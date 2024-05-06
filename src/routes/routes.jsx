@@ -7,6 +7,7 @@ import AboutPage from '../pages/about/AboutPage';
 import ServicePage from '../pages/service/ServicePage';
 import ContactPage from '../pages/contact/ContactPage';
 import SearchPage from '../pages/search/SearchPage';
+import CartPage from '../pages/cart/CartPage';
 
 function routes() {
   return (
@@ -32,6 +33,9 @@ function routes() {
   </Routes>
   <Routes>
     <Route path="/search" element={<SearchPage />} />
+  </Routes>
+  <Routes>
+    <Route path="/cart" element={<CartPage />} />
   </Routes>
 
    </>

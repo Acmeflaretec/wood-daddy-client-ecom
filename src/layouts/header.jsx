@@ -108,7 +108,7 @@ const Header = () => {
 <div className="grp-bar">
 <NotificationsIcon className='headicons'  />
 <FavoriteBorderIcon className='headicons' onClick={()=>navigate('/wishlist')} />
-<ShoppingBasketIcon className='headicons'  />
+<ShoppingBasketIcon className='headicons' onClick={()=>navigate('/cart')} />
 </div>
 
       </div>
