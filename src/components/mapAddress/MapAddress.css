@@ -1,0 +1,17 @@
+.MapAddress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.mapContainer {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.addressContainer {
+  text-align: center;
+  padding: 20px;
+}
+

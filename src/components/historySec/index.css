@@ -1,0 +1,36 @@
+.AboutSec {
+  margin-top: 50px;
+  display: flex;
+  width: 100%;
+}
+
+.AboutSec img {
+  flex: 1;
+  max-width: 40%; /* Adjust as needed */
+}
+
+.content {
+  flex: 1;
+  padding: 0 20px; /* Adjust padding as needed */
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.content h1 {
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 678px) {
+  .AboutSec {
+    flex-direction: column;
+  }
+  
+  .AboutSec img {
+    max-width: 100%;
+  }
+  
+  .content {
+    padding: 20px;
+  }
+}

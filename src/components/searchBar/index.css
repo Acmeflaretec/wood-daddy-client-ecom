@@ -1,0 +1,13 @@
+.header-top{
+  display: flex;
+  height: 110px;
+  
+  }
+  .search-bar{
+    display: flex;
+    flex-direction: column;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  }
+  
