@@ -63,10 +63,14 @@ const {type} = props
         <Typography variant="body2" color="text.secondary">
           Description of the furniture goes here. You can provide additional details about the product.
         </Typography>
+        <p className='warning'>Hurry up! only 3 left</p>
       <div>
         <p > <span style={{fontSize:'22px'}} >Rs 10000</span> <span style={{color:'gray',fontSize:'18px',textDecoration:'line-through'
       ,marginLeft:'10px'}}>15000</span> <span style={{color:'green',marginLeft:'10px',fontSize:'22px'}}>25% off</span></p>
       </div>
+      <p style={{color:'green'}}>Hot Deal</p>
+      
+
       </CardContent>
       <Box className="actions">
         <button className="action-button add-to-cart">Add to Cart</button>
