@@ -21,7 +21,7 @@ const para ='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut leo
       <ContentSection title={title} para={para} />
       <HomeCategory/>
       <OfferSale/>
-      <ProductList title={'Recent Furnitures'} />
+      <ProductList title={'Recent Furnitures'} recentf={true} />
       <ContactSec/>
       <Service/>
       <Footer/>

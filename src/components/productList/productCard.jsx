@@ -7,7 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 
 function ProductCard(props) {
-  const { type } = props;
+  const { type,productDetails } = props;
+
+  console.log('pro',productDetails)
 
   const images = [
     '/gallery/products/p1.jpg',
