@@ -25,7 +25,7 @@ const {title,type,recentf} = props
     const fetchData = async () => {
       try {
         const response = await axiosInstance.get(urlQuery);
-        setDetails(response.data.data);
+        setDetails(response.data.products);
         console.log('prooo',response.data.products)
         
       } catch (error) {
@@ -47,9 +47,12 @@ const {title,type,recentf} = props
       <div className="ProductList"> {/* Updated class name */}
 
       {details && details.map((pro, index) => (
+<>
+{console.log(' prr',pro)}
+<ProductCard key={index} type={type} productDetails={pro} />
+</>
 
-  <ProductCard key={index} type={type} productDetails={pro} />
-  
+
 ))}
 
         {/* <ProductCard type={type} productDetails={details} /> */}

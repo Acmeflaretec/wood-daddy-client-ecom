@@ -23,11 +23,11 @@ function ProductCard(props) {
   const [activeIndex, setActiveIndex] = React.useState(0);
 
   const handleNext = () => {
-    setActiveIndex((prevIndex) => (prevIndex + 1) % images.length);
+    setActiveIndex((prevIndex) => (prevIndex + 1) % productDetails.image.length);
   };
 
   const handleBack = () => {
-    setActiveIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+    setActiveIndex((prevIndex) => (prevIndex - 1 + productDetails.image.length) % productDetails.image.length);
   };
 
   const handlers = useSwipeable({
@@ -44,7 +44,7 @@ function ProductCard(props) {
     <Box className="product-card" {...handlers}>
       <Box className="image">
         <img
-          src={images[activeIndex]}
+          src={`http://localhost:5000/uploads/${productDetails.image[activeIndex]}` }
           alt={`Image ${activeIndex + 1}`}
           onClick={handleCardClick}
         />
@@ -59,19 +59,22 @@ function ProductCard(props) {
       </Box>
       <CardContent>
         <Typography variant="h5" component="div">
-          Furniture Name
+          {productDetails.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Description of the furniture goes here. You can provide additional details about the product.
+         {productDetails.subheading}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+         {productDetails.description}
         </Typography>
         <p className="warning">Hurry up! only 3 left</p>
         <div>
           <p>
-            <span style={{ fontSize: '22px' }}>Rs 10000</span>
+            <span style={{ fontSize: '22px' }}>Rs {productDetails.price}</span>
             <span style={{ color: 'gray', fontSize: '18px', textDecoration: 'line-through', marginLeft: '10px' }}>
-              15000
+              {productDetails.sale_rate}
             </span>
-            <span style={{ color: 'green', marginLeft: '10px', fontSize: '22px' }}>25% off</span>
+            <span style={{ color: 'green', marginLeft: '10px', fontSize: '22px' }}>{productDetails.discount}% off</span>
           </p>
         </div>
         <p style={{ color: 'green' }}>Hot Deal</p>
