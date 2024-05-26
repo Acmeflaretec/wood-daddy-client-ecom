@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import './index.css'
+import { useParams } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-
-
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
@@ -28,13 +27,14 @@ import { useNavigate  } from 'react-router-dom';
 
 
 const Header = () => {
-  
-    const [open, setOpen] = React.useState(false);
+    
+    const [searchItem,setSearchItem] = useState('')
+    const [open, setOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleSearch = (event) => {
       event.preventDefault(); // Prevent the default form submission behavior
-      navigate('/search'); // Navigate to the desired route
+      navigate(`/search/${searchItem}`); // Navigate to the desired route
     };
 
     const toggleDrawer = (newOpen) => () => {
@@ -81,13 +81,14 @@ const Header = () => {
         
 <div className="search-bar">
 
-<form   style={{ display: 'flex' }} onSubmit={handleSearch}>
+<form   style={{ display: 'flex' }} onSubmit={handleSearch} >
 
-        <SearchIcon className='headicons' />
+        <SearchIcon className='headicons' onClick={handleSearch} />
 
       <input
         type="text"
-         
+         value={searchItem}
+         onChange={(e)=>setSearchItem(e.target.value)}
         placeholder="Search..."
         style={{
           padding: '8px',

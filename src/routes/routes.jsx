@@ -32,7 +32,7 @@ function routes() {
     <Route path="/contact" element={<ContactPage />} />
   </Routes>
   <Routes>
-    <Route path="/search" element={<SearchPage />} />
+    <Route path="/search/:searchItem" element={<SearchPage />} />
   </Routes>
   <Routes>
     <Route path="/cart" element={<CartPage />} />
