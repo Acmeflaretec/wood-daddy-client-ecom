@@ -9,7 +9,7 @@ import { useSwipeable } from 'react-swipeable';
 function ProductCard(props) {
   const { type,productDetails } = props;
 
-  console.log('pro',productDetails)
+  console.log('card',productDetails)
 
   const images = [
     '/gallery/products/p1.jpg',
@@ -37,7 +37,7 @@ function ProductCard(props) {
 
   const handleCardClick = () => {
     // Navigate to /product route
-    navigate('/product');
+    navigate(`/product/${productDetails._id}`);
   };
 
   return (
@@ -67,7 +67,7 @@ function ProductCard(props) {
         <Typography variant="body2" color="text.secondary">
          {productDetails.description}
         </Typography>
-        <p className="warning">Hurry up! only 3 left</p>
+       { <p className="warning">Hurry up! only 3 left</p>}
         <div>
           <p>
             <span style={{ fontSize: '22px' }}>Rs {productDetails.price}</span>
@@ -77,11 +77,16 @@ function ProductCard(props) {
             <span style={{ color: 'green', marginLeft: '10px', fontSize: '22px' }}>{productDetails.discount}% off</span>
           </p>
         </div>
-        <p style={{ color: 'green' }}>Hot Deal</p>
+        <p style={{ color: 'green' }}>Hot Deal</p> 
       </CardContent>
       <Box className="actions">
-        <button className="action-button add-to-cart">Add to Cart</button>
-        {type !== 'wishlist' && <button className="action-button wishlist">Wishlist</button>}
+     { !productDetails.inCart? ( <button className="action-button add-to-cart">Add  Cart</button>) 
+     : (<button className="action-button add-to-cart">Remove Cart</button>)}
+
+        {!productDetails.inWishlist? (<button className="action-button wishlist"> add Wishlist</button>) :
+         (<button className="action-button wishlist">remove Wishlist</button>)}
+
+
       </Box>
     </Box>
   );

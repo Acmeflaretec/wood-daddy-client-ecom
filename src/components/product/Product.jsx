@@ -1,10 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import axiosInstance from '../../axios';
+import { useParams } from 'react-router-dom';
 import './index.css';
 import ActiveLastBreadcrumb from '../../common/breadCrums/breadCrums';
 import AccordionBox from '../accordion/Accordion';
 
 function Product() {
   const [quantity, setQuantity] = useState(1);
+  const { productId } = useParams();
+
+  const [details, setDetails] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosInstance.get(`http://localhost:5000/api/v1/products/${productId}`);
+        setDetails(response.data.product);
+         console.log('prooo',response.data.product)
+        
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    
+      fetchData();
+     
+  }, []);
 
   const incrementQuantity = () => {
     setQuantity(quantity + 1);
@@ -28,10 +50,10 @@ function Product() {
           <img src='/gallery/products/p1.jpg' alt='Product' />
         </div>
         <div className="proContents">
-        <h2 className='ftitle' >Furniture name</h2>  
-     <p > <span className='fpr' >Rs:7000</span>
-      <span className='fdpr' >3500</span> 
-     <span  className='dcnt'> 50% off</span>  </p>
+        <h2 className='ftitle' >{details.name}</h2>  
+     <p > <span className='fpr' >Rs:{details.price}</span>
+      <span className='fdpr' >{details.price - details.sale_rate}</span> 
+     <span  className='dcnt'> {details.discount}% off</span>  </p>
     
      <div style={{display:'flex',alignItems:'center',gap:'20px'}}>
      <p className='qtyn' style={{fontSize:'22px'}} >Quantity: </p>
@@ -44,16 +66,18 @@ function Product() {
      <p className='warning'>Hurry up! only 3 left</p>
 
      <div className="button-container">
+     { !details.inCart? ( <button className="add-to-cart-button">Add Cart</button>) 
+     : (<button className="add-to-cart-button">Remove Cart</button>)}
 
-
-      <button className="add-to-cart-button">Add to Cart</button>
-      <button className="add-to-wishlist-button">Add to Wishlist</button>
+{ !details.inWishlist? (  <button className="add-to-wishlist-button">Add Wishlist</button>) 
+     : ( <button className="add-to-wishlist-button">Remove Wishlist</button>)}
+     
 
       
     </div>
     
 {/* accordion */}
-<AccordionBox/>
+<AccordionBox  accDetails={details} />
 
 
 

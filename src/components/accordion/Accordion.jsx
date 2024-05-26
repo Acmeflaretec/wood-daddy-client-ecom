@@ -5,7 +5,10 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export default function AccordionBox() {
+export default function AccordionBox(props) {
+
+  const {accDetails} = props
+
   return (
     <div style={{marginTop:'30px'}}>
       <Accordion>
@@ -18,8 +21,7 @@ export default function AccordionBox() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+           {accDetails.description}
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -33,8 +35,7 @@ export default function AccordionBox() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            {accDetails.specification}
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -44,12 +45,11 @@ export default function AccordionBox() {
           aria-controls="panel2-content"
           id="panel2-header"
         >
-          <Typography>Seller</Typography>
+          <Typography>Dimension</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+         {accDetails.dimension}
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -63,8 +63,7 @@ export default function AccordionBox() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            {accDetails.warranty}
           </Typography>
         </AccordionDetails>
       </Accordion>

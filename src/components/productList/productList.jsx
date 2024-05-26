@@ -15,7 +15,7 @@ const {title,type,recentf} = props
     setPage(value);
   };
  
-  if(recentf) var urlQuery = `http://localhost:5000/api/v1/products?page=1&limit=6&sortField=createdAt&sortOrder=asc` ;
+  if(recentf) var urlQuery = `http://localhost:5000/api/v1/products?page=1&limit=6&sortField=createdAt&sortOrder=desc` ;
 
   //axios fetch code 
 
@@ -26,7 +26,7 @@ const {title,type,recentf} = props
       try {
         const response = await axiosInstance.get(urlQuery);
         setDetails(response.data.products);
-        console.log('prooo',response.data.products)
+        // console.log('prooo',response.data.products)
         
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -58,13 +58,14 @@ const {title,type,recentf} = props
         {/* <ProductCard type={type} productDetails={details} /> */}
        
        
-
-<div className="pagination">
-<Stack spacing={2}>
-      <Typography>Page: {page}</Typography>
-      <Pagination count={10} page={page} onChange={handleChange} />
-    </Stack>
-</div>
+        <div className="pagination">
+    {!recentf ? (
+      <Stack spacing={2}>
+        <Typography>Page: {page}</Typography>
+        <Pagination count={10} page={page} onChange={handleChange} />
+      </Stack>
+    ) : null}
+  </div>
 
       </div>
     </div>

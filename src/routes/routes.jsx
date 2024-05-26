@@ -17,7 +17,7 @@ function routes() {
       <Route path="/" element={<Home />} />
     </Routes>
     <Routes>
-    <Route path="/product" element={<ProductPage />} />
+    <Route path="/product/:productId" element={<ProductPage />} />
   </Routes>
   <Routes>
     <Route path="/wishlist" element={<WishlistPage />} />
