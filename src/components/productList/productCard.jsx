@@ -67,7 +67,7 @@ function ProductCard(props) {
         <Typography variant="body2" color="text.secondary">
          {productDetails.description}
         </Typography>
-       { <p className="warning">Hurry up! only 3 left</p>}
+       { <p className="warning">Hurry up! only few left</p>}
         <div>
           <p>
             <span style={{ fontSize: '22px' }}>Rs {productDetails.price}</span>

@@ -49,7 +49,7 @@ function Cart(props) {
     <button className="quantity-button" onClick={incrementQuantity}>+</button>
   </div>
    </div>
-   <p className='warning'>Hurry up! only 3 left</p>
+   <p className='warning'>Hurry up! only few left</p>
 
    <div className="button-container">
 
