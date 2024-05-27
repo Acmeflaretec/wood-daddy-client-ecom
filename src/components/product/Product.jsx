@@ -38,14 +38,33 @@ function Product() {
     }
   };
 
-const addCart = async()=>{
+const addCart = async(e,proId)=>{
 
-
+  e.preventDefault()
+  console.log('proid',proId)
+    try {
+  
+      const response = await axiosInstance.post(`http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55/${proId}`);
+      setDetails({ ...details, inCart: true });
+      
+    } catch (error) {
+      console.log('err',error)
+    }
+    
 
 }
-const removeCart = async()=>{
+const removeCart = async(e,proId)=>{
 
+  e.preventDefault()
+  console.log('proid',proId)
+  try {
 
+    const response = await axiosInstance.delete(`http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55/${proId}`);
+    setDetails({ ...details, inCart: false });
+    
+  } catch (error) {
+    console.log('err',error)
+  }
   
 }
 const addWishlist = async(e,proId)=>{
@@ -103,8 +122,8 @@ const removeWishlist = async(e,proId)=>{
      <p className='warning'>Hurry up! only 3 left</p>
 
      <div className="button-container">
-     { !details.inCart? ( <button className="add-to-cart-button" onClick={(e)=> addCart} >Add Cart</button>) 
-     : (<button className="add-to-cart-button" onClick={(e)=> removeCart} >Remove Cart</button>)}
+     { !details.inCart? ( <button className="add-to-cart-button" onClick={(e)=> addCart(e,details._id)} >Add Cart</button>) 
+     : (<button className="add-to-cart-button" onClick={(e)=> removeCart(e,details._id)} >Remove Cart</button>)}
 
 { !details.inWishlist? (  <button className="add-to-wishlist-button" onClick={(e)=> addWishlist(e,details._id)} >Add Wishlist</button>) 
      : ( <button className="add-to-wishlist-button" onClick={(e)=> removeWishlist(e,details._id)} >Remove Wishlist</button>)}
