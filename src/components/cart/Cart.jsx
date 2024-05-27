@@ -3,8 +3,10 @@ import './index.css';
 import ActiveLastBreadcrumb from '../../common/breadCrums/breadCrums';
 import AccordionBox from '../accordion/Accordion';
 
-function Cart() {
+function Cart(props) {
   const [quantity, setQuantity] = useState(1);
+
+  const {productDetails} = props
 
   const incrementQuantity = () => {
     setQuantity(quantity + 1);
@@ -25,9 +27,9 @@ function Cart() {
       </div>
       <div className="proContents">
       <h2 className='ftitle' >Furniture name</h2>  
-   <p > <span className='fpr' >Rs:7000</span>
-    <span className='fdpr' >3500</span> 
-   <span  className='dcnt'> 50% off</span>  </p>
+   <p > <span className='fpr' >Rs:{productDetails.price}</span>
+    <span className='fdpr' >{productDetails.sale_rate}</span> 
+   <span  className='dcnt'> {productDetails.discount}% off</span>  </p>
   
    <div style={{display:'flex',alignItems:'center',gap:'20px'}}>
    <p className='qtyn' style={{fontSize:'22px'}} >Quantity: </p>
@@ -49,7 +51,7 @@ function Cart() {
   </div>
   
 {/* accordion */}
-<AccordionBox/>
+<AccordionBox accDetails={productDetails} />
 
 
 
