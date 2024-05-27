@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import './index.css';
+import { useNavigate } from 'react-router-dom';
 import ActiveLastBreadcrumb from '../../common/breadCrums/breadCrums';
 import AccordionBox from '../accordion/Accordion';
 
 function Cart(props) {
   const [quantity, setQuantity] = useState(1);
+  const navigate = useNavigate();
+
+
 
   const {productDetails} = props
 
@@ -17,13 +21,19 @@ function Cart(props) {
       setQuantity(quantity - 1);
     }
   };
+
+  const handleCardClick = () => {
+    // Navigate to /product route
+    navigate(`/product/${productDetails._id}`);
+  };
+
   return (
     <div className='Product' style={{marginTop:'30px'}}>
    
 
     <div className="proSub">
       <div className="imgFrame">
-        <img src='/gallery/products/p1.jpg' alt='Product' />
+        <img src='/gallery/products/p1.jpg' alt='Product' onClick={handleCardClick} />
       </div>
       <div className="proContents">
       <h2 className='ftitle' >Furniture name</h2>  
