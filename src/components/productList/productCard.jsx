@@ -9,7 +9,7 @@ import { useSwipeable } from 'react-swipeable';
 function ProductCard(props) {
   const { type,productDetails } = props;
 
-  console.log('card',productDetails)
+   
 
   const images = [
     '/gallery/products/p1.jpg',

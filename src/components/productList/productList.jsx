@@ -8,14 +8,18 @@ import Stack from '@mui/material/Stack';
 
 
 function ProductList(props) {
-const {title,type,recentf} = props
+const {title,type,recentf,searchItem} = props
 
   const [page, setPage] = useState(1);
+
+
   const handleChange = (event, value) => {
     setPage(value);
   };
  
   if(recentf) var urlQuery = `http://localhost:5000/api/v1/products?page=1&limit=6&sortField=createdAt&sortOrder=desc` ;
+
+  if(searchItem) var urlQuery =`http://localhost:5000/api/v1/products?page=1&limit=10&search=${searchItem}&sortField=createdAt&sortOrder=desc` ;
 
   // axios fetch code 
 

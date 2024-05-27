@@ -44,7 +44,7 @@ const Header = () => {
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
 <div className="logo-bar">
-<h1>Wood Daddy</h1>
+<h1 onClick={()=> navigate(`/`)} >Wood Daddy</h1>
 </div>
 
 <Divider />
@@ -103,7 +103,7 @@ const Header = () => {
 
 </div>
 <div className="logo-bar">
-<h1 >Wood Daddy</h1>
+<h1 onClick={()=> navigate('/')} >Wood Daddy</h1>
 </div>
 
 <div className="grp-bar">
