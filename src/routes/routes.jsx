@@ -8,6 +8,7 @@ import ServicePage from '../pages/service/ServicePage';
 import ContactPage from '../pages/contact/ContactPage';
 import SearchPage from '../pages/search/SearchPage';
 import CartPage from '../pages/cart/CartPage';
+import ProductsFetch from '../pages/productsfetch/productsFetch';
 
 function routes() {
   return (
@@ -36,6 +37,9 @@ function routes() {
   </Routes>
   <Routes>
     <Route path="/cart" element={<CartPage />} />
+  </Routes>
+  <Routes>
+    <Route path="/productfetch/:cat" element={<ProductsFetch />} />
   </Routes>
 
    </>

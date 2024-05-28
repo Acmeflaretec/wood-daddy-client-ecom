@@ -7,11 +7,14 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 
 
+
 function ProductList(props) {
-  const {title,type,recentf,searchItem} = props
+  const {title,type,recentf,searchItem,categ} = props;
   const [details, setDetails] = useState([]);
   const [page, setPage] = useState(1);
 
+
+console.log('cattt',categ)
 
   const handleChange = (event, value) => {
     setPage(value);
@@ -23,7 +26,7 @@ function ProductList(props) {
 
   if(type === 'wishlist')  var urlQuery = `http://localhost:5000/api/v1/wishlist/664db80748eeadcd76759a55/wishlist?page=1&limit=6&sortField=createdAt&sortOrder=desc` ;
 
-
+  if(type === 'productFetch')  var urlQuery = `http://localhost:5000/api/v1/products?page=1&limit=6&category=${categ}&sortField=createdAt&sortOrder=desc` ;
   // axios fetch code 
 
   
@@ -33,6 +36,7 @@ function ProductList(props) {
       try {
         const response = await axiosInstance.get(urlQuery);
         setDetails(response.data.products);
+        console.log('prr',response.data.products)
       
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -43,7 +47,6 @@ function ProductList(props) {
       fetchData();
      
   }, []);
-
 
   return (
     <div className='ProductsBox'>
