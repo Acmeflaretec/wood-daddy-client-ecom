@@ -1,0 +1,51 @@
+/* index.css */
+
+.order-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.order-table th,
+.order-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.order-table th {
+  background-color: #f2f2f2;
+}
+
+.order-table img {
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.total-price {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.buy-button-container {
+  text-align: right;
+  padding-right: 50px;
+}
+
+.buy-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.buy-button:hover {
+  background-color: #45a049;
+}

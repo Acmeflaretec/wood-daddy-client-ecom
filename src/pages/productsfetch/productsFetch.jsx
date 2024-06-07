@@ -7,12 +7,13 @@ import SearchBar from '../../components/searchBar/SearchBar';
 
 
 function ProductsFetch() {
+  const [search, setSearch] = useState('');
   const { cat } = useParams();
 
 
   return (
      <div>
-      <SearchBar  />  
+      <SearchBar setSearch1={setSearch} search1={search} />
       <ProductList title={'Results...'} type={'productFetch'} categ={cat} />
       <Footer />
     </div>

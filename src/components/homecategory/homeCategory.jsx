@@ -18,7 +18,7 @@ const categories = [
   {
     imgUrl:'/gallery/c2.jpg',
     category:'SOFA',
-    cat_id:'664ee6aa98b29a202c2c7bf3'
+    cat_id:'6655b2ec006290bd3c7e3935'
 
   },
   {
@@ -30,7 +30,7 @@ const categories = [
   {
     imgUrl:'/gallery/c1.jpg',
     category:'CHAIR',
-    cat_id:'664ee6aa98b29a202c2c7bf3'
+    cat_id:'6655b340006290bd3c7e3944'
   },
 ]
 

@@ -9,6 +9,7 @@ import ContactPage from '../pages/contact/ContactPage';
 import SearchPage from '../pages/search/SearchPage';
 import CartPage from '../pages/cart/CartPage';
 import ProductsFetch from '../pages/productsfetch/productsFetch';
+import OrderPage from '../pages/order/OrderPage';
 
 function routes() {
   return (
@@ -22,6 +23,9 @@ function routes() {
   </Routes>
   <Routes>
     <Route path="/wishlist" element={<WishlistPage />} />
+  </Routes>
+  <Routes>
+    <Route path="/order" element={<OrderPage />} />
   </Routes>
   <Routes>
     <Route path="/about" element={<AboutPage />} />
