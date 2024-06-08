@@ -10,7 +10,7 @@ import { useSwipeable } from 'react-swipeable';
 function ProductCard(props) {
   const { type,productDetails } = props;
   const [state,setState] = useState(productDetails)
-  console.log('pro details',state)
+  // console.log('pro details',state)
 
 
   const images = [
@@ -45,7 +45,7 @@ function ProductCard(props) {
   const addCart = async(e,proId)=>{
 
     e.preventDefault()
-    console.log('proid',proId)
+    // console.log('proid',proId)
       try {
     
         const response = await axiosInstance.post(`http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55/${proId}`);

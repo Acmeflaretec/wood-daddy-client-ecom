@@ -10,16 +10,18 @@ import SearchPage from '../pages/search/SearchPage';
 import CartPage from '../pages/cart/CartPage';
 import ProductsFetch from '../pages/productsfetch/productsFetch';
 import OrderPage from '../pages/order/OrderPage';
+import LoginPage from '../pages/auth/LoginPage';
+import SignupPage from '../pages/auth/SignupPage';
 
 function routes() {
   return (
    <>
 
-     <Routes>
-      <Route path="/" element={<Home />} />
-    </Routes>
-    <Routes>
-    <Route path="/product/:productId" element={<ProductPage />} />
+  <Routes>
+  <Route path="/" element={<Home />} />
+  </Routes>
+  <Routes>
+  <Route path="/product/:productId" element={<ProductPage />} />
   </Routes>
   <Routes>
     <Route path="/wishlist" element={<WishlistPage />} />
@@ -41,6 +43,12 @@ function routes() {
   </Routes>
   <Routes>
     <Route path="/cart" element={<CartPage />} />
+  </Routes>
+  <Routes>
+    <Route path="/login" element={<LoginPage />} />
+  </Routes>
+  <Routes>
+    <Route path="/signup" element={<SignupPage />} />
   </Routes>
   <Routes>
     <Route path="/productfetch/:cat" element={<ProductsFetch />} />
