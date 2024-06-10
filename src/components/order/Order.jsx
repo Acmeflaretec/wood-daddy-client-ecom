@@ -119,7 +119,7 @@ useEffect(() => {
     try {
       const response = await axiosInstance.get(urlQuery);
       setDetails(response.data.products);
-      console.log('orderrr',response.data.products)
+     // console.log('orderrr',response.data.products)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -143,7 +143,7 @@ useEffect(() => {
   // }, []);
 
   const handleQuantityChange = async (id, action) => {
-    console.log('iddd', id);
+    //console.log('iddd', id);
     try {
       if (action === 'increment') {
         await axiosInstance.put(`http://localhost:5000/api/v1/cart/increase/${id}`);
@@ -173,38 +173,36 @@ useEffect(() => {
       console.error('Error deleting order item:', error);
     }
   };
+  function convertToServerFormat(details) {
+    const products = details.map(item => ({
+      product_id: item._id, // Assuming _id represents the product ID
+      qty: item.cartDetails.length > 0 ? item.cartDetails[0].qty : 0, // Assuming qty is taken from cartDetails
+      price: item.sale_rate // Assuming sale_rate represents the price
+    }));
+  
+    const totalPrice = products.reduce((acc, curr) => acc + (curr.qty * curr.price), 0);
+  
+    return {
+      item: products,
+      totalPrice
+    };
+  }
+  
 
   const handleBuy = async () => {
     try {
-      // Get the IDs of order items
-      const orderItemIds = details.map(item => item._id);
-
       // Calculate total amount
-      const totalAmount = calculateTotal();
+   //   const totalAmount = calculateTotal();
+console.log('productsssss',details)
 
-      // Prepare customer dummy data
-      const customerDummyData = {
-        name: "John Doe",
-        email: "johndoe@example.com",
-        address: {
-          street: "123 Main St",
-          city: "Anytown",
-          state: "CA",
-          zip: "12345"
-        }
-      };
+const productsData = convertToServerFormat(details);
+console.log(productsData);
+console.log('cart ',productsData)
 
       // Prepare data for creating the order
-      const orderData = {
-      
-        customer: customerDummyData,
-        orderItems: orderItemIds,
-        totalAmount,
-        status: 'pending' // Set initial status as 'pending'
-      };
-console.log('orddataaa',orderData)
+   
       // Send a POST request to create the order
-      const response = await axiosInstance.post(`http://localhost:5000/api/v1/order/createorder/${'664db80748eeadcd76759a55'}`, orderData);
+      const response = await axiosInstance.post(`http://localhost:5000/api/v1/order/createorder/${'664db80748eeadcd76759a55'}/${'666716d82f9a542271578e2e'}`, {products:productsData});
       console.log('Order created:', response.data);
       // Optionally, you can perform additional actions after the order is created
     } catch (error) {
