@@ -124,6 +124,19 @@ function Cart(props) {
     }
   };
 
+  const BuyOrderItem = async (e, proId) => {
+    e.preventDefault();
+    console.log('proid', proId);
+    try {
+      const response = await axiosInstance.post(`http://localhost:5000/api/v1/order/orderitem/${proId}/664db80748eeadcd76759a55/${quantity}/${productDetails.price}`);
+      const response2 = await axiosInstance.delete(`http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55/${proId}`);
+      setDetails(details.filter((item) => item._id !== proId));
+
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
+
   return (
     <div className='Product' style={{ marginTop: '30px' }}>
       <div className="proSub">
@@ -150,7 +163,7 @@ function Cart(props) {
 
           <div className="button-container">
             <button className="add-to-cart-button" onClick={(e) => removeCart(e, productDetails._id)}>Remove</button>
-            <button className="add-to-wishlist-button">Buy Item</button>
+            <button className="add-to-wishlist-button" onClick={(e) => BuyOrderItem(e, productDetails._id)} >Buy Item</button>
           </div>
 
           {/* accordion */}
