@@ -6,10 +6,10 @@ import Order from '../../components/order/Order';
 function OrderPage() {
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
     <Order />
 
-      <Footer />
+      {/* <Footer /> */}
 
       </div>
   )
