@@ -67,25 +67,56 @@ function CartPage() {
   const [details, setDetails] = useState([]);
   const navigate = useNavigate();
 
+  const [usersId,setUsersId] = useState()
+  useEffect(() => {
+   
+    const fetchData = async () => {
+      const response = await axiosInstance.get(`http://localhost:5000/api/v1/auth/getuser`);
+      setUsersId(response.data.data[0]._id)
+      console.log('userrrr',response.data.data[0]._id)
+    }
+    fetchData()
+    
+  }, []);
+  useEffect(() => {
+    if (usersId) {
+      const urlQuery = `http://localhost:5000/api/v1/cart/${usersId}?page=1&sortField=createdAt&sortOrder=desc`;
+      // Now you can use the urlQuery for further data fetching or processing
+      console.log('URL Query:', urlQuery);
+      // You can also fetch data here if needed
+      const fetchCartData = async () => {
+        try {
+          const response = await axiosInstance.get(urlQuery);
+          setDetails(response.data.products);
+          // Handle the cart data
+        } catch (error) {
+          console.error('Error fetching cart data:', error);
+        }
+      };
+      fetchCartData();
+    }
+  }, [usersId]);
+
 
   const handleOrder = async () => {
    navigate(`/order`);
   
   }
-  var urlQuery = `http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55?page=1&sortField=createdAt&sortOrder=desc`;
+  // var urlQuery = `http://localhost:5000/api/v1/cart/${usersId}?page=1&sortField=createdAt&sortOrder=desc`;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosInstance.get(urlQuery);
-        setDetails(response.data.products);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axiosInstance.get(urlQuery);
+  //       setDetails(response.data.products);
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
+
 
   return (
     <div>

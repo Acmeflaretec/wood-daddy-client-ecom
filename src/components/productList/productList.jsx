@@ -23,15 +23,29 @@ function ProductList(props) {
   const [disc, setDisc] = useState('');
   const [sortRate, setsortRate] = useState('');
 
+  const [usersId,setUsersId] = useState()
+
+
   let urlQuery = '';
 
   if (recentf) urlQuery = `http://localhost:5000/api/v1/products?page=${page}&limit=6&sortField=createdAt&sortOrder=desc`;
 
   if (searchItem) urlQuery = `http://localhost:5000/api/v1/products?page=${page}&limit=10&search=${searchItem}&sortField=createdAt&sortOrder=desc`;
 
-  if (type === 'wishlist') urlQuery = `http://localhost:5000/api/v1/wishlist/664db80748eeadcd76759a55/wishlist?page=${page}&limit=6&sortField=createdAt&sortOrder=desc`;
+  // if (type === 'wishlist') urlQuery = `http://localhost:5000/api/v1/wishlist/664db80748eeadcd76759a55/wishlist?page=${page}&limit=6&sortField=createdAt&sortOrder=desc`;
 
   if (type === 'productFetch') urlQuery = `http://localhost:5000/api/v1/products?page=${page}&limit=9&category=${categ}&sortField=createdAt&sortOrder=desc`;
+
+  useEffect(() => {
+   
+    const fetchData = async () => {
+      const response = await axiosInstance.get(`http://localhost:5000/api/v1/auth/getuser`);
+      setUsersId(response.data.data[0]._id)
+      console.log('userrrr',response.data.data[0]._id)
+    }
+    fetchData()
+    
+  }, []);
 
 
   const handleSortChange = (event) => {
@@ -63,13 +77,32 @@ function ProductList(props) {
   };
 
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axiosInstance.get(urlQuery);
+  //       setDetails(response.data.products);
+  //       setTotalPages(Math.ceil(response.data.totalProducts / 10)); // Set total pages based on total products
+  //       console.log('tpages',Math.ceil(response.data.totalProducts / 10))
+
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [page, urlQuery]);
+
   useEffect(() => {
-    const fetchData = async () => {
+    if (usersId) {
+      if (type === 'wishlist') urlQuery = `http://localhost:5000/api/v1/wishlist/${usersId}/wishlist?page=${page}&limit=6&sortField=createdAt&sortOrder=desc`;
+
+        const fetchData = async () => {
       try {
         const response = await axiosInstance.get(urlQuery);
         setDetails(response.data.products);
         setTotalPages(Math.ceil(response.data.totalProducts / 10)); // Set total pages based on total products
-        console.log('tpages',Math.ceil(response.data.totalProducts / 10))
+        //console.log('tpages',Math.ceil(response.data.totalProducts / 10))
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -77,7 +110,10 @@ function ProductList(props) {
     };
 
     fetchData();
-  }, [page, urlQuery]);
+   
+      
+    }
+  }, [page,usersId]);
 
   return (
     <div className='ProductsBox'>

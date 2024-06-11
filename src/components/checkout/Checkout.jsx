@@ -1,4 +1,7 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
+import axiosInstance from '../../axios';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
@@ -101,6 +104,146 @@ export default function Checkout() {
   const defaultTheme = createTheme({ palette: { mode } });
   const [activeStep, setActiveStep] = React.useState(0);
 
+
+  const [details, setDetails] = useState([]);
+  const navigate = useNavigate();
+
+
+const handleOrder = async () => {
+ navigate(`/order`);
+
+}
+
+var urlQuery = `http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55?page=1&sortField=createdAt&sortOrder=desc`;
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axiosInstance.get(urlQuery);
+      setDetails(response.data.products);
+     // console.log('orderrr',response.data.products)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+   
+  const handleQuantityChange = async (id, action) => {
+    //console.log('iddd', id);
+    try {
+      if (action === 'increment') {
+        await axiosInstance.put(`http://localhost:5000/api/v1/cart/increase/${id}`);
+      } else if (action === 'decrement') {
+        await axiosInstance.put(`http://localhost:5000/api/v1/cart/decrease/${id}`);
+      }
+
+      // Fetch updated order items
+      const response = await axiosInstance.get(urlQuery);
+      setDetails(response.data.products);
+    } catch (error) {
+      console.error(`Error ${action === 'increment' ? 'incrementing' : 'decrementing'} order item quantity:`, error);
+    }
+  };
+
+  const calculateTotal = () => {
+    return details.reduce((total, item) => total + item.quantity * item.price, 0);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axiosInstance.delete(`http://localhost:5000/api/v1/order/orderitem/${id}`);
+      // Fetch updated order items
+      const response = await axiosInstance.get(urlQuery);
+      setDetails(response.data);
+    } catch (error) {
+      console.error('Error deleting order item:', error);
+    }
+  };
+  function convertToServerFormat(details) {
+    const products = details.map(item => ({
+      product_id: item._id, // Assuming _id represents the product ID
+      qty: item.cartDetails.length > 0 ? item.cartDetails[0].qty : 0, // Assuming qty is taken from cartDetails
+      price: item.sale_rate // Assuming sale_rate represents the price
+    }));
+  
+    const totalPrice = products.reduce((acc, curr) => acc + (curr.qty * curr.price), 0);
+  
+    return {
+      item: products,
+      totalPrice
+    };
+  }
+  
+
+  const handleBuy = async () => {
+    try {
+      // Calculate total amount
+   //   const totalAmount = calculateTotal();
+console.log('productsssss',details)
+
+const productsData = convertToServerFormat(details);
+console.log(productsData);
+console.log('cart ',productsData)
+
+      // Prepare data for creating the order
+   
+      // Send a POST request to create the order
+      const response = await axiosInstance.post(`http://localhost:5000/api/v1/order/createorder/${'664db80748eeadcd76759a55'}/${'666716d82f9a542271578e2e'}`, {products:productsData});
+      console.log('Order created:', response.data);
+      // Optionally, you can perform additional actions after the order is created
+    } catch (error) {
+      console.error('Error creating order:', error);
+      // Optionally, you can handle error cases here
+    }
+  };
+
+
+  React.useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+       document.body.removeChild(script);
+    };
+ }, []);
+ const handleClick = () => {
+  console.log('object')
+
+    const options = {
+       key: 'rzp_test_wNhVz81BFxrIrL',
+       amount: parseInt(1000) * 100, // amount in paisa
+       currency: 'INR',
+       name: 'TUT FINDER',
+       description: 'Purchase course',
+       handler: function (response) {
+          handlePaymentSuccess()
+       },
+      //  prefill: {
+      //     email: data?.email,
+      //  },
+      //  theme: {
+      //     color: theme?.palette?.mode === 'light' ? '#a31545' : '#000',
+      //  },
+      //  image: 'apple-touch-icon.png'
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open()
+    // details?.subscription_type === 'Paid' ? rzp.open() : handlePaymentSuccess()
+ };
+
+ const handlePaymentSuccess = async () => {
+   console.log('success')
+ };
+
+
+// ********* //
+
+
   const toggleColorMode = () => {
     setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
@@ -171,7 +314,7 @@ export default function Checkout() {
               maxWidth: 500,
             }}
           >
-            <Info totalPrice={activeStep >= 2 ? '$144.97' : '$134.98'} />
+            <Info totalPrice={activeStep >= 2 ? '$144.97' : '$134.98'} productData={details} setProductData={setDetails} />
           </Box>
         </Grid>
         <Grid

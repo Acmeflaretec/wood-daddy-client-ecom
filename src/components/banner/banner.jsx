@@ -14,6 +14,10 @@ function Banner() {
   const [maxSteps, setMaxSteps] = useState(0);
   const [banners, setBanners] = useState([]);
 
+
+  
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {

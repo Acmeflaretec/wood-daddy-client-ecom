@@ -13,14 +13,14 @@ axios.defaults.headers.common["Accept"] = "multi-part/formdata";
 
 instance.interceptors.request.use(
   async (config) => {
-    console.log(localStorage.getItem('Tokens'))
+   
     const token = JSON.parse(localStorage.getItem("Tokens"));
 
     if (token) {
-      console.log('tok.CC',token.access)
+      
       config.headers.Authorization = `Bearer ${token?.access}`;
     }
-console.log('interceptor',config);
+ 
     return config;
   }
   
@@ -31,7 +31,6 @@ instance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log('errr1',error)
 
     if (
       error?.response?.data?.code === "token_not_valid" &&
@@ -45,13 +44,12 @@ instance.interceptors.response.use(
         originalConfig._retry = true;
         try {
           const tokens = JSON.parse(localStorage.getItem("Tokens"));
-          console.log('tokennn',tokens)
+          
           const response = await instance.post("users/token/refresh/", {
             refresh: tokens.refresh,
           });
           let accessToken = response?.data?.access;
-console.log('acccceddsss ',accessToken)
-console.log(JSON.stringify({ access: accessToken, refresh: tokens.refresh }))
+ 
 
           if (accessToken) {
             localStorage.setItem(
@@ -68,7 +66,7 @@ console.log(JSON.stringify({ access: accessToken, refresh: tokens.refresh }))
     }
   
     else {
-      console.log('errr2',error)
+     
       return Promise.reject(error);
     }
   }

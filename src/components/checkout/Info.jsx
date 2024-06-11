@@ -10,7 +10,7 @@ const products = [
   {
     name: 'Professional plan',
     desc: 'Monthly subscription',
-    price: '$15.00',
+    price: '15000',
   },
   {
     name: 'Dedicated support',
@@ -27,9 +27,13 @@ const products = [
     desc: 'License',
     price: '$49.99',
   },
+  
 ];
 
-function Info({ totalPrice }) {
+function Info({ totalPrice,setProductData,productData }) {
+
+
+
   return (
     <React.Fragment>
       <Typography variant="subtitle2" color="text.secondary">
@@ -41,14 +45,23 @@ function Info({ totalPrice }) {
       <List disablePadding>
         {products.map((product) => (
           <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
+            <img src={`http://localhost:5000/uploads/${'1717839551847-a2.jpg'}`} alt={''} style={{height:'30px',width:'30px',marginRight:'4px'}} />
             <ListItemText
               sx={{ mr: 2 }}
               primary={product.name}
               secondary={product.desc}
             />
-            <Typography variant="body1" fontWeight="medium">
-              {product.price}
+            <Typography variant="body1" fontWeight="medium" style={{marginRight:'4px'}}>
+              { `qty 5`}
             </Typography>
+           
+
+            <Typography variant="body1" fontWeight="medium">
+            { `price  ${product.price}`}
+            </Typography>
+            
+
+ 
           </ListItem>
         ))}
       </List>
