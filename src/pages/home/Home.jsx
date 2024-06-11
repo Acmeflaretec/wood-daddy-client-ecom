@@ -8,6 +8,7 @@ import OfferSale from '../../components/offerSale/offerSale'
 import ContentSection from '../../components/contentSection/contentSection'
 import ContactSec from '../../components/contactSec/contactSec'
 import HomeCategory from '../../components/homecategory/homeCategory'
+import axiosInstance from '../../axios';
 
 function Home() {
 const title = 'Our Customizable Furnitures'
@@ -15,21 +16,22 @@ const para ='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut leo
 
 useEffect(() => {
   // Retrieve tokens from localStorage
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = localStorage.getItem('Tokens');
   const refreshToken = localStorage.getItem('refreshToken');
+  const fetchData = async () => {
+    const response = await axiosInstance.get(`http://localhost:5000/api/v1/auth/getuser`);
+    console.log('userrrr',response.data)
+
+
+  }
+
+  fetchData()
 
   // Console log the tokens
   console.log('Access Token:', accessToken);
   console.log('Refresh Token:', refreshToken);
 
-  // Add additional checks
-  if (!accessToken) {
-    console.warn('Access Token is missing');
-  }
-
-  if (!refreshToken) {
-    console.warn('Refresh Token is missing');
-  }
+ 
 }, []);
 
   return (

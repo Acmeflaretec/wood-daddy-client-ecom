@@ -10,7 +10,7 @@ function LoginPage() {
 
 
   const [formData, setFormData] = useState({
-    email: '',
+    mail: '',
     password: '',
   });
 
@@ -30,10 +30,13 @@ function LoginPage() {
     try {
       const response = await axiosInstance.post('http://localhost:5000/api/v1/auth/login', formData);
       console.log(response.data)
-
+      localStorage.setItem(
+        "Tokens",
+        JSON.stringify({ access: response.data.data.token.accessToken, refresh: response.data.data.token.refreshToken })
+      );
       // Store tokens if provided in the response
-      localStorage.setItem('accessToken', response.data.data.accessToken);
-      localStorage.setItem('refreshToken', response.data.data.refreshToken);
+      // localStorage.setItem('Tokens', response.data.data.accessToken);
+      // localStorage.setItem('refreshToken', response.data.data.refreshToken);
 
       // Navigate to the home page or another route
       navigate(`/`);
@@ -67,12 +70,12 @@ function LoginPage() {
               margin="normal"
               required
               fullWidth
-              id="email"
+              id="mail"
               label="Email Address"
-              name="email"
-              autoComplete="email"
+              name="mail"
+              autoComplete="mail"
               autoFocus
-              value={formData.email}
+              value={formData.mail}
               onChange={handleChange}
             />
             <TextField

@@ -3,8 +3,9 @@ import axiosInstance from '../../axios';
 import './index.css';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import Checkout from '../checkout/Checkout';
 
-
+ 
 function Order() {
   const [details, setDetails] = useState([]);
   const navigate = useNavigate();
@@ -114,9 +115,53 @@ console.log('cart ',productsData)
     }
   };
 
+
+  React.useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+       document.body.removeChild(script);
+    };
+ }, []);
+ const handleClick = () => {
+  console.log('object')
+
+    const options = {
+       key: 'rzp_test_wNhVz81BFxrIrL',
+       amount: parseInt(1000) * 100, // amount in paisa
+       currency: 'INR',
+       name: 'TUT FINDER',
+       description: 'Purchase course',
+       handler: function (response) {
+          handlePaymentSuccess()
+       },
+      //  prefill: {
+      //     email: data?.email,
+      //  },
+      //  theme: {
+      //     color: theme?.palette?.mode === 'light' ? '#a31545' : '#000',
+      //  },
+      //  image: 'apple-touch-icon.png'
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open()
+    // details?.subscription_type === 'Paid' ? rzp.open() : handlePaymentSuccess()
+ };
+
+ const handlePaymentSuccess = async () => {
+   console.log('success')
+ };
+
+
   return (
     <div>
-      <table className="order-table">
+
+<Checkout />
+
+      {/* <table className="order-table">
         <thead>
           <tr>
             <th>No</th>
@@ -148,8 +193,8 @@ console.log('cart ',productsData)
       </table>
       <div className="total-price">Total Price: ${calculateTotal()}</div>
       <div className="buy-button-container">
-        <button className="buy-button" onClick={handleBuy}>Buy</button>
-      </div>
+        <button className="buy-button" onClick={handleClick}>Buy</button>
+      </div> */}
     </div>
   );
 }
