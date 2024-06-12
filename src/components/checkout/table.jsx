@@ -1,4 +1,6 @@
-import * as React from 'react';
+import  React,{useState,useEffect} from 'react';
+import axiosInstance from '../../axios';
+import { useParams } from 'react-router-dom';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,6 +8,14 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+
+import Box from '@mui/material/Box';
+import Badge from '@mui/material/Badge';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 
 const TAX_RATE = 0.07;
 
@@ -36,7 +46,34 @@ const invoiceSubtotal = subtotal(rows);
 const invoiceTaxes = TAX_RATE * invoiceSubtotal;
 const invoiceTotal = invoiceTaxes + invoiceSubtotal;
 
-export default function SpanningTable() {
+export default function SpanningTable({productDetails,setProductDetails}) {
+
+  const [count, setCount] = React.useState(1);
+  const [invisible, setInvisible] = React.useState(false);
+
+  const handleBadgeVisibility = () => {
+    setInvisible(!invisible);
+  };
+
+  var urlQuery = `http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55?page=1&sortField=createdAt&sortOrder=desc`;
+
+  const handleQuantityChange = async (id, action) => {
+    //console.log('iddd', id);
+    try {
+      if (action === 'increment') {
+        await axiosInstance.put(`http://localhost:5000/api/v1/cart/increase/${id}`);
+      } else if (action === 'decrement') {
+        await axiosInstance.put(`http://localhost:5000/api/v1/cart/decrease/${id}`);
+      }
+
+      // Fetch updated order items
+      const response = await axiosInstance.get(urlQuery);
+      setProductDetails(response.data.products);
+    } catch (error) {
+      console.error(`Error ${action === 'increment' ? 'incrementing' : 'decrementing'} order item quantity:`, error);
+    }
+  };
+  
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="spanning table">
@@ -56,13 +93,50 @@ export default function SpanningTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.desc}>
-              <TableCell>{row.desc}</TableCell>
-              <TableCell align="right">{row.qty}</TableCell>
-              <TableCell align="right">{row.unit}</TableCell>
-              <TableCell align="right">{ccyFormat(row.price)}</TableCell>
-              <TableCell align="right">{ccyFormat(row.price*row.qty)}</TableCell>
+          {productDetails.map((obj,index) => (
+            <TableRow key={index}>
+              <TableCell>{obj.name}</TableCell>
+              <TableCell align="right">
+                {/* {row.qty} */}
+
+                <Box
+      sx={{
+        color: 'action.active',
+        display: 'flex',
+        flexDirection: 'column',
+        '& > *': {
+          marginBottom: 2,
+        },
+        '& .MuiBadge-root': {
+          marginRight: 4,
+        },
+      }}
+    >
+      <div>
+        <Badge color="secondary" badgeContent={obj.cartDetails[0].qty}>
+          <ShoppingBagIcon />
+        </Badge>
+        <ButtonGroup>
+          <Button
+            aria-label="reduce"
+            onClick={() => handleQuantityChange(obj.inCart._id, 'decrement')}
+          >
+            <RemoveIcon fontSize="small" />
+          </Button>
+          <Button
+            aria-label="increase"
+            onClick={() => handleQuantityChange(obj.inCart._id, 'increment')}
+          >
+            <AddIcon fontSize="small" />
+          </Button>
+        </ButtonGroup>
+      </div>
+    </Box>
+
+                </TableCell>
+              <TableCell align="right">{obj.discount}</TableCell>
+              <TableCell align="right">{ccyFormat(obj.sale_rate)}</TableCell>
+              <TableCell align="right">{ccyFormat(obj.sale_rate*obj.cartDetails[0].qty)}</TableCell>
             </TableRow>
           ))}
           <TableRow>

@@ -35,6 +35,9 @@ import ToggleColorMode from './ToggleColorMode';
 import SpanningTable from './table'
 
 function ToggleCustomTheme({ showCustomTheme, toggleCustomTheme }) {
+
+
+
   return (
     <Box
       sx={{
@@ -85,18 +88,7 @@ const logoStyle = {
   marginRight: '-8px',
 };
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <SpanningTable />;
-    case 1:
-      return <AddressForm />;
-    case 2:
-      return <Review />;
-    default:
-      throw new Error('Unknown step');
-  }
-}
+
 
 export default function Checkout() {
   const [mode, setMode] = React.useState('light');
@@ -122,7 +114,7 @@ useEffect(() => {
     try {
       const response = await axiosInstance.get(urlQuery);
       setDetails(response.data.products);
-     // console.log('orderrr',response.data.products)
+      console.log('orderrr',response.data.products)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -261,6 +253,19 @@ console.log('cart ',productsData)
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return <SpanningTable productDetails={details} setProductDetails={setDetails} />;
+      case 1:
+        return <AddressForm />;
+      case 2:
+        return <Review />;
+      default:
+        throw new Error('Unknown step');
+    }
+  }
 
   return (
     <ThemeProvider theme={showCustomTheme ? checkoutTheme : defaultTheme}>
