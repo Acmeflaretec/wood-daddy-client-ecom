@@ -57,18 +57,31 @@ export default function SpanningTable({productDetails,setProductDetails}) {
 
   var urlQuery = `http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55?page=1&sortField=createdAt&sortOrder=desc`;
 
-  const handleQuantityChange = async (id, action) => {
+  const handleQuantityChange = async (id, action,qty,stock) => {
     //console.log('iddd', id);
     try {
+console.log('qqqq',qty)
+console.log('sttt',stock)
+console.log(stock < qty)
+   
+
       if (action === 'increment') {
-        await axiosInstance.put(`http://localhost:5000/api/v1/cart/increase/${id}`);
+        if(qty < stock){
+          await axiosInstance.put(`http://localhost:5000/api/v1/cart/increase/${id}`);
+
+        }
       } else if (action === 'decrement') {
+        if(qty!=1 ){
         await axiosInstance.put(`http://localhost:5000/api/v1/cart/decrease/${id}`);
+        }
       }
 
       // Fetch updated order items
       const response = await axiosInstance.get(urlQuery);
       setProductDetails(response.data.products);
+    
+
+     
     } catch (error) {
       console.error(`Error ${action === 'increment' ? 'incrementing' : 'decrementing'} order item quantity:`, error);
     }
@@ -119,13 +132,13 @@ export default function SpanningTable({productDetails,setProductDetails}) {
         <ButtonGroup>
           <Button
             aria-label="reduce"
-            onClick={() => handleQuantityChange(obj.inCart._id, 'decrement')}
+            onClick={() => handleQuantityChange(obj.inCart._id, 'decrement',obj.cartDetails[0].qty,obj.stock)}
           >
             <RemoveIcon fontSize="small" />
           </Button>
           <Button
             aria-label="increase"
-            onClick={() => handleQuantityChange(obj.inCart._id, 'increment')}
+            onClick={() => handleQuantityChange(obj.inCart._id, 'increment',obj.cartDetails[0].qty,obj.stock)}
           >
             <AddIcon fontSize="small" />
           </Button>
