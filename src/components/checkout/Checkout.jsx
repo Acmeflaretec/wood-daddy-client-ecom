@@ -33,6 +33,7 @@ import PaymentForm from './PaymentForm';
 import Review from './Review';
 import ToggleColorMode from './ToggleColorMode';
 import SpanningTable from './table'
+import { TryOutlined } from '@mui/icons-material';
 
 function ToggleCustomTheme({ showCustomTheme, toggleCustomTheme }) {
 
@@ -106,6 +107,21 @@ export default function Checkout() {
 
   const [addressDetailsM, setAddressDetailsM] = useState();
   const [primaryAddressesM,setPrimaryAddressesM] = useState();
+  const [formDataM, setFormDataM] = useState({
+    firstname: '',
+    lastname: '',
+    address_line_1: '',
+    address_line_2: '',
+    city: '',
+    state: '',
+    zip: '',
+    primary:true,
+    country: '',
+    mobile:'',
+    
+  });
+
+ 
 
   useEffect(() => {
     if (usersId) {
@@ -251,33 +267,45 @@ console.log('cart ',productsData)
        document.body.removeChild(script);
     };
  }, []);
- const handleClick = () => {
+//  const handleClick = () => {
 
-    const options = {
-       key: 'rzp_test_wNhVz81BFxrIrL',
-       amount: parseInt(1000) * 100, // amount in paisa
-       currency: 'INR',
-       name: 'TUT FINDER',
-       description: 'Purchase course',
-       handler: function (response) {
-          handlePaymentSuccess()
-       },
-      //  prefill: {
-      //     email: data?.email,
-      //  },
-      //  theme: {
-      //     color: theme?.palette?.mode === 'light' ? '#a31545' : '#000',
-      //  },
-      //  image: 'apple-touch-icon.png'
-    };
+//     const options = {
+//        key: 'rzp_test_wNhVz81BFxrIrL',
+//        amount: parseInt(1000) * 100, // amount in paisa
+//        currency: 'INR',
+//        name: 'TUT FINDER',
+//        description: 'Purchase course',
+//        handler: function (response) {
+//           handlePaymentSuccess()
+//        },
+//       //  prefill: {
+//       //     email: data?.email,
+//       //  },
+//       //  theme: {
+//       //     color: theme?.palette?.mode === 'light' ? '#a31545' : '#000',
+//       //  },
+//       //  image: 'apple-touch-icon.png'
+//     };
 
-    const rzp = new window.Razorpay(options);
-    rzp.open()
-    // details?.subscription_type === 'Paid' ? rzp.open() : handlePaymentSuccess()
- };
+//     const rzp = new window.Razorpay(options);
+//     rzp.open()
+//     // details?.subscription_type === 'Paid' ? rzp.open() : handlePaymentSuccess()
+//  };
 
+
+
+
+//  succes payment
  const handlePaymentSuccess = async () => {
+  const productsData =await convertToServerFormat(details);
+console.log(productsData);
+console.log('cart ',productsData)
    console.log('success')
+
+   
+
+   const response = await axiosInstance.post(`http://localhost:5000/api/v1/order/createorder/${usersId}/${primaryAddressesM._id}`, {products:productsData});
+
    setActiveStep(activeStep + 1);
  };
 // ********* //
@@ -290,7 +318,7 @@ console.log('cart ',productsData)
     setShowCustomTheme((prev) => !prev);
   };
 
-  const handleNext = () => {
+  const handleNext = async() => {
     console.log('act step',activeStep+1)
    if(activeStep+1 ==1 ) {
     setActiveStep(activeStep + 1);
@@ -301,13 +329,34 @@ console.log('cart ',productsData)
   if(activeStep+1 ==2){
     console.log('act2',activeStep +1)
 
-    if(primaryAddressesM){
+    if(primaryAddressesM  ){
 
       console.log('address present',primaryAddressesM)
       setActiveStep(activeStep + 1);
       }else{
+        console.log('reached  api post')
+        const postAddress = async () => {
+          try {
+              const response = await axiosInstance.post(`http://localhost:5000/api/v1/address/address/${usersId}`, formDataM);
+      
+              console.log('Address response:', response.data);
+              console.log('Address response success :', response.data.success);
+              // Assuming a successful response indicates the address was added
+              if (response.data ) {
+                  setActiveStep(activeStep + 1);
+              }
+          } catch (error) {
+              console.error('Error adding address:', error);
+          }
+      };
+      
+      postAddress();
+      console.log('not present', primaryAddressesM);
+      
 
-        console.log('not present',primaryAddressesM)
+
+
+        
       }
 
   }
@@ -353,7 +402,8 @@ if(activeStep + 1 === 3){
       case 0:
         return <SpanningTable productDetails={details} setProductDetails={setDetails} />;
       case 1:
-        return <AddressForm usersProId={usersId} addressDetails={addressDetailsM} primaryAddresses={primaryAddressesM} />;
+        return <AddressForm usersProId={usersId} addressDetails={addressDetailsM} primaryAddresses={primaryAddressesM} 
+        formData={formDataM} setFormData={setFormDataM} />;
       case 2:
         return <Review />;
       default:

@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import axiosInstance from '../../axios';
+import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
@@ -18,9 +19,29 @@ const FormGrid = styled(Grid)(() => ({
   flexDirection: 'column',
 }));
 
-export default function AddressForm({usersProId,addressDetails,primaryAddresses}) {
+export default function AddressForm({usersProId,addressDetails,primaryAddresses,formData,setFormData}) {
   const [urlQuery, setUrlQuery] = useState('');
-  
+
+
+  const handleChange = (event) => {
+     
+    const { name, value, type, checked } = event.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value,
+    });
+  };
+  console.log('form',formData)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axiosInstance.post(`http://localhost:5000/api/v1/address/address/${usersProId}`, formData);
+      console.log('Address saved successfully:', response.data);
+    } catch (error) {
+      console.error('Error saving address:', error);
+    }
+  };
 
 
   return (
@@ -49,19 +70,24 @@ export default function AddressForm({usersProId,addressDetails,primaryAddresses}
         </Box>
       </Paper>
     </Container>
+    <div style={{display:'flex',justifyContent:'center',paddingTop:'20px'}} >  <Button variant="contained" onClick={()=>console.log('chng add')} >Change Address</Button></div>
+
 </div>
 
-) :( <Grid container spacing={3}>
+) :(
+   <Grid container spacing={3}>
       <FormGrid item xs={12} md={6}>
         <FormLabel htmlFor="first-name" required>
           First name
         </FormLabel>
         <OutlinedInput
-          id="first-name"
-          name="first-name"
+          id="firstname"
+          name="firstname"
           type="name"
           placeholder="John"
           autoComplete="first name"
+          value={formData.firstname}
+          onChange={handleChange}
           required
         />
       </FormGrid>
@@ -70,11 +96,13 @@ export default function AddressForm({usersProId,addressDetails,primaryAddresses}
           Last name
         </FormLabel>
         <OutlinedInput
-          id="last-name"
-          name="last-name"
+          id="lastname"
+          name="lastname"
           type="last-name"
           placeholder="Snow"
           autoComplete="last name"
+          value={formData.lastname}
+                onChange={handleChange}
           required
         />
       </FormGrid>
@@ -83,22 +111,39 @@ export default function AddressForm({usersProId,addressDetails,primaryAddresses}
           Address line 1
         </FormLabel>
         <OutlinedInput
-          id="address1"
-          name="address1"
+          id="address_line_1"
+          name="address_line_1"
           type="address1"
           placeholder="Street name and number"
           autoComplete="shipping address-line1"
+          value={formData.address_line_1}
+                onChange={handleChange}
           required
         />
       </FormGrid>
       <FormGrid item xs={12}>
         <FormLabel htmlFor="address2">Address line 2</FormLabel>
         <OutlinedInput
-          id="address2"
-          name="address2"
+          id="address_line_2"
+          name="address_line_2"
           type="address2"
-          placeholder="Apartment, suite, unit, etc. (optional)"
+          placeholder="Apartment, suite, unit, etc. "
           autoComplete="shipping address-line2"
+          value={formData.address_line_2}
+                onChange={handleChange}
+          required
+        />
+      </FormGrid>
+      <FormGrid item xs={12}>
+        <FormLabel htmlFor="address2">phone</FormLabel>
+        <OutlinedInput
+          id="mobile"
+          name="mobile"
+          type="mobile"
+          placeholder="mobile"
+          autoComplete="mobile"
+          value={formData.mobile}
+                onChange={handleChange}
           required
         />
       </FormGrid>
@@ -112,6 +157,8 @@ export default function AddressForm({usersProId,addressDetails,primaryAddresses}
           type="city"
           placeholder="New York"
           autoComplete="City"
+          value={formData.city}
+          onChange={handleChange}
           required
         />
       </FormGrid>
@@ -125,6 +172,8 @@ export default function AddressForm({usersProId,addressDetails,primaryAddresses}
           type="state"
           placeholder="NY"
           autoComplete="State"
+          value={formData.state}
+          onChange={handleChange}
           required
         />
       </FormGrid>
@@ -138,6 +187,8 @@ export default function AddressForm({usersProId,addressDetails,primaryAddresses}
           type="zip"
           placeholder="12345"
           autoComplete="shipping postal-code"
+          value={formData.zip}
+                onChange={handleChange}
           required
         />
       </FormGrid>
@@ -151,6 +202,8 @@ export default function AddressForm({usersProId,addressDetails,primaryAddresses}
           type="country"
           placeholder="United States"
           autoComplete="shipping country"
+          value={formData.country}
+          onChange={handleChange}
           required
         />
       </FormGrid>
@@ -160,8 +213,8 @@ export default function AddressForm({usersProId,addressDetails,primaryAddresses}
           label="Use this address for payment details"
         />
       </FormGrid>
-    </Grid>)}
-
+    </Grid>
+  )}
    </div>
   );
 }
