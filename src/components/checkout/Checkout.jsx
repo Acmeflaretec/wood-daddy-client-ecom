@@ -32,6 +32,7 @@ import InfoMobile from './InfoMobile';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 import ToggleColorMode from './ToggleColorMode';
+import SpanningTable from './table'
 
 function ToggleCustomTheme({ showCustomTheme, toggleCustomTheme }) {
   return (
@@ -75,7 +76,7 @@ ToggleCustomTheme.propTypes = {
   toggleCustomTheme: PropTypes.func.isRequired,
 };
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+const steps = [ 'order details','Shipping address', 'Review your order'];
 
 const logoStyle = {
   width: '140px',
@@ -87,11 +88,11 @@ const logoStyle = {
 function getStepContent(step) {
   switch (step) {
     case 0:
+      return <SpanningTable />;
+    case 1:
       return <AddressForm />;
-    // case 1:
-    //   return <PaymentForm />;
-    // case 2:
-    //   return <Review />;
+    case 2:
+      return <Review />;
     default:
       throw new Error('Unknown step');
   }
@@ -253,12 +254,12 @@ console.log('cart ',productsData)
   };
 
   const handleNext = () => {
-    // setActiveStep(activeStep + 1);
+    setActiveStep(activeStep + 1);
 
   };
 
   const handleBack = () => {
-    // setActiveStep(activeStep - 1);
+    setActiveStep(activeStep - 1);
   };
 
   return (
@@ -379,7 +380,7 @@ console.log('cart ',productsData)
               }}
             >
               <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
-              {/* <Stepper
+              <Stepper
                 id="desktop-stepper"
                 activeStep={activeStep}
                 sx={{
@@ -398,7 +399,7 @@ console.log('cart ',productsData)
                     <StepLabel>{label}</StepLabel>
                   </Step>
                 ))}
-              </Stepper> */}
+              </Stepper>
             </Box>
           </Box>
           <Card
@@ -438,7 +439,7 @@ console.log('cart ',productsData)
               gap: { xs: 5, md: 'none' },
             }}
           >
-            {/* <Stepper
+            <Stepper
               id="mobile-stepper"
               activeStep={activeStep}
               alternativeLabel
@@ -460,7 +461,7 @@ console.log('cart ',productsData)
                   </StepLabel>
                 </Step>
               ))}
-            </Stepper> */}
+            </Stepper>
             {activeStep === steps.length ? (
               <Stack spacing={2} useFlexGap>
                 <Typography variant="h1">📦</Typography>

@@ -27,9 +27,9 @@ function subtotal(items) {
 }
 
 const rows = [
-  createRow('Paperclips (Box)', 100, 1.15),
-  createRow('Paper (Case)', 10, 45.99),
-  createRow('Waste Basket', 2, 17.99),
+  createRow('chair ', 2, 3000),
+  createRow('table', 1, 20000),
+  createRow('sofa', 2, 50000),
 ];
 
 const invoiceSubtotal = subtotal(rows);
@@ -48,10 +48,11 @@ export default function SpanningTable() {
             <TableCell align="right">Price</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Desc</TableCell>
+            <TableCell>name</TableCell>
             <TableCell align="right">Qty.</TableCell>
-            <TableCell align="right">Unit</TableCell>
-            <TableCell align="right">Sum</TableCell>
+            <TableCell align="right">discount</TableCell>
+            <TableCell align="right">price</TableCell>
+            <TableCell align="right">total price</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -61,6 +62,7 @@ export default function SpanningTable() {
               <TableCell align="right">{row.qty}</TableCell>
               <TableCell align="right">{row.unit}</TableCell>
               <TableCell align="right">{ccyFormat(row.price)}</TableCell>
+              <TableCell align="right">{ccyFormat(row.price*row.qty)}</TableCell>
             </TableRow>
           ))}
           <TableRow>
