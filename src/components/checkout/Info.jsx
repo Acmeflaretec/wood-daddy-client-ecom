@@ -40,9 +40,9 @@ function Info({ totalPrice,setProductData,productData }) {
         Total
       </Typography>
       <Typography variant="h4" gutterBottom>
-        {totalPrice}
+        {`Rs :${totalPrice.totalPrice}`}
       </Typography>
-      <List disablePadding>
+      {/* <List disablePadding>
         {products.map((product) => (
           <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
             <img src={`http://localhost:5000/uploads/${'1717839551847-a2.jpg'}`} alt={''} style={{height:'30px',width:'30px',marginRight:'4px'}} />
@@ -64,7 +64,7 @@ function Info({ totalPrice,setProductData,productData }) {
  
           </ListItem>
         ))}
-      </List>
+      </List> */}
     </React.Fragment>
   );
 }

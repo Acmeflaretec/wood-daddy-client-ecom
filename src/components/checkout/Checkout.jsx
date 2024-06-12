@@ -464,7 +464,7 @@ if(activeStep + 1 === 3){
               maxWidth: 500,
             }}
           >
-            <Info totalPrice={activeStep >= 2 ? '$144.97' : '$134.98'} productData={details} setProductData={setDetails} />
+            <Info totalPrice={convertToServerFormat(details)} productData={details} setProductData={setDetails} />
           </Box>
         </Grid>
         <Grid
