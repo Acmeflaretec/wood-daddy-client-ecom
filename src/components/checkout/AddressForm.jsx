@@ -1,5 +1,5 @@
-import * as React from 'react';
-
+import React,{useState,useEffect} from 'react';
+import axiosInstance from '../../axios';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
@@ -7,14 +7,51 @@ import Grid from '@mui/material/Grid';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/system';
 
+import { Box,Container, Paper } from '@mui/material';
+import Typography from '@mui/material/Typography';
+
+const addresses = ['1 MUI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
+
+
 const FormGrid = styled(Grid)(() => ({
   display: 'flex',
   flexDirection: 'column',
 }));
 
-export default function AddressForm() {
+export default function AddressForm({usersProId,addressDetails,primaryAddresses}) {
+  const [urlQuery, setUrlQuery] = useState('');
+  
+
+
   return (
-    <Grid container spacing={3}>
+   <div>
+
+{ addressDetails?(
+  
+  <div>
+   <Container maxWidth="sm">
+      <Paper elevation={3} sx={{ padding: 3, marginTop: 3 }}>
+        <Typography variant="h5" gutterBottom>
+          Primary Address Details
+        </Typography>
+        <Box sx={{ marginBottom: 2 }}>
+          <Typography variant="subtitle1"><strong>First Name:</strong> {primaryAddresses.firstname}</Typography>
+          <Typography variant="subtitle1"><strong>Last Name:</strong> {primaryAddresses.lastname}</Typography>
+          <Typography variant="subtitle1"><strong>Mobile:</strong> {primaryAddresses.mobile}</Typography>
+          <Typography variant="subtitle1"><strong>Address Line 1:</strong> {primaryAddresses.address_line_1}</Typography>
+          <Typography variant="subtitle1"><strong>Address Line 2:</strong> {primaryAddresses.address_line_2}</Typography>
+          <Typography variant="subtitle1"><strong>City:</strong> {primaryAddresses.city}</Typography>
+          <Typography variant="subtitle1"><strong>State:</strong> {primaryAddresses.state}</Typography>
+          <Typography variant="subtitle1"><strong>ZIP:</strong> {primaryAddresses.zip}</Typography>
+          <Typography variant="subtitle1"><strong>Country:</strong> {primaryAddresses.country}</Typography>
+          <Typography variant="subtitle1"><strong>Created At:</strong> {new Date(primaryAddresses.createdAt).toLocaleString()}</Typography>
+          <Typography variant="subtitle1"><strong>Updated At:</strong> {new Date(primaryAddresses.updatedAt).toLocaleString()}</Typography>
+        </Box>
+      </Paper>
+    </Container>
+</div>
+
+) :( <Grid container spacing={3}>
       <FormGrid item xs={12} md={6}>
         <FormLabel htmlFor="first-name" required>
           First name
@@ -123,6 +160,8 @@ export default function AddressForm() {
           label="Use this address for payment details"
         />
       </FormGrid>
-    </Grid>
+    </Grid>)}
+
+   </div>
   );
 }

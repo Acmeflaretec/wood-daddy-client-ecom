@@ -19,9 +19,11 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 
 const TAX_RATE = 0.07;
 
-function ccyFormat(num) {
-  return `${num.toFixed(2)}`;
-}
+// function ccyFormat(num) {
+//   return `${num.toFixed(2)}`;
+// }
+
+
 
 function priceRow(qty, unit) {
   return qty * unit;
@@ -50,6 +52,7 @@ export default function SpanningTable({productDetails,setProductDetails}) {
 
   const [count, setCount] = React.useState(1);
   const [invisible, setInvisible] = React.useState(false);
+  const [totalPrice,setTotalPrice] = useState()
 
   const handleBadgeVisibility = () => {
     setInvisible(!invisible);
@@ -60,10 +63,6 @@ export default function SpanningTable({productDetails,setProductDetails}) {
   const handleQuantityChange = async (id, action,qty,stock) => {
     //console.log('iddd', id);
     try {
-console.log('qqqq',qty)
-console.log('sttt',stock)
-console.log(stock < qty)
-   
 
       if (action === 'increment') {
         if(qty < stock){
@@ -86,6 +85,14 @@ console.log(stock < qty)
       console.error(`Error ${action === 'increment' ? 'incrementing' : 'decrementing'} order item quantity:`, error);
     }
   };
+
+  useEffect(() => {
+    const total = productDetails.reduce((sum, obj) => {
+      return sum + (obj.sale_rate * obj.cartDetails[0].qty);
+    }, 0);
+    setTotalPrice(total);
+  }, [productDetails]);
+  
   
   return (
     <TableContainer component={Paper}>
@@ -148,23 +155,26 @@ console.log(stock < qty)
 
                 </TableCell>
               <TableCell align="right">{obj.discount}</TableCell>
-              <TableCell align="right">{ccyFormat(obj.sale_rate)}</TableCell>
-              <TableCell align="right">{ccyFormat(obj.sale_rate*obj.cartDetails[0].qty)}</TableCell>
+              <TableCell align="right">{obj.sale_rate}</TableCell>
+              <TableCell align="right">{obj.sale_rate*obj.cartDetails[0].qty}</TableCell>
             </TableRow>
           ))}
-          <TableRow>
+
+          {/* <TableRow>
             <TableCell rowSpan={3} />
             <TableCell colSpan={2}>Subtotal</TableCell>
-            <TableCell align="right">{ccyFormat(invoiceSubtotal)}</TableCell>
-          </TableRow>
-          <TableRow>
+            <TableCell align="right">{invoiceSubtotal}</TableCell>
+          </TableRow> */}
+
+          {/* <TableRow>
             <TableCell>Tax</TableCell>
             <TableCell align="right">{`${(TAX_RATE * 100).toFixed(0)} %`}</TableCell>
-            <TableCell align="right">{ccyFormat(invoiceTaxes)}</TableCell>
-          </TableRow>
+            <TableCell align="right">{invoiceTaxes}</TableCell>
+          </TableRow> */}
+
           <TableRow>
-            <TableCell colSpan={2}>Total</TableCell>
-            <TableCell align="right">{ccyFormat(invoiceTotal)}</TableCell>
+            <TableCell colSpan={2}>Total :</TableCell>
+            <TableCell align="right">{totalPrice}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

@@ -96,32 +96,80 @@ export default function Checkout() {
   const checkoutTheme = createTheme(getCheckoutTheme(mode));
   const defaultTheme = createTheme({ palette: { mode } });
   const [activeStep, setActiveStep] = React.useState(0);
+  const [usersId,setUsersId] = useState()
+  const [urlQuery, setUrlQuery] = useState('');
+  const [checkAddress,setCheckAddress] = useState()
 
 
   const [details, setDetails] = useState([]);
   const navigate = useNavigate();
 
+  const [addressDetailsM, setAddressDetailsM] = useState();
+  const [primaryAddressesM,setPrimaryAddressesM] = useState();
+
+  useEffect(() => {
+    if (usersId) {
+      const query = `http://localhost:5000/api/v1/address/getaddress/${usersId}`;
+      setUrlQuery(query);
+
+      const fetchData = async () => {
+        try {
+          const response = await axiosInstance.get(query);
+          setAddressDetailsM(response.data);
+         
+          const filterAddresses = await response.data.filter(address => address.primary === true);
+          setPrimaryAddressesM(filterAddresses[0])
+
+console.log(filterAddresses[0]);
+
+          console.log('adddd',response.data)
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [usersId]);
+
+
+
+
+  useEffect(() => {
+   
+    const fetchData = async () => {
+      const response = await axiosInstance.get(`http://localhost:5000/api/v1/auth/getuser`);
+      setUsersId(response.data.data[0]._id)
+      console.log('userrrr',response.data.data[0]._id)
+    }
+    fetchData()
+    
+  }, []);
 
 const handleOrder = async () => {
  navigate(`/order`);
 
 }
 
-var urlQuery = `http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55?page=1&sortField=createdAt&sortOrder=desc`;
+//var urlQuery = `http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55?page=1&sortField=createdAt&sortOrder=desc`;
 
 useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const response = await axiosInstance.get(urlQuery);
-      setDetails(response.data.products);
-      console.log('orderrr',response.data.products)
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+  if (usersId) {
+    const query = `http://localhost:5000/api/v1/cart/${usersId}?page=1&sortField=createdAt&sortOrder=desc`;
+    setUrlQuery(query);
 
-  fetchData();
-}, []);
+    const fetchData = async () => {
+      try {
+        const response = await axiosInstance.get(query);
+        setDetails(response.data.products);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }
+}, [usersId]);
 
    
   const handleQuantityChange = async (id, action) => {
@@ -204,7 +252,6 @@ console.log('cart ',productsData)
     };
  }, []);
  const handleClick = () => {
-  console.log('object')
 
     const options = {
        key: 'rzp_test_wNhVz81BFxrIrL',
@@ -231,11 +278,9 @@ console.log('cart ',productsData)
 
  const handlePaymentSuccess = async () => {
    console.log('success')
+   setActiveStep(activeStep + 1);
  };
-
-
 // ********* //
-
 
   const toggleColorMode = () => {
     setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
@@ -246,7 +291,56 @@ console.log('cart ',productsData)
   };
 
   const handleNext = () => {
+    console.log('act step',activeStep+1)
+   if(activeStep+1 ==1 ) {
     setActiveStep(activeStep + 1);
+    console.log('act1',activeStep +1)
+    
+  }
+  
+  if(activeStep+1 ==2){
+    console.log('act2',activeStep +1)
+
+    if(primaryAddressesM){
+
+      console.log('address present',primaryAddressesM)
+      setActiveStep(activeStep + 1);
+      }else{
+
+        console.log('not present',primaryAddressesM)
+      }
+
+  }
+
+if(activeStep + 1 === 3){
+
+
+  const options = {
+    key: 'rzp_test_wNhVz81BFxrIrL',
+    amount: parseInt(1000) * 100, // amount in paisa
+    currency: 'INR',
+    name: 'TUT FINDER',
+    description: 'Purchase course',
+    handler: function (response) {
+       handlePaymentSuccess()
+    },
+   //  prefill: {
+   //     email: data?.email,
+   //  },
+   //  theme: {
+   //     color: theme?.palette?.mode === 'light' ? '#a31545' : '#000',
+   //  },
+   //  image: 'apple-touch-icon.png'
+ };
+
+ const rzp = new window.Razorpay(options);
+ rzp.open()
+
+
+
+}
+
+
 
   };
 
@@ -259,7 +353,7 @@ console.log('cart ',productsData)
       case 0:
         return <SpanningTable productDetails={details} setProductDetails={setDetails} />;
       case 1:
-        return <AddressForm />;
+        return <AddressForm usersProId={usersId} addressDetails={addressDetailsM} primaryAddresses={primaryAddressesM} />;
       case 2:
         return <Review />;
       default:
