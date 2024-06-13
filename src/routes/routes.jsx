@@ -13,6 +13,7 @@ import OrderPage from '../pages/order/OrderPage';
 import LoginPage from '../pages/auth/LoginPage';
 import SignupPage from '../pages/auth/SignupPage';
 import CreateAddressPage from '../pages/createAddress/CreateAddressPage';
+import AddressPage from '../pages/address/AddressPage';
 
 function routes() {
   return (
@@ -58,7 +59,9 @@ function routes() {
   <Routes>
     <Route path="/addressform" element={<CreateAddressPage />} />
   </Routes>
-
+  <Routes>
+    <Route path="/address" element={<AddressPage />} />
+  </Routes>
 
    </>
   
