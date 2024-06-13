@@ -41,4 +41,8 @@
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 
 }
-
+/* hides uncaught errors form ui */
+iframe
+{
+    display: none;
+}

@@ -8,8 +8,19 @@ import AccordionBox from '../accordion/Accordion';
 function Product() {
   const [quantity, setQuantity] = useState(1);
   const { productId } = useParams();
-
   const [details, setDetails] = useState([]);
+  const [usersId,setUsersId] = useState()
+
+  useEffect(() => {
+   
+    const fetchData = async () => {
+      const response = await axiosInstance.get(`http://localhost:5000/api/v1/auth/getuser`);
+      setUsersId(response.data.data[0]._id)
+      console.log('userrrr',response.data.data[0]._id)
+    }
+    fetchData()
+    
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +55,7 @@ const addCart = async(e,proId)=>{
   console.log('proid',proId)
     try {
   
-      const response = await axiosInstance.post(`http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55/${proId}`);
+      const response = await axiosInstance.post(`http://localhost:5000/api/v1/cart/${usersId}/${proId}`);
       setDetails({ ...details, inCart: true });
       
     } catch (error) {
@@ -59,7 +70,7 @@ const removeCart = async(e,proId)=>{
   console.log('proid',proId)
   try {
 
-    const response = await axiosInstance.delete(`http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55/${proId}`);
+    const response = await axiosInstance.delete(`http://localhost:5000/api/v1/cart/${usersId}/${proId}`);
     setDetails({ ...details, inCart: false });
     
   } catch (error) {
@@ -72,7 +83,7 @@ const addWishlist = async(e,proId)=>{
 console.log('proid',proId)
   try {
 
-    const response = await axiosInstance.post(`http://localhost:5000/api/v1/wishlist/664db80748eeadcd76759a55/${proId}/wishlist`);
+    const response = await axiosInstance.post(`http://localhost:5000/api/v1/wishlist/${usersId}/${proId}/wishlist`);
     setDetails({ ...details, inWishlist: true });
     
   } catch (error) {
@@ -85,7 +96,7 @@ const removeWishlist = async(e,proId)=>{
   console.log('proid',proId)
   try {
 
-    const response = await axiosInstance.delete(`http://localhost:5000/api/v1/wishlist/664db80748eeadcd76759a55/${proId}/wishlist`);
+    const response = await axiosInstance.delete(`http://localhost:5000/api/v1/wishlist/${usersId}/${proId}/wishlist`);
     setDetails({ ...details, inWishlist: false });
     
   } catch (error) {
@@ -107,17 +118,17 @@ const removeWishlist = async(e,proId)=>{
         </div>
         <div className="proContents">
         <h2 className='ftitle' >{details.name}</h2>  
-     <p > <span className='fpr' >Rs:{details.price}</span>
-      <span className='fdpr' >{details.price - details.sale_rate}</span> 
+     <p > <span className='fpr' >Rs:{details.sale_rate}</span>
+      <span className='fdpr' >{details.price }</span> 
      <span  className='dcnt'> {details.discount}% off</span>  </p>
     
      <div style={{display:'flex',alignItems:'center',gap:'20px'}}>
-     <p className='qtyn' style={{fontSize:'22px'}} >Quantity: </p>
+     {/* <p className='qtyn' style={{fontSize:'22px'}} >Quantity: </p>
      <div className="quantity-counter">
       <button className="quantity-button" onClick={decrementQuantity}>-</button>
       <span className="quantity">{quantity}</span>
       <button className="quantity-button" onClick={incrementQuantity}>+</button>
-    </div>
+    </div> */}
      </div>
      <p className='warning'>Hurry up! only 3 left</p>
 

@@ -12,6 +12,7 @@ import ProductsFetch from '../pages/productsfetch/productsFetch';
 import OrderPage from '../pages/order/OrderPage';
 import LoginPage from '../pages/auth/LoginPage';
 import SignupPage from '../pages/auth/SignupPage';
+import CreateAddressPage from '../pages/createAddress/CreateAddressPage';
 
 function routes() {
   return (
@@ -53,6 +54,11 @@ function routes() {
   <Routes>
     <Route path="/productfetch/:cat" element={<ProductsFetch />} />
   </Routes>
+
+  <Routes>
+    <Route path="/addressform" element={<CreateAddressPage />} />
+  </Routes>
+
 
    </>
   

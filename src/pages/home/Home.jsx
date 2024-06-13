@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React,{useState,useEffect} from 'react'
 import Header from '../../layouts/header'
 import Banner from '../../components/banner/banner'
 import Service from '../../components/service-sec/service'
@@ -11,29 +11,33 @@ import HomeCategory from '../../components/homecategory/homeCategory'
 import axiosInstance from '../../axios';
 
 function Home() {
-const title = 'Our Customizable Furnitures'
-const para ='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut leo a justo faucibus vestibulum. Morbi tristique velit eget nulla viverra, nec condimentum libero venenatis. Aliquam erat volutpat. Sed sit amet sapien in libero tempus vulputate.'
+  const [userDetails,setUserDetails] = useState(null)
 
 useEffect(() => {
-  // const accessToken = localStorage.getItem('Tokens');
-  // const refreshToken = localStorage.getItem('refreshToken');
+ 
   const fetchData = async () => {
-    const response = await axiosInstance.get(`http://localhost:5000/api/v1/auth/getuser`);
-    console.log('userrrr',response.data.data[0])
+try {
+  
+  const response = await axiosInstance.get(`http://localhost:5000/api/v1/auth/getuser`);
+  setUserDetails(response.data.data[0])
+  console.log('userrrr',response.data.data[0])
+} catch (error) {
+  console.log('errr',error)
+}
+
   }
   fetchData()
-  // console.log('Access Token:', accessToken);
-  // console.log('Refresh Token:', refreshToken);
+   
 }, []);
-
+ 
   return (
     <div>
       <Header/>
       <Banner/>
-      <ContentSection title={title} para={para} />
+      <ContentSection  />
       <HomeCategory/>
       <OfferSale/>
-      <ProductList title={'Recent Furnitures'} recentf={true} />
+      <ProductList title={'Recent Furnitures'} recentf={true}  />
       <ContactSec/>
       <Service/>
       <Footer/>

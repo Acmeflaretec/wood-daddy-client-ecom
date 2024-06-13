@@ -186,7 +186,7 @@ function ProductList(props) {
 
       <div className="ProductList">
         {details && details.map((pro, index) => (
-          <ProductCard key={index} type={type} productDetails={pro} />
+          <ProductCard key={index} type={type} productDetails={pro} usersIdM={usersId} />
         ))}
         <div className="pagination">
           {!recentf ? (

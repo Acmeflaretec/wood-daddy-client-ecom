@@ -56,7 +56,7 @@ export default function Review() {
             Payment details
           </Typography>
           <Grid container>
-            {payments.map((payment) => (
+            {/* {payments.map((payment) => (
               <React.Fragment key={payment.name}>
                 <Stack
                   direction="row"
@@ -70,7 +70,7 @@ export default function Review() {
                   <Typography variant="body2">{payment.detail}</Typography>
                 </Stack>
               </React.Fragment>
-            ))}
+            ))} */}
           </Grid>
         </div>
       </Stack>

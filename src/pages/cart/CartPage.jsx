@@ -126,7 +126,7 @@ function CartPage() {
       </div>
 
       {details && details.map((pro, index) => (
-        <Cart key={index} productDetails={pro} details={details} setDetails={setDetails} numberIndex={index} />
+        <Cart key={index} productDetails={pro} details={details} setDetails={setDetails} usersIdM={usersId} numberIndex={index} />
       ))}
         <div className="buy-button-container" style={{width:'100%',display:'flex',justifyContent:'center',marginTop:'50px'}}>
         <button className="buy-button" onClick={()=> handleOrder()} >Order product</button>

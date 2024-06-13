@@ -95,7 +95,7 @@ import { useNavigate } from 'react-router-dom';
 import AccordionBox from '../accordion/Accordion';
 
 function Cart(props) {
-  const { productDetails, details, setDetails,numberIndex } = props;
+  const { productDetails, details, setDetails,numberIndex,usersIdM } = props;
 const [cartItem,setCartItem] = useState(productDetails)
   const [quantity, setQuantity] = useState(1);
 
@@ -108,7 +108,7 @@ const [cartItem,setCartItem] = useState(productDetails)
     try {
       await axiosInstance.put(`http://localhost:5000/api/v1/cart/increase/${id}`);
 // Fetch updated order items
-const response = await axiosInstance.get(`http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55?page=1&limit=6&sortField=createdAt&sortOrder=desc`);
+const response = await axiosInstance.get(`http://localhost:5000/api/v1/cart/${usersIdM}?page=1&limit=6&sortField=createdAt&sortOrder=desc`);
 console.log('ress cart',response.data.products[numberIndex])
 setCartItem(response.data.products[numberIndex]);
 
@@ -121,7 +121,7 @@ setCartItem(response.data.products[numberIndex]);
   const decrementQuantity = async(id) => {
     try {
       await axiosInstance.put(`http://localhost:5000/api/v1/cart/decrease/${id}`);
-      const response = await axiosInstance.get(`http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55?page=1&limit=6&sortField=createdAt&sortOrder=desc`);
+      const response = await axiosInstance.get(`http://localhost:5000/api/v1/cart/${usersIdM}?page=1&limit=6&sortField=createdAt&sortOrder=desc`);
       console.log('ress cart',response.data.products[numberIndex])
       setCartItem(response.data.products[numberIndex]);
 
@@ -142,7 +142,7 @@ setCartItem(response.data.products[numberIndex]);
     e.preventDefault();
     console.log('proid', proId);
     try {
-      const response = await axiosInstance.delete(`http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55/${proId}`);
+      const response = await axiosInstance.delete(`http://localhost:5000/api/v1/cart/${usersIdM}/${proId}`);
       setDetails(details.filter((item) => item._id !== proId));
     } catch (error) {
       console.log('err', error);
@@ -153,7 +153,7 @@ setCartItem(response.data.products[numberIndex]);
     e.preventDefault();
     console.log('proid', proId);
     try {
-      const response = await axiosInstance.post(`http://localhost:5000/api/v1/order/orderitem/${proId}/664db80748eeadcd76759a55/${quantity}/${productDetails.price}`);
+      const response = await axiosInstance.post(`http://localhost:5000/api/v1/order/orderitem/${proId}/${usersIdM}/${quantity}/${productDetails.price}`);
       const response2 = await axiosInstance.delete(`http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55/${proId}`);
       setDetails(details.filter((item) => item._id !== proId));
 
@@ -171,8 +171,8 @@ setCartItem(response.data.products[numberIndex]);
         <div className="proContents">
           <h2 className='ftitle'>{cartItem.name}</h2>
           <p>
-            <span className='fpr'>Rs:{cartItem.price}</span>
-            <span className='fdpr'>{cartItem.sale_rate}</span>
+            <span className='fpr'>Rs:{cartItem.sale_rate}</span>
+            <span className='fdpr'>{cartItem.price}</span>
             <span className='dcnt'>{cartItem.discount}% off</span>
           </p>
 
@@ -188,7 +188,7 @@ setCartItem(response.data.products[numberIndex]);
 
           <div className="button-container">
             <button className="add-to-cart-button" onClick={(e) => removeCart(e, cartItem._id)}>Remove</button>
-            <button className="add-to-wishlist-button" onClick={(e) => BuyOrderItem(e, cartItem._id)} >Buy Item</button>
+            <button className="add-to-wishlist-button" onClick={(e) => navigate('/order')} >Buy Item</button>
           </div>
 
           {/* accordion */}

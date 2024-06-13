@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 
 function ProductCard(props) {
-  const { type,productDetails } = props;
+  const { type,productDetails,usersIdM } = props;
   const [state,setState] = useState(productDetails)
   // console.log('pro details',state)
 
@@ -48,7 +48,7 @@ function ProductCard(props) {
     // console.log('proid',proId)
       try {
     
-        const response = await axiosInstance.post(`http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55/${proId}`);
+        const response = await axiosInstance.post(`http://localhost:5000/api/v1/cart/${usersIdM}/${proId}`);
         setState({ ...state, inCart: true });
         
       } catch (error) {
@@ -63,7 +63,7 @@ function ProductCard(props) {
     console.log('proid',proId)
     try {
   
-      const response = await axiosInstance.delete(`http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55/${proId}`);
+      const response = await axiosInstance.delete(`http://localhost:5000/api/v1/cart/${usersIdM}/${proId}`);
       setState({ ...state, inCart: false });
       
     } catch (error) {
@@ -76,7 +76,7 @@ function ProductCard(props) {
   console.log('proid',proId)
     try {
   
-      const response = await axiosInstance.post(`http://localhost:5000/api/v1/wishlist/664db80748eeadcd76759a55/${proId}/wishlist`);
+      const response = await axiosInstance.post(`http://localhost:5000/api/v1/wishlist/${usersIdM}/${proId}/wishlist`);
       setState({ ...state, inWishlist: true });
       
     } catch (error) {
@@ -89,7 +89,7 @@ function ProductCard(props) {
     console.log('proid',proId)
     try {
   
-      const response = await axiosInstance.delete(`http://localhost:5000/api/v1/wishlist/664db80748eeadcd76759a55/${proId}/wishlist`);
+      const response = await axiosInstance.delete(`http://localhost:5000/api/v1/wishlist/${usersIdM}/${proId}/wishlist`);
       setState({ ...state, inWishlist: false });
       
     } catch (error) {
