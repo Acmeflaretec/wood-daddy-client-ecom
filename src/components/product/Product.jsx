@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import axiosInstance from '../../axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import './index.css';
 import ActiveLastBreadcrumb from '../../common/breadCrums/breadCrums';
 import AccordionBox from '../accordion/Accordion';
@@ -14,6 +15,7 @@ function Product() {
   const { productId } = useParams();
   const [details, setDetails] = useState([]);
   const [usersId,setUsersId] = useState()
+  const navigate = useNavigate();
 
   const [state,setState] = useState(details)
 
@@ -174,11 +176,11 @@ const removeWishlist = async(e,proId)=>{
  { details?.stock <=10 ?  ( <p className='warning'>Hurry up! only {details.stock} left</p>):('')}
 
      <div className="button-container">
-     { !details.inCart? ( <button className="add-to-cart-button" onClick={(e)=> addCart(e,details._id)} >Add Cart</button>) 
-     : (<button className="add-to-cart-button" onClick={(e)=> removeCart(e,details._id)} >Remove Cart</button>)}
+     { !details.inCart? ( <button className="add-to-cart-button" onClick={ usersId ? (e)=> addCart(e,details._id) : ()=> navigate('/login') } >Add Cart</button>) 
+     : (<button className="add-to-cart-button" onClick={usersId ? (e)=> removeCart(e,details._id) : ()=> navigate('/login') } >Remove Cart</button>)}
 
-{ !details.inWishlist? (  <button className="add-to-wishlist-button" onClick={(e)=> addWishlist(e,details._id)} >Add Wishlist</button>) 
-     : ( <button className="add-to-wishlist-button" onClick={(e)=> removeWishlist(e,details._id)} >Remove Wishlist</button>)}
+{ !details.inWishlist? (  <button className="add-to-wishlist-button" onClick={usersId ? (e)=> addWishlist(e,details._id) : () => navigate('/login') } >Add Wishlist</button>) 
+     : ( <button className="add-to-wishlist-button" onClick={ usersId ?  (e)=> removeWishlist(e,details._id) : () => navigate('/login') } >Remove Wishlist</button>)}
      
 
       

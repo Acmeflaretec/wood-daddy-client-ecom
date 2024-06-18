@@ -1,8 +1,9 @@
 
 
 // SearchBar component
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
+import axiosInstance from '../../axios';
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -12,6 +13,21 @@ import { useNavigate } from 'react-router-dom';
 function SearchBar(props) {
   const navigate = useNavigate();
   const { setSearch1, search1 } = props; // Change setSearch to setSearch1
+  const [userDetails, setUserDetails] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await axiosInstance.get('http://localhost:5000/api/v1/auth/getuser');
+            setUserDetails(response.data.data[0]);
+            console.log('userrrr', response.data.data[0]);
+        } catch (error) {
+            console.log('errr', error);
+            setUserDetails(null);
+        }
+    };
+    fetchData();
+}, []);
 
   const handleSearch = (e) => {
     
@@ -50,9 +66,9 @@ function SearchBar(props) {
         </div>
 
         <div className="grp-bar">
-          <NotificationsIcon className='headicons' onClick={() => navigate('/order')}/>
-          <FavoriteBorderIcon className='headicons' onClick={() => navigate('/wishlist')} />
-          <ShoppingBasketIcon className='headicons' onClick={() => navigate('/cart')} />
+          <NotificationsIcon className='headicons' onClick={userDetails ? () => navigate('/order') : () => navigate('/login')}/>
+          <FavoriteBorderIcon className='headicons' onClick={userDetails ? () => navigate('/wishlist') : () => navigate('/login')} />
+          <ShoppingBasketIcon className='headicons' onClick={userDetails ? () => navigate('/cart') : () => navigate('/login')} />
         </div>
       </div>
       <hr />

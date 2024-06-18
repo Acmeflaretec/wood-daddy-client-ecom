@@ -138,11 +138,11 @@ function ProductCard(props) {
         <p style={{ color: 'green' }}>Hot Deal</p> 
       </CardContent>
       <Box className="actions">
-     { !state.inCart? ( <button className="action-button add-to-cart" onClick={(e)=>addCart(e,state._id)} >Add  Cart</button>) 
-     : (<button className="action-button add-to-cart" onClick={(e)=>removeCart(e,state._id)} >Remove Cart</button>)}
+     { !state.inCart? ( <button className="action-button add-to-cart" onClick={usersIdM ? (e)=>addCart(e,state._id) :()=>navigate('/login') } >Add  Cart</button>) 
+     : (<button className="action-button add-to-cart" onClick={usersIdM ? (e)=>removeCart(e,state._id) : ()=> navigate('/login')} >Remove Cart</button>)}
 
-        {!state.inWishlist? (<button className="action-button wishlist" onClick={(e)=>addWishlist(e,state._id)} > add Wishlist</button>) :
-         (<button className="action-button wishlist" onClick={(e)=>removeWishlist(e,state._id)} >remove Wishlist</button>)}
+        {!state.inWishlist? (<button className="action-button wishlist" onClick={usersIdM ? (e)=>addWishlist(e,state._id) : ()=>navigate('/login')} > add Wishlist</button>) :
+         (<button className="action-button wishlist" onClick={usersIdM ? (e)=>removeWishlist(e,state._id) : ()=> navigate('/login')  } >remove Wishlist</button>)}
 
 
       </Box>
