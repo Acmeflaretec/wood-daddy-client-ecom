@@ -171,7 +171,7 @@ const removeWishlist = async(e,proId)=>{
       <button className="quantity-button" onClick={incrementQuantity}>+</button>
     </div> */}
      </div>
-     <p className='warning'>Hurry up! only 3 left</p>
+ { details?.stock <=10 ?  ( <p className='warning'>Hurry up! only {details.stock} left</p>):('')}
 
      <div className="button-container">
      { !details.inCart? ( <button className="add-to-cart-button" onClick={(e)=> addCart(e,details._id)} >Add Cart</button>) 
