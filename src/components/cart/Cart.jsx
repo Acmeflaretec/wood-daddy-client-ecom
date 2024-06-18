@@ -101,16 +101,19 @@ const [cartItem,setCartItem] = useState(productDetails)
 
   const navigate = useNavigate();
 
-  console.log('object,d',cartItem)
+  console.log('cart pro,d',cartItem)
 
-  const incrementQuantity = async(id) => {
+  const incrementQuantity = async(id,stock,qty) => {
     console.log('iddd',id)
     try {
-      await axiosInstance.put(`http://localhost:5000/api/v1/cart/increase/${id}`);
-// Fetch updated order items
-const response = await axiosInstance.get(`http://localhost:5000/api/v1/cart/${usersIdM}?page=1&limit=6&sortField=createdAt&sortOrder=desc`);
-console.log('ress cart',response.data.products[numberIndex])
-setCartItem(response.data.products[numberIndex]);
+      if(qty < stock){
+        await axiosInstance.put(`http://localhost:5000/api/v1/cart/increase/${id}`);
+        // Fetch updated order items
+        const response = await axiosInstance.get(`http://localhost:5000/api/v1/cart/${usersIdM}?page=1&limit=6&sortField=createdAt&sortOrder=desc`);
+        console.log('ress cart',response.data.products[numberIndex])
+        setCartItem(response.data.products[numberIndex]);
+
+      }
 
     } catch (error) {
       
@@ -118,12 +121,16 @@ setCartItem(response.data.products[numberIndex]);
    // setQuantity(quantity + 1);
   };
 
-  const decrementQuantity = async(id) => {
+  const decrementQuantity = async(id,stock,qty) => {
     try {
-      await axiosInstance.put(`http://localhost:5000/api/v1/cart/decrease/${id}`);
-      const response = await axiosInstance.get(`http://localhost:5000/api/v1/cart/${usersIdM}?page=1&limit=6&sortField=createdAt&sortOrder=desc`);
-      console.log('ress cart',response.data.products[numberIndex])
-      setCartItem(response.data.products[numberIndex]);
+
+      if(qty!=1 ){
+        await axiosInstance.put(`http://localhost:5000/api/v1/cart/decrease/${id}`);
+        const response = await axiosInstance.get(`http://localhost:5000/api/v1/cart/${usersIdM}?page=1&limit=6&sortField=createdAt&sortOrder=desc`);
+        console.log('ress cart',response.data.products[numberIndex])
+        setCartItem(response.data.products[numberIndex]);
+
+      }
 
 
     } catch (error) {
@@ -179,9 +186,9 @@ setCartItem(response.data.products[numberIndex]);
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             <p className='qtyn' style={{ fontSize: '22px' }}>Quantity: </p>
             <div className="quantity-counter">
-              <button className="quantity-button" onClick={()=> decrementQuantity(cartItem.inCart._id)}>-</button>
+              <button className="quantity-button" onClick={()=> decrementQuantity(cartItem.inCart._id,cartItem.stock,cartItem.cartDetails[0].qty)}>-</button>
               <span className="quantity">{cartItem.cartDetails[0].qty}</span>
-              <button className="quantity-button" onClick={()=> incrementQuantity(cartItem.inCart._id)}>+</button>
+              <button className="quantity-button" onClick={()=> incrementQuantity(cartItem.inCart._id,cartItem.stock,cartItem.cartDetails[0].qty)}>+</button>
             </div>
           </div>
           <p className='warning'>Hurry up! only few left</p>
