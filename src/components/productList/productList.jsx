@@ -24,7 +24,8 @@ function ProductList(props) {
   const [usersId,setUsersId] = useState()
 
   const [sortInit,setSortInit] = useState('desc')
-
+  const [lessPrice,setLessPrice] = useState(null)
+const [grtDisc,setGrtDisc] = useState(null)
 
 
   let urlQuery = '';
@@ -33,7 +34,20 @@ function ProductList(props) {
   if (searchItem) urlQuery = `http://localhost:5000/api/v1/products?page=${page}&limit=10&search=${searchItem}&sortField=createdAt&sortOrder=${sortInit}`;
 
 
-  if (type === 'productFetch') urlQuery = `http://localhost:5000/api/v1/products?page=${page}&limit=9&category=${categ}&sortField=createdAt&sortOrder=${sortInit}`;
+  if (type === 'productFetch'){
+
+    urlQuery = `http://localhost:5000/api/v1/products?page=${page}&limit=9&category=${categ}&sortField=createdAt&sortOrder=${sortInit}`;
+if(lessPrice){
+  urlQuery=urlQuery+`&priceLessThan=${lessPrice}`
+
+}
+if(grtDisc){
+  urlQuery=urlQuery+`&sortDiscountGreaterThan=${grtDisc}`
+
+}
+console.log(urlQuery)
+
+  }
   
 
   useEffect(() => {
@@ -86,7 +100,7 @@ try {
       fetchData();
     }
 
-  }, [page,usersId,latest]);
+  }, [page,usersId,latest,sortRate,disc]);
 
 
   
@@ -112,23 +126,66 @@ setLatest(event.target.value);
   };
   const handleDiscChange = (event) => {
     console.log('clicked',event.target.value)
-    setDisc(event.target.value);
+  
+    setDetails(null)
+    console.log('changed',event.target.value)
+    if(event.target.value === 10){
+      setDisc(event.target.value);
+      setGrtDisc(40)
+    }
+    if(event.target.value === 20){
+      setDisc(event.target.value);
+      setGrtDisc(50)
+    }  if(event.target.value === 30){
+      setDisc(event.target.value);
+      setGrtDisc(60)
+      
+    }  if(event.target.value === 40){
+      setDisc(event.target.value);
+      setGrtDisc(70)
+      
+    } 
   };
+
+
   const handleRateChange = (event) => {
-    console.log('clicked',event.target.value)
-    setsortRate(event.target.value);
+    setDetails(null)
+    console.log('changed',event.target.value)
+    if(event.target.value === 10){
+      setsortRate(event.target.value);
+      setLessPrice(1000)
+    }
+    if(event.target.value === 20){
+      setsortRate(event.target.value);
+      setLessPrice(5000)
+    }  if(event.target.value === 30){
+      setsortRate(event.target.value);
+      setLessPrice(10000)
+      
+    }  if(event.target.value === 40){
+      setsortRate(event.target.value);
+      setLessPrice(15000)
+      
+    }  if(event.target.value === 50){
+      setsortRate(event.target.value);
+      setLessPrice(20000)
+      
+    }  
+
+   
+    
   };
 
 
-  const handleDiscClick = (event) => {
-    console.log('clicked',event.target.value)
-  };
+  // const handleDiscClick = (event) => {
+  //   console.log('clicked',event.target.value)
+  // };
   // const handleSortClick = (event) => {
   //   console.log('clicked',event.target.value)
   // };
-  const handleRateClick = (event) => {
-    console.log('clicked',event.target.value)
-  };
+  // const handleRateClick = (event) => {
+  //   console.log('clicked',event.target.value)
+  // };
 
   const handleChange = (event, value) => {
     setPage(value);
@@ -153,7 +210,7 @@ setLatest(event.target.value);
           value={disc}
           label="discount"
           onChange={handleDiscChange}
-          onClick={handleDiscClick}
+          // onClick={handleDiscClick}
 
         >
           <MenuItem value={10}>greater than 40%</MenuItem>
@@ -190,7 +247,7 @@ setLatest(event.target.value);
           value={sortRate}
           label="Sort"
           onChange={handleRateChange}
-          onClick={handleRateClick}
+          // onClick={handleRateClick}
 
         >
           <MenuItem value={10}>lesser than 1000</MenuItem>

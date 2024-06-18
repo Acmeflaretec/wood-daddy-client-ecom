@@ -128,9 +128,9 @@ function ProductCard(props) {
        { <p className="warning">Hurry up! only few left</p>}
         <div>
           <p>
-            <span style={{ fontSize: '22px' }}>Rs {state.price}</span>
+            <span style={{ fontSize: '22px' }}>Rs {state.sale_rate}</span>
             <span style={{ color: 'gray', fontSize: '18px', textDecoration: 'line-through', marginLeft: '10px' }}>
-              {state.sale_rate}
+              {state.price}
             </span>
             <span style={{ color: 'green', marginLeft: '10px', fontSize: '22px' }}>{state.discount}% off</span>
           </p>
