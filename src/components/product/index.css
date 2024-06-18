@@ -1,11 +1,14 @@
 .Product{
 width: 100%;
+
 }
 .proSub{
+  
   display: flex;
   width: 100%;
 }
 .imgFrame {
+  position: relative !important;
   flex: 1;
   display: flex;
   justify-content: center;
@@ -152,4 +155,30 @@ font-size: 30px;
   .add-to-cart-button, .add-to-wishlist-button {
 font-size: 12px;
   }
+}
+
+
+
+
+/*  */
+
+
+.nav-button {
+  position: absolute;
+ 
+  transform: translateY(-50%);
+  /* background-color: rgba(255, 255, 255, 0.5); */
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.prev {
+  left: 0;
+ 
+  
+}
+
+.next {
+  right: 0;
 }

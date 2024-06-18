@@ -4,12 +4,37 @@ import { useParams } from 'react-router-dom';
 import './index.css';
 import ActiveLastBreadcrumb from '../../common/breadCrums/breadCrums';
 import AccordionBox from '../accordion/Accordion';
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+
+import { useSwipeable } from 'react-swipeable';
 
 function Product() {
   const [quantity, setQuantity] = useState(1);
   const { productId } = useParams();
   const [details, setDetails] = useState([]);
   const [usersId,setUsersId] = useState()
+
+  const [state,setState] = useState(details)
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  //console.log('slider ',details.image[activeIndex])
+
+  const handleNext = () => {
+    setActiveIndex((prevIndex) => (prevIndex + 1) % details.image.length);
+  };
+
+  const handleBack = () => {
+    setActiveIndex((prevIndex) => (prevIndex - 1 + details.image.length) % details.image.length);
+  };
+
+  const handlers = useSwipeable({
+    onSwipedLeft: handleNext,
+    onSwipedRight: handleBack,
+  });
+
+  // 
 
   useEffect(() => {
    
@@ -114,8 +139,24 @@ const removeWishlist = async(e,proId)=>{
 
       <div className="proSub">
         <div className="imgFrame">
-          <img src='/gallery/products/p1.jpg' alt='Product' />
+          {/* <img src='/gallery/products/p1.jpg' alt='Product' /> */}
+          <img
+  src={details && details.image && details.image.length > 0 ? `http://localhost:5000/uploads/${details.image[activeIndex]}` : ''}
+  alt={`Product Image`}
+/>
+
+<div className="nav-button">
+  <IconButton className="prev" onClick={handleBack}  >
+    <KeyboardArrowLeft />
+  </IconButton>
+  <IconButton className="next" onClick={handleNext}  >
+    <KeyboardArrowRight />
+  </IconButton>
+</div>
         </div>
+
+      
+
         <div className="proContents">
         <h2 className='ftitle' >{details.name}</h2>  
      <p > <span className='fpr' >Rs:{details.sale_rate}</span>
