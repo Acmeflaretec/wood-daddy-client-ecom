@@ -50,9 +50,9 @@ function SearchBar(props) {
         </div>
 
         <div className="grp-bar">
-          <NotificationsIcon className='headicons' />
+          <NotificationsIcon className='headicons' onClick={() => navigate('/order')}/>
           <FavoriteBorderIcon className='headicons' onClick={() => navigate('/wishlist')} />
-          <ShoppingBasketIcon className='headicons' />
+          <ShoppingBasketIcon className='headicons' onClick={() => navigate('/cart')} />
         </div>
       </div>
       <hr />
