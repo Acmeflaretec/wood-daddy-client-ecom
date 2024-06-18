@@ -23,15 +23,17 @@ function ProductList(props) {
   const [sortRate, setsortRate] = useState('');
   const [usersId,setUsersId] = useState()
 
+  const [sortInit,setSortInit] = useState('desc')
+
 
 
   let urlQuery = '';
   if (recentf) urlQuery = `http://localhost:5000/api/v1/products?page=${page}&limit=6&sortField=createdAt&sortOrder=desc`;
 
-  if (searchItem) urlQuery = `http://localhost:5000/api/v1/products?page=${page}&limit=10&search=${searchItem}&sortField=createdAt&sortOrder=desc`;
+  if (searchItem) urlQuery = `http://localhost:5000/api/v1/products?page=${page}&limit=10&search=${searchItem}&sortField=createdAt&sortOrder=${sortInit}`;
 
 
-  if (type === 'productFetch') urlQuery = `http://localhost:5000/api/v1/products?page=${page}&limit=9&category=${categ}&sortField=createdAt&sortOrder=desc`;
+  if (type === 'productFetch') urlQuery = `http://localhost:5000/api/v1/products?page=${page}&limit=9&category=${categ}&sortField=createdAt&sortOrder=${sortInit}`;
   
 
   useEffect(() => {
@@ -53,8 +55,8 @@ try {
   }, []);
 
   useEffect(() => {
-    if (usersId) {
-      if (type === 'wishlist') urlQuery = `http://localhost:5000/api/v1/wishlist/${usersId}/wishlist?page=${page}&limit=6&sortField=createdAt&sortOrder=desc`;
+    if (type === 'wishlist') {
+      if (usersId) urlQuery = `http://localhost:5000/api/v1/wishlist/${usersId}/wishlist?page=${page}&limit=6&sortField=createdAt&sortOrder=desc`;
         const fetchData = async () => {
       try {
         const response = await axiosInstance.get(urlQuery);
@@ -66,12 +68,17 @@ try {
     };
   
     fetchData();
+
+
     }else{
+      setDetails(null)
       const fetchData = async () => {
         try {
           const response = await axiosInstance.get(urlQuery);
-          setDetails(response.data.products);
+          
+          console.log('data reached ',response.data.products)
           setTotalPages(Math.ceil(response.data.totalProducts / 10));
+          setDetails(response.data.products);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -79,14 +86,29 @@ try {
       fetchData();
     }
 
-  }, [page,usersId]);
+  }, [page,usersId,latest]);
 
+
+  
  
 
 
   const handleSortChange = (event) => {
-    console.log('clicked',event.target.value)
+    console.log('changed',event.target.value)
+  setDetails(null)
+  if(event.target.value === 10){
+setSortInit('desc')
+setLatest(event.target.value);
+
+  }else if(event.target.value === 20){ 
+    setSortInit('asc')
     setLatest(event.target.value);
+
+
+  }
+
+
+
   };
   const handleDiscChange = (event) => {
     console.log('clicked',event.target.value)
@@ -101,9 +123,9 @@ try {
   const handleDiscClick = (event) => {
     console.log('clicked',event.target.value)
   };
-  const handleSortClick = (event) => {
-    console.log('clicked',event.target.value)
-  };
+  // const handleSortClick = (event) => {
+  //   console.log('clicked',event.target.value)
+  // };
   const handleRateClick = (event) => {
     console.log('clicked',event.target.value)
   };
@@ -151,7 +173,7 @@ try {
           value={latest}
           label="Sort"
           onChange={handleSortChange}
-          onClick={handleSortClick}
+          // onClick={handleSortClick}
 
         >
           <MenuItem value={10}>Latest</MenuItem>

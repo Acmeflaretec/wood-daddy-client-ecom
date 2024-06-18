@@ -37,8 +37,6 @@ import { TryOutlined } from '@mui/icons-material';
 
 function ToggleCustomTheme({ showCustomTheme, toggleCustomTheme }) {
 
-
-
   return (
     <Box
       sx={{
@@ -302,9 +300,9 @@ console.log(productsData);
 console.log('cart ',productsData)
    console.log('success')
 
-   
-
-   const response = await axiosInstance.post(`http://localhost:5000/api/v1/order/createorder/${usersId}/${primaryAddressesM._id}`, {products:productsData});
+ 
+   const response = await axiosInstance.post(`http://localhost:5000/api/v1/order/createorder/${usersId}/${primaryAddressesM._id}`,
+     {products:productsData,totalAmt:convertToServerFormat(details)});
 
    setActiveStep(activeStep + 1);
  };
@@ -442,7 +440,7 @@ if(activeStep + 1 === 3){
             <Button
               startIcon={<ArrowBackRoundedIcon />}
               component="a"
-              href="/material-ui/getting-started/templates/landing-page/"
+              href="/"
               sx={{ ml: '-8px' }}
             >
               Back to Home
@@ -504,7 +502,7 @@ if(activeStep + 1 === 3){
               <Button
                 startIcon={<ArrowBackRoundedIcon />}
                 component="a"
-                href="/material-ui/getting-started/templates/landing-page/"
+                href="/"
                 sx={{ alignSelf: 'start' }}
               >
                 Back to home
