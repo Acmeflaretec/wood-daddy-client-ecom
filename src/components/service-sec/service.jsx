@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Fade } from 'react-reveal';
 
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -52,31 +51,29 @@ function Service() {
     <Box id="service" py={8} bgcolor="#f7f7f7" ref={serviceRef}>
       <Grid container spacing={4} justifyContent="center">
         <Grid item xs={12} sm={6} md={4}>
-          <Fade bottom when={isVisible}>
+        
             <ServiceBox>
               <LocalShippingIcon color="primary" fontSize="large" />
               <Typography variant="h6" mt={2}>Furniture Delivery</Typography>
               <Typography variant="body2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Typography>
             </ServiceBox>
-          </Fade>
+   
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
-          <Fade bottom delay={300} when={isVisible}>
+         
             <ServiceBox>
               <CheckCircleIcon color="primary" fontSize="large" />
               <Typography variant="h6" mt={2}>Quality products</Typography>
               <Typography variant="body2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Typography>
             </ServiceBox>
-          </Fade>
+         
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
-          <Fade bottom delay={500} when={isVisible}>
             <ServiceBox>
               <SupportAgentIcon color="primary" fontSize="large" />
               <Typography variant="h6" mt={2}>24/7 Support</Typography>
               <Typography variant="body2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Typography>
             </ServiceBox>
-          </Fade>
         </Grid>
       </Grid>
     </Box>
