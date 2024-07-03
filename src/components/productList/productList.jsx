@@ -74,6 +74,7 @@ try {
         const fetchData = async () => {
       try {
         const response = await axiosInstance.get(urlQuery);
+        console.log('wish ',response.data)
         setDetails(response.data.products);
         setTotalPages(Math.ceil(response.data.totalProducts / 10));
       } catch (error) {
