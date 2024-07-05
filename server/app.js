@@ -5,12 +5,11 @@ const router = require('./routes/index.js');
 const morgan = require('morgan');
 const path = require('path')
 const dotenv = require('dotenv');
-dotenv.config();
+dotenv.config();       
 
 const app = express();
 app.use(bodyParser.json());
-// app.use(cors());
-const corsOptions = {
+const corsOptions = {   
   origin: [process.env.ADMIN_PORT_LOCAL,process.env.CLIENT_PORT_LOCAL],
   credentials: true,
 };
