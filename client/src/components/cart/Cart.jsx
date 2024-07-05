@@ -15,7 +15,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
  
 
-function Cart() {
+function Cart({setNotif}) {
 
   const [quantity, setQuantity] = useState(1);
 const [TotalAmnt,setTotalAmnt] = useState(0)
@@ -72,7 +72,7 @@ const [details, setDetails] = useState([]);
        // console.log('ress cart',response.data)
         setDetails(response.data.products);
         convertToServerFormat(response.data.products)
-
+        setNotif(prev => !prev);
       }
 
     } catch (error) {
@@ -90,7 +90,7 @@ const [details, setDetails] = useState([]);
       //  console.log('ress cart',response.data)
         setDetails(response.data.products);
         convertToServerFormat(response.data.products)
-
+        setNotif(prev => !prev);
       }
 
 
@@ -112,7 +112,7 @@ const [details, setDetails] = useState([]);
       
       setDetails(details.filter((item) => item._id !== proId));
       convertToServerFormat(details.filter((item) => item._id !== proId))
-
+      setNotif(prev => !prev);
     } catch (error) {
       console.log('err', error);
     }

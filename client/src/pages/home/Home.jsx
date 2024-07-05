@@ -12,6 +12,7 @@ import axiosInstance from '../../axios';
 
 function Home() {
   const [userDetails,setUserDetails] = useState(null)
+  const [notification,setNotification] = useState(true)
 
 useEffect(() => {
  
@@ -20,7 +21,8 @@ try {
   
   const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`);
   setUserDetails(response.data.data[0])
-  console.log('userrrr',response.data.data[0])
+  setNotification(prev => !prev)
+ // console.log('userrrr',response.data.data[0])
 } catch (error) {
   console.log('errr',error)
 }
@@ -32,13 +34,13 @@ try {
  
   return (
     <div>
-      <Header/>
+      <Header notif={notification} notificationM={notification} />
       <Banner/>
       <ContentSection  />
       <HomeCategory/>
       <OfferSale/>
 
-      <ProductScroll type={'home'} /> 
+      <ProductScroll type={'home'} setNotif={setNotification}  /> 
 
       {/* <ProductList recentf={true}  /> */}
       <ContactSec/>

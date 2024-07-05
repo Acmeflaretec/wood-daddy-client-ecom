@@ -13,7 +13,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 function ProductList(props) {
-  const { title, type, recentf, searchItem, categ, allProds } = props;
+  const { title, type, recentf, searchItem, categ, allProds,setNotif  } = props;
   const [details, setDetails] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -67,6 +67,7 @@ function ProductList(props) {
           console.log("wish ", response.data);
           setDetails(response.data.products);
           setTotalPages(Math.ceil(response.data.totalProducts / 10));
+          setNotif(prev => !prev)
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -86,6 +87,7 @@ function ProductList(props) {
             console.log("all prods  reached ", response.data.products);
             setTotalPages(Math.ceil(response.data.totalProducts / 10));
             setDetails(response.data.products);
+            setNotif(prev => !prev)
           } else {
             console.log('urlll',urlQuery)
             const response = await axiosInstance.get(urlQuery);
@@ -93,6 +95,7 @@ function ProductList(props) {
             console.log("data reached ", response.data.products);
             setTotalPages(Math.ceil(response.data.totalProducts / 10));
             setDetails(response.data.products);
+            setNotif(prev => !prev)
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -256,6 +259,7 @@ function ProductList(props) {
               type={type}
               productDetails={pro}
               usersIdM={usersId}
+              setNotifM={setNotif}
             />
           ))}
         <div className="pagination">

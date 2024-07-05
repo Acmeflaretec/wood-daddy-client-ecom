@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 
 function ProductCard(props) {
-  const { type,productDetails,usersIdM } = props;
+  const { type,productDetails,usersIdM,setNotifM } = props;
   const [state,setState] = useState(productDetails)
   // console.log('pro details',state)
 
@@ -51,6 +51,7 @@ function ProductCard(props) {
     
         const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/api/v1/cart/${usersIdM}/${proId}`);
         setState({ ...state, inCart: true });
+        setNotifM(prev => !prev)
         
       } catch (error) {
         console.log('err',error)
@@ -66,7 +67,7 @@ function ProductCard(props) {
   
       const response = await axiosInstance.delete(`${process.env.REACT_APP_API_URL}/api/v1/cart/${usersIdM}/${proId}`);
       setState({ ...state, inCart: false });
-      
+      setNotifM(prev => !prev)
     } catch (error) {
       console.log('err',error)
     }
@@ -79,7 +80,7 @@ function ProductCard(props) {
   
       const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/api/v1/wishlist/${usersIdM}/${proId}/wishlist`);
       setState({ ...state, inWishlist: true });
-      
+      setNotifM(prev => !prev)
     } catch (error) {
       console.log('err',error)
     }
@@ -92,7 +93,7 @@ function ProductCard(props) {
   
       const response = await axiosInstance.delete(`${process.env.REACT_APP_API_URL}/api/v1/wishlist/${usersIdM}/${proId}/wishlist`);
       setState({ ...state, inWishlist: false });
-      
+      setNotifM(prev => !prev)
     } catch (error) {
       console.log('err',error)
     }
