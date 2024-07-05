@@ -10,8 +10,8 @@ const getContentSection = async (req, res) => {
 };
 
 const addContentSection = async (req, res) => {
-  console.log('reached')
-  console.log(req.body)
+  // console.log('reached')
+  // console.log(req.body)
   const { title, desc } = req?.body;
  
 
@@ -38,12 +38,55 @@ const addContentSection = async (req, res) => {
   }
 };
 
+const getWelcomeById = async (req, res) => {
+  try {
+    const data = await ContentSection.findOne({ _id: req.params.id });
+    res.status(200).json({ data, message: 'product found successfully' });
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ message: error?.message ?? "Something went wrong !" });
+  }
+}
+const updateWelcome = async (req, res) => {
+  const {_id,title, desc} = req?.body
+  try {
+    const data = await ContentSection.findById(_id);
+    if (!data) {
+      return res.status(404).json({ message: 'Welcome not found' });
+    }
+    
+    await ContentSection.updateOne({ _id }, {
+      $set: { title, desc }
+    })
+    res.status(200).json({ data, message: 'Welcome updated successfully' });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error?.message ?? 'Something went wrong' })
+  }
+}
+const deleteWelcome = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const data = await ContentSection.findByIdAndDelete(id);
+    if (!data) {
+      return res.status(404).json({ message: 'Welcome not found' });
+    }
+    res.status(200).json({ message: 'Welcome deleted successfully' });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error?.message ?? 'Something went wrong' })
+  }
+}
+
 
 
 module.exports = {
 
   getContentSection,
   addContentSection,
+  getWelcomeById,
+  updateWelcome,
+  deleteWelcome
 
 
 }

@@ -4,11 +4,13 @@ import PageLayout from 'layouts/PageLayout';
 import { useAddWelcomeSection } from "queries/ProductQuery";
 import toast from "react-hot-toast";
 import Input from "components/Input";
+import { useNavigate } from "react-router-dom";
 
 const AddWelcomeContent = () => {
+  const navigate = useNavigate()
   const [data,setData] = useState({})
   
-  useEffect(() => {
+  useEffect(() => {  
     console.log('Updated Data:', data);
   }, [data]);
   
@@ -32,7 +34,8 @@ const AddWelcomeContent = () => {
 
       addWelcomeSection(data)
       .then((res) => {
-        toast.success(res?.message ?? "category added");
+        toast.success(res?.message ?? "Welcome Section added");
+        navigate('/welcomeContents')
       })
       .catch((err) => {
         toast.error(err?.message ?? "Something went wrong");
@@ -58,13 +61,9 @@ const AddWelcomeContent = () => {
               value={data?.title || ''}
               onChange={handleChange}
               fullWidth
-              autoComplete="name"
+              autoComplete="title"
               variant="outlined"
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            {data?.title}
-            {data?.desc}
           </Grid>
 
           <Grid item xs={12}>

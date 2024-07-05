@@ -18,7 +18,7 @@ function Illustration() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
-//
+
   return (
     <IllustrationLayout
       title="Sign In"
@@ -30,7 +30,6 @@ function Illustration() {
           "The more effortless the writing looks, the more effort the writer actually put into the process.",
       }}
     >
-     
       <Box component="form" role="form">
         <Box mb={2}>
           <Input type="email" placeholder="Email" size="large" />

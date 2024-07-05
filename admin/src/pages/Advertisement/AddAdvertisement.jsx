@@ -4,9 +4,11 @@ import PageLayout from 'layouts/PageLayout';
 import { useAddAdvertisement } from "queries/ProductQuery";
 import toast from "react-hot-toast";
 import Input from "components/Input";
+import { useNavigate } from "react-router-dom";
 
 const AddAdvertisement = () => {
-  const [data,setData] = useState({})
+  const navigate = useNavigate()
+  const [data, setData] = useState({})
   const fileInputRef = React.useRef(null);
   const handleFileSelect = () => {
     fileInputRef.current.click();
@@ -14,23 +16,26 @@ const AddAdvertisement = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    setData(prev=>({ ...prev, image: file }));
+    setData(prev => ({ ...prev, image: file }));
   };
 
   const handleChange = (e) => {
-    setData(prev=>({ ...prev, [e.target.name]: e.target.value }));
+    setData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
   const { mutateAsync: addCategory, isLoading } = useAddAdvertisement()
 
-  const handleSubmit = ()=>{
+  const handleSubmit = () => {
     try {
-      if(!data?.title){
+      if (!data?.title) {
         return toast.error("name is required")
       }
-      if(!data?.subtitle){
+      if (!data?.subtitle) {
         return toast.error("description is required")
       }
-      if(!data?.image){
+      if (!data?.offer) {
+        return toast.error("offer is required")
+      }
+      if (!data?.image) {
         return toast.error("image is required")
       }
       const formData = new FormData();
@@ -39,28 +44,29 @@ const AddAdvertisement = () => {
           formData.append(key, data[key]);
         }
       }
-     
-      typeof(data.image) == 'object' && formData.append("advertisement", data.image, data?.image?.name);
+
+      typeof (data.image) == 'object' && formData.append("advertisement", data.image, data?.image?.name);
 
 
-       addCategory(formData)
-      .then((res) => {
-        toast.success(res?.message ?? "category added");
-      })
-      .catch((err) => {
-        toast.error(err?.message ?? "Something went wrong");
-      });
-      
+      addCategory(formData)
+        .then((res) => {
+          toast.success(res?.message ?? "advertisement is added");
+          navigate('/advertisements')
+        })
+        .catch((err) => {
+          toast.error(err?.message ?? "Something went wrong");
+        });
+
     } catch (error) {
       console.error(error)
     }
   }
   return (
     <PageLayout
-      title={'Add Category'}
+      title={'Add Advertisement'}
     >
-    <Box sx={{ flexGrow: 1 }} display={'flex'} justifyContent={'center'}>
-      <Grid container spacing={2} maxWidth={600} py={5}>
+      <Box sx={{ flexGrow: 1 }} display={'flex'} justifyContent={'center'}>
+        <Grid container spacing={2} maxWidth={600} py={5}>
           <Grid item xs={12} sm={6}>
             <Input
               required
@@ -75,17 +81,13 @@ const AddAdvertisement = () => {
               variant="outlined"
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            {data?.title}
-            {data?.subtitle}
-          </Grid>
 
           <Grid item xs={12}>
             <Input
               id="subtitle"
               name="subtitle"
-              placeholder="Banner Subtitle"
-              label="Banner Subtitle *"
+              placeholder="Subtitle"
+              label="Subtitle *"
               value={data?.subtitle || ''}
               onChange={handleChange}
               fullWidth
@@ -136,34 +138,34 @@ const AddAdvertisement = () => {
               ) : (
                 <React.Fragment>
                   <svg
-                                          width="56"
-                                          height="56"
-                                          viewBox="0 0 56 56"
-                                          fill="none"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                       >
-                                          <path
-                                             d="M20.9994 51.3346H34.9994C46.666 51.3346 51.3327 46.668 51.3327 35.0013V21.0013C51.3327 9.33464 46.666 4.66797 34.9994 4.66797H20.9994C9.33268 4.66797 4.66602 9.33464 4.66602 21.0013V35.0013C4.66602 46.668 9.33268 51.3346 20.9994 51.3346Z"
-                                             stroke="#CDCDCD"
-                                             strokeWidth="3"
-                                             strokeLinecap="round"
-                                             strokeLinejoin="round"
-                                          />
-                                          <path
-                                             d="M21.0007 23.3333C23.578 23.3333 25.6673 21.244 25.6673 18.6667C25.6673 16.0893 23.578 14 21.0007 14C18.4233 14 16.334 16.0893 16.334 18.6667C16.334 21.244 18.4233 23.3333 21.0007 23.3333Z"
-                                             stroke="#CDCDCD"
-                                             strokeWidth="3"
-                                             strokeLinecap="round"
-                                             strokeLinejoin="round"
-                                          />
-                                          <path
-                                             d="M6.23047 44.2186L17.7338 36.4953C19.5771 35.2586 22.2371 35.3986 23.8938 36.8219L24.6638 37.4986C26.4838 39.0619 29.4238 39.0619 31.2438 37.4986L40.9505 29.1686C42.7705 27.6053 45.7105 27.6053 47.5305 29.1686L51.3338 32.4353"
-                                             stroke="#CDCDCD"
-                                             strokeWidth="3"
-                                             strokeLinecap="round"
-                                             strokeLinejoin="round"
-                                          />
-                                       </svg>
+                    width="56"
+                    height="56"
+                    viewBox="0 0 56 56"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M20.9994 51.3346H34.9994C46.666 51.3346 51.3327 46.668 51.3327 35.0013V21.0013C51.3327 9.33464 46.666 4.66797 34.9994 4.66797H20.9994C9.33268 4.66797 4.66602 9.33464 4.66602 21.0013V35.0013C4.66602 46.668 9.33268 51.3346 20.9994 51.3346Z"
+                      stroke="#CDCDCD"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M21.0007 23.3333C23.578 23.3333 25.6673 21.244 25.6673 18.6667C25.6673 16.0893 23.578 14 21.0007 14C18.4233 14 16.334 16.0893 16.334 18.6667C16.334 21.244 18.4233 23.3333 21.0007 23.3333Z"
+                      stroke="#CDCDCD"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M6.23047 44.2186L17.7338 36.4953C19.5771 35.2586 22.2371 35.3986 23.8938 36.8219L24.6638 37.4986C26.4838 39.0619 29.4238 39.0619 31.2438 37.4986L40.9505 29.1686C42.7705 27.6053 45.7105 27.6053 47.5305 29.1686L51.3338 32.4353"
+                      stroke="#CDCDCD"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                   <Typography sx={{ mt: 1, fontSize: 13 }}>
                     Upload Thumbnail
                   </Typography>
@@ -179,7 +181,7 @@ const AddAdvertisement = () => {
             </Box>
           </Grid>
           <Grid item xs={12}>
- <Button onClick={handleSubmit}>Add Advertisement</Button>
+            <Button onClick={handleSubmit}>Add Advertisement</Button>
           </Grid>
           <Grid item xs={12}>
             <Alert color="primary" severity="info" sx={{ mt: 3, fontSize: 13 }}>
@@ -191,7 +193,7 @@ const AddAdvertisement = () => {
             </Alert>
           </Grid>
         </Grid>
-    </Box>
+      </Box>
 
     </PageLayout>
   )

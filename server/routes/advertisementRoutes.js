@@ -5,10 +5,10 @@ const { getAdvertisement,addAdvertisement,getAdvertisementById,deleteAdvertiseme
 const { upload } = require('../middlewares/multer');
 
 router.get('/', getAdvertisement);
-router.get('/:id', getAdvertisementById);
 router.post("/", upload.single('advertisement'), addAdvertisement);
+router.get('/:id', getAdvertisementById);
 router.delete('/:id', deleteAdvertisementById);
-router.put('/:id', upload.single('advertisement'), updateAdvertisementById);
+router.patch('/', upload.single('advertisement'), updateAdvertisementById);
 
  
 

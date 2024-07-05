@@ -1,4 +1,5 @@
 const Advertisement = require('../models/advertisement');
+const fs = require('fs')
 
 const getAdvertisement = async (req, res) => {
   try {
@@ -10,13 +11,14 @@ const getAdvertisement = async (req, res) => {
 };
 
 const addAdvertisement = async (req, res) => {
-   
+  
   const {offer, title, subtitle } = req?.body
   const imgUrl = req?.file?.filename
   try {
-     
-      const adv = new Advertisement({offer,title, subtitle, imgUrl })
-      await adv.save()
+    
+    const adv = new Advertisement({offer,title, subtitle, imgUrl })
+    await adv.save()
+    console.log('hello',adv);  
       res.status(201).json({ data: adv, message: 'advertisement created successfully' });
      
   } catch (error) {
@@ -55,25 +57,30 @@ const deleteAdvertisementById = async (req, res) => {
 };
 
 const updateAdvertisementById = async (req, res) => {
-  const { id } = req.params;
-  const { offer,title, subtitle } = req.body;
-  const imgUrl = req.file?.filename;
-
+  const {_id,offer,title, subtitle} = req?.body
+  const  imgUrl= req?.file?.filename
+  console.log(_id,offer,title, subtitle,imgUrl);
   try {
-    const advertisement = await Advertisement.findById(id);
-    if (!advertisement) {
-      return res.status(404).json({ message: 'Banner not found' });
+    const data = await Advertisement.findById(_id);
+    if (!data) {
+      return res.status(404).json({ message: 'Advertisement not found' });
     }
-    if (offer) advertisement.offer = offer;
-    if (title) advertisement.title = title;
-    if (subtitle) advertisement.subtitle = subtitle;
-    if (imgUrl) advertisement.imgUrl = imgUrl;
-
-    await advertisement.save();
-    res.status(200).json({ data: advertisement, message: 'Banner updated successfully' });
+    if (imgUrl) {
+      fs.unlink(`public/uploads/${data?.imgUrl}`, (err) => {
+        if (err) {
+          console.error('Error deleting image:', err);
+          return;
+        }
+        console.log('Image deleted successfully.');
+      });
+    }
+    await Advertisement.updateOne({ _id }, {
+      $set: { offer,title, subtitle, ...(imgUrl && { imgUrl }) }
+    })
+    res.status(200).json({ data, message: 'Advertisement updated successfully' });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'An error occurred', error });
+    return res.status(500).json({ message: error?.message ?? 'Something went wrong' })
   }
 };
 

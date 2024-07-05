@@ -26,6 +26,8 @@ console.log('interceptor',config);
 
 axiosInstance.interceptors.response.use(
   (response) => {
+    console.log('response',response);
+
     return response;
   },
   async (error) => {
