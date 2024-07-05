@@ -1,14 +1,13 @@
 /* eslint-disable react/prop-types */
 import Box from "components/Box";
 import Typography from "components/Typography";
-import Avatar from "components/Avatar";
-import Badge from "components/Badge";
-import toast from 'react-hot-toast';
-import { useGetBanner } from "queries/ProductQuery";
 import Table from "examples/Tables/Table";
+import { Avatar, Icon } from "@mui/material";
+import Badge from "components/Badge";
+import { Link } from "react-router-dom";
+import { useGetBanners } from "queries/StoreQuery";
 
-const notify = () => toast.success('category deleted successfully.');
-function Category({ image, name, desc }) {
+function Banners({ image, name, desc }) {
   return (
     <Box display="flex" alignItems="center" px={1} py={0.5}>
       <Box mr={2}>
@@ -27,58 +26,45 @@ function Category({ image, name, desc }) {
 }
 
 const TableData = () => {
-  const { data, isLoading } = useGetBanner({ page: 1, limit: 100 });
-
-  console.log('get bannerrr ',data?.data)
+  const { data, isLoading } = useGetBanners({ pageNo: 1, pageCount: 100 });
   const columns = [
-    { name: "category", align: "left" },
-   
-    { name: "title", align: "center" },
-    { name: "subtitle", align: "center" },
-   
+    { name: "Banners", align: "left" },
+    // { name: "url", align: "center" },
+    { name: "createdon", align: "center" },
+    { name: "Lastupdated", align: "center" },
+    { name: "status", align: "center" },
     { name: "action", align: "center" },
   ]
 
   const rows = data?.data?.map(item => ({
-    category: <Category image={`${process.env.REACT_APP_API_URL}/uploads/${item?.imgUrl}`} title={item?.title} desc={item?.desc} />,
-  
-    title: (
+    Banners: <Banners image={`${process.env.REACT_APP_API_URL}/uploads/${item?.image}`} name={item?.title} desc={item?.subtitle} />,
+    // url: (
+    //   <Typography variant="caption" color="secondary" fontWeight="medium">
+    //     <a href={item?.url}>{item?.url}</a>
+    //   </Typography>
+    // ),
+    status: (
+      <Badge variant="gradient" badgeContent={item?.status ? 'Available' : 'Unavailable'} color={item?.status ? "success" : 'secondary'} size="xs" container />
+    ),
+    createdon: (
       <Typography variant="caption" color="secondary" fontWeight="medium">
-        {item.title}
+        {new Date(item?.createdAt).toDateString()}
       </Typography>
     ),
-    subtitle: (
+    Lastupdated: (
       <Typography variant="caption" color="secondary" fontWeight="medium">
-        {item.subtitle}
+        {new Date(item?.updatedAt).toDateString()}
       </Typography>
     ),
-   
     action: (
-      <>
-        <Typography
-          component="a"
-          href="#"
-          onClick={notify}
-          variant="caption"
-          color="secondary"
-          fontWeight="medium"
-        >
-          Edit
-        </Typography>
-        <Typography
-          component="a"
-          href="#"
-          onClick={notify}
-          variant="caption"
-          color="secondary"
-          fontWeight="medium"
-        >
-          Delete
-        </Typography>
-      </>
+      <Link to={`/banners/editBanner/${item?._id}`}>
+        <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small">
+          more_vert
+        </Icon>
+      </Link>
     ),
   }))
-  return isLoading ? <>loading...</> : <Table columns={columns} rows={rows} />
+  return isLoading ? <Typography fontSize={14} sx={{ paddingX: 5 }}>loading...</Typography> : <Table columns={columns} rows={rows} />
 };
 
 export default TableData;

@@ -1,22 +1,17 @@
- 
 import PageLayout from "layouts/PageLayout";
-import underConstruction from 'assets/images/under_construction.png'
-import Button from 'components/Button';
-import { Link } from 'react-router-dom';
-import { useGetCategory } from "queries/ProductQuery";
+import Button from "components/Button";
+import { Link } from "react-router-dom";
 import TableData from "./tableData";
-function Banner() {
-  // const { data, isLoading } = useGetCategory({ pageNo: 1, pageCount: 100 });
-  // console.log(data, isLoading);
 
+function Banner() {
   return (
     <PageLayout
       title={'Banners'}
       action={
-        <Button component={Link} to={`/banners/addBanners`}>Add Banner</Button>
+        <Button component={Link} to={`/banners/addBanner`}>Add Banner</Button>
       }
     >
-<TableData/>
+      <TableData />
     </PageLayout>
   );
 }

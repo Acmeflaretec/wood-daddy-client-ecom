@@ -1,14 +1,13 @@
 /* eslint-disable react/prop-types */
 import Box from "components/Box";
 import Typography from "components/Typography";
-import Avatar from "components/Avatar";
-import Badge from "components/Badge";
-import { useGetCategory } from "queries/ProductQuery";
 import Table from "examples/Tables/Table";
-import { Icon } from "@mui/material";
+import { Avatar, Icon } from "@mui/material";
+import Badge from "components/Badge";
 import { Link } from "react-router-dom";
+import { useGetBlogs } from "queries/StoreQuery";
 
-function Category({ image, name, desc }) {
+function Blogs({ image, name, desc }) {
   return (
     <Box display="flex" alignItems="center" px={1} py={0.5}>
       <Box mr={2}>
@@ -27,19 +26,25 @@ function Category({ image, name, desc }) {
 }
 
 const TableData = () => {
-  const { data, isLoading } = useGetCategory({ pageNo: 1, pageCount: 100 });
+  const { data, isLoading } = useGetBlogs({ pageNo: 1, pageCount: 100 });
   const columns = [
-    { name: "category", align: "left" },
+    { name: "Blogs", align: "left" },
+    { name: "url", align: "center" },
     { name: "status", align: "center" },
     { name: "createdon", align: "center" },
     { name: "Lastupdated", align: "center" },
     { name: "action", align: "center" },
   ]
-console.log('data',data);
+
   const rows = data?.data?.map(item => ({
-    category: <Category image={`${process.env.REACT_APP_API_URL}/uploads/${item?.image}`} name={item?.name} desc={item?.desc} />,
+    Blogs: <Blogs image={`${process.env.REACT_APP_API_URL}/uploads/${item?.image}`} name={item?.title} desc={item?.subtitle} />,
+    url: (
+      <Typography variant="caption" color="secondary" fontWeight="medium">
+        <a href={item?.url}>{item?.url}</a>
+      </Typography>
+    ),
     status: (
-      <Badge variant="gradient" badgeContent={item?.isAvailable ? 'Available' : 'Unavailable'} color={item?.isAvailable ? "success" : 'secondary'} size="xs" container />
+      <Badge variant="gradient" badgeContent={item?.status ? 'Available' : 'Unavailable'} color={item?.status ? "success" : 'secondary'} size="xs" container />
     ),
     createdon: (
       <Typography variant="caption" color="secondary" fontWeight="medium">
@@ -52,7 +57,7 @@ console.log('data',data);
       </Typography>
     ),
     action: (
-      <Link to={`/category/editCategory/${item?._id}`}>
+      <Link to={`/blogs/editBlog/${item?._id}`}>
         <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small">
           more_vert
         </Icon>

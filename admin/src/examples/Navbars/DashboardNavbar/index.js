@@ -144,7 +144,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 }
               />
             </Box>
-            <Box color={light ? "white" : "inherit"}>
+            {/* <Box color={light ? "white" : "inherit"}>
               <Link to="/authentication/sign-in/basic">
                 <IconButton sx={navbarIconButton} size="small">
                   <Icon
@@ -191,7 +191,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 <Icon>notifications</Icon>
               </IconButton>
               {renderMenu()}
-            </Box>
+            </Box> */}
           </Box>
         )}
       </Toolbar>

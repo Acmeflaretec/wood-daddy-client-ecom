@@ -1,35 +1,26 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
   addCategory,
+  getCategoryById,
+  editCategory,
+  deleteCategory,
   addProduct,
+  deleteProduct,
   getCategory,
+  getProductById,
   getProducts,
-  addBanner,
-  getBanner,
+  updateProduct,
   getAdvertisement,
   addAdvertisement,
   addWelcomeSection,
   getWelcomeSection,
-  getOrders,
-
-
+  editWelcomeSection,
+  getWelcomeById,
+  deleteWelcome,
+  editAds,
+  getAdsId,
+  deleteAds
 } from "./productUrls";
-
-const useGetWelcomeSection = (data) => {
-  return useQuery(["get_welcomeSection", data], () => getWelcomeSection(data), {
-    staleTime: 3000,
-    keepPreviousData: true,
-    // refetchOnWindowFocus: false,
-  });
-};
-
-const useGetAdvertisement = (data) => {
-  return useQuery(["get_advertisement", data], () => getAdvertisement(data), {
-    staleTime: 3000,
-    keepPreviousData: true,
-    // refetchOnWindowFocus: false,
-  });
-};
 
 const useGetCategory = (data) => {
   return useQuery(["get_category", data], () => getCategory(data), {
@@ -38,17 +29,43 @@ const useGetCategory = (data) => {
     // refetchOnWindowFocus: false,
   });
 };
-//getOrders
-const useGetOrders = (data) =>{
 
-  return useQuery(["get_category", data], () => getOrders(data), {
-    staleTime: 3000,
-    keepPreviousData: true,
-    // refetchOnWindowFocus: false,
+
+const useGetCategorysById = (data) => {
+  return useQuery(["get_category", data], () => getCategoryById(data), {
+      staleTime: 3000,
+      keepPreviousData: true,
+      // refetchOnWindowFocus: false,
   });
+};
 
-}
+const useEditCategorys = () => {
+  const queryClient = useQueryClient();
 
+  return useMutation((data) => editCategory(data), {
+      onSuccess: (data) => {
+          queryClient.invalidateQueries("get_category");
+          return data;
+      },
+      onError: (data) => {
+          return data;
+      },
+  });
+};
+
+const useDeleteCategorys = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation((data) => deleteCategory(data), {
+      onSuccess: (data) => {
+          queryClient.invalidateQueries("get_category");
+          return data;
+      },
+      onError: (data) => {
+          return data;
+      },
+  });
+};
 
 const useGetProducts = (data) => {
   return useQuery(["get_products", data], () => getProducts(data), {
@@ -58,44 +75,14 @@ const useGetProducts = (data) => {
   });
 };
 
-
-
-const useGetBanner = (data) => {
-  return useQuery(["get_banner", data], () => getBanner(data), {
+const useGetProductById = (data) => {
+  return useQuery(["get_products", data], () => getProductById(data), {
     // staleTime: 30000,
     keepPreviousData: true,
     refetchOnWindowFocus: false,
   });
 };
 
- 
-const useAddWelcomeSection = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation((data) => addWelcomeSection(data), {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries("get_category");
-      return data;
-    },
-    onError: (data) => {
-      return data;
-    },
-  });
-};
-
-const useAddAdvertisement = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation((data) => addAdvertisement(data), {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries("get_advertisement");
-      return data;
-    },
-    onError: (data) => {
-      return data;
-    },
-  });
-};
 
 const useAddCategory = () => {
   const queryClient = useQueryClient();
@@ -124,13 +111,25 @@ const useAddProduct = () => {
     },
   });
 };
-
-const useAddBanner = () => {
+const useUpdateProduct = () => {
   const queryClient = useQueryClient();
 
-  return useMutation((data) => addBanner(data), {
+  return useMutation((data) => updateProduct(data), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries("add_banner");
+      queryClient.invalidateQueries("get_products");
+      return data;
+    },
+    onError: (data) => {
+      return data;
+    },
+  });
+};
+const useDeleteProduct = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation((data) => deleteProduct(data), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries("get_products");
       return data;
     },
     onError: (data) => {
@@ -139,18 +138,139 @@ const useAddBanner = () => {
   });
 };
 
+const useAddAdvertisement = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation((data) => addAdvertisement(data), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries("get_advertisement");
+      return data;
+    },
+    onError: (data) => {
+      return data;
+    },
+  });
+};
+
+
+const useAddWelcomeSection = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation((data) => addWelcomeSection(data), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries("get_category");
+      return data;
+    },
+    onError: (data) => {
+      return data;
+    },
+  });
+};
+const useGetWelcomeSection = (data) => {
+  return useQuery(["get_welcomeSection", data], () => getWelcomeSection(data), {
+    staleTime: 3000,
+    keepPreviousData: true,
+    // refetchOnWindowFocus: false,
+  });
+};
+
+const useGetAdvertisement = (data) => {
+  return useQuery(["get_advertisement", data], () => getAdvertisement(data), {
+    staleTime: 3000,
+    keepPreviousData: true,
+    // refetchOnWindowFocus: false,
+  });
+};
+
+const useUpdateWelcome = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation((data) => editWelcomeSection(data), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries("get_products");
+      return data;
+    },
+    onError: (data) => {
+      return data;
+    },
+  });
+};
+const useGetWelcomeById = (data) => {
+  return useQuery(["get_category", data], () => getWelcomeById(data), {
+      staleTime: 3000,
+      keepPreviousData: true,
+      // refetchOnWindowFocus: false,
+  });
+};
+const useDeleteWelcome = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation((data) => deleteWelcome(data), {
+      onSuccess: (data) => {
+          queryClient.invalidateQueries("get_category");
+          return data;
+      },
+      onError: (data) => {
+          return data;
+      },
+  });
+};
+
+
+
+
+const useEditAds = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation((data) => editAds(data), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries("get_products");
+      return data;
+    },
+    onError: (data) => {
+      return data;
+    },
+  });
+};
+const useGetAdsById = (data) => {
+  return useQuery(["get_category", data], () => getAdsId(data), {
+      staleTime: 3000,
+      keepPreviousData: true,
+      // refetchOnWindowFocus: false,
+  });
+};
+const useDeleteAds = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation((data) => deleteAds(data), {
+      onSuccess: (data) => {
+          queryClient.invalidateQueries("get_category");
+          return data;
+      },
+      onError: (data) => {
+          return data;
+      },
+  });
+};
 export {
   useGetCategory,
+  useEditCategorys, 
+  useGetCategorysById, 
+  useDeleteCategorys ,
   useGetProducts,
-  useGetBanner,
+  useGetProductById,
   useAddCategory,
   useAddProduct,
-  useAddBanner,
+  useUpdateProduct,
+  useDeleteProduct,
   useAddAdvertisement,
-  useGetAdvertisement,
-  useGetWelcomeSection,
   useAddWelcomeSection,
-  useGetOrders,
-
-
+  useGetWelcomeSection,
+  useGetAdvertisement,
+  useUpdateWelcome,
+  useGetWelcomeById,
+  useDeleteWelcome,
+  useEditAds, 
+  useGetAdsById,
+  useDeleteAds
 };

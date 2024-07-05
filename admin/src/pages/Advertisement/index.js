@@ -13,7 +13,7 @@ function Advertisement() {
     <PageLayout
       title={'Advertisements'}
       action={
-        <Button component={Link} to={`/advertisements/addAdvertisements`}>Add Banner</Button>
+        <Button component={Link} to={`/advertisements/addAdvertisements`}>Add Advertisement</Button>
       }
     >
 <TableData/>

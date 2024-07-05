@@ -28,6 +28,6 @@ imgUrl:{
 
 }
 
-})
+},{timestamps: true})
 
 module.exports = mongoose.model('advertisement',advertisementSchema)

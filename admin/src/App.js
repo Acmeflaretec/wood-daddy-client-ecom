@@ -1,11 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
-import { Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import Icon from "@mui/material/Icon";
-import Box from "components/Box";
 import Sidenav from "examples/Sidenav";
-import Configurator from "examples/Configurator";
 import theme from "assets/theme";
 import themeRTL from "assets/theme/theme-rtl";
 import themeDark from "assets/theme-dark";
@@ -14,7 +11,7 @@ import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import routes from "routes";
-import { useController, setMiniSidenav, setOpenConfigurator } from "context";
+import { useController, setMiniSidenav } from "context";
 import brand from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -25,14 +22,22 @@ import "assets/css/nucleo-svg.css";
 import "assets/css/style.css";
 import AddCategory from "pages/Category/AddCategory";
 import AddProduct from "pages/Products/AddProduct";
-import AddBanner from "pages/Banner/AddBannner";
+import EditProduct from "pages/Products/EditProduct";
+import EditOrder from "pages/Orders/EditOrder";
+import Login from "pages/Auth";
+import AddBanner from "pages/Banner/AddBanner";
+import AddBlog from "pages/Blogs/AddBlog";
+import EditBanner from "pages/Banner/EditBanner";
+import EditBlog from "pages/Blogs/EditBlog";
+import EditCategory from "pages/Category/EditCategory";
 import AddAdvertisement from "pages/Advertisement/AddAdvertisement";
 import AddWelcomeContent from "pages/WelcomeContent/AddWelcomeContent";
+import EditWelcome from "pages/WelcomeContent/EditWelcome";
+import EditAds from "pages/Advertisement/EditAds";
 
 export default function App() {
   const [controller, dispatch] = useController();
-  const { miniSidenav, direction, layout, openConfigurator, sidenavColor, darkSidenav, darkMode } =
-    controller;
+  const { miniSidenav, direction, sidenavColor, darkSidenav, darkMode, auth } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
@@ -63,9 +68,6 @@ export default function App() {
     }
   };
 
-  // Change the openConfigurator state
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
-
   // Setting the dir attribute for the body element
   useEffect(() => {
     document.body.setAttribute("dir", direction);
@@ -90,90 +92,77 @@ export default function App() {
       return null;
     });
 
-  const configsButton = (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      width="3.5rem"
-      height="3.5rem"
-      bgColor="white"
-      shadow="sm"
-      borderRadius="50%"
-      position="fixed"
-      right="2rem"
-      bottom="2rem"
-      zIndex={99}
-      color="dark"
-      sx={{ cursor: "pointer" }}
-      onClick={handleConfiguratorOpen}
-    >
-      <Icon fontSize="default" color="inherit">
-        settings
-      </Icon>
-    </Box>
-  );
-
   return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
         <CssBaseline />
-        <Sidenav
-          color={sidenavColor}
-          brand={darkSidenav || darkMode ? brand : brandDark}
-          brandName=" Admin Dashboard"
-          routes={routes}
-          onMouseEnter={handleOnMouseEnter}
-          onMouseLeave={handleOnMouseLeave}
-        />
-        <Configurator />
-        {configsButton}
-        <DashboardLayout>
-          <DashboardNavbar />
-          <Routes>
-            {getRoutes(routes)}
-            <Route path="/category/addCategory" element={<AddCategory />} />
-          <Route path="/products/addProducts" element={<AddProduct />} />
-          <Route path="/banners/addBanners" element={<AddBanner />} />
-          <Route path="/advertisements/addAdvertisements" element={<AddAdvertisement />} />
-          <Route path="/welcomeContents/addWelcomeContents" element={<AddWelcomeContent />} />
+        {!auth ? <Login /> :
+          <>
+            <Sidenav
+              color={sidenavColor}
+              brand={darkSidenav || darkMode ? brand : brandDark}
+              brandName=" Admin Dashboard"
+              routes={routes}
+              onMouseEnter={handleOnMouseEnter}
+              onMouseLeave={handleOnMouseLeave}
+            />
+            <DashboardLayout>
+              <DashboardNavbar />
+              <Routes>
+                {getRoutes(routes)}
+                <Route path="/category/addCategory" element={<AddCategory />} />
+                <Route path="/category/editCategory/:id" element={<EditCategory />} />
+                <Route path="/products/addProducts" element={<AddProduct />} />
+                <Route path="/products/editProduct/:id" element={<EditProduct />} />
+                <Route path="/orders/editOrder/:id" element={<EditOrder />} />
+                <Route path="/advertisements/addAdvertisements" element={<AddAdvertisement />} />
+                <Route path="/welcomeContents/addWelcomeContents" element={<AddWelcomeContent />} />
+                <Route path="/welcomeContents/editWelcome/:id" element={<EditWelcome />} />
+                <Route path="/advertisements/editAds/:id" element={<EditAds />} />
 
-          <Route path="/orders/addOrders" element={<Outlet />} />
-            <Route path="*" element={<Navigate to="/dashboard" />} />
-          </Routes>
-          <Footer />
-        </DashboardLayout>
+                <Route path="*" element={<Navigate to="/orders" />} />
+              </Routes>
+              <Footer />
+            </DashboardLayout>
+          </>}
       </ThemeProvider>
     </CacheProvider>
   ) : (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
-      <Sidenav
-        color={sidenavColor}
-        brand={darkSidenav || darkMode ? brand : brandDark}
-        brandName=" Admin Dashboard"
-        routes={routes}
-        onMouseEnter={handleOnMouseEnter}
-        onMouseLeave={handleOnMouseLeave}
-      />
-      <Configurator />
-      {configsButton}
-      <DashboardLayout>
-        <DashboardNavbar />
-        <Routes>
-          {getRoutes(routes)}
-          <Route path="/category/addCategory" element={<AddCategory />} />
-          <Route path="/products/addProducts" element={<AddProduct />} />
-          <Route path="/banners/addBanners" element={<AddBanner />} />
-          <Route path="/advertisements/addAdvertisements" element={<AddAdvertisement />} />
-          <Route path="/welcomeContents/addWelcomeContents" element={<AddWelcomeContent />} />
-
-
-          <Route path="/orders/addOrders" element={<Outlet />} />
-          <Route path="*" element={<Navigate to="/dashboard" />} />
-        </Routes>
-        <Footer />
-      </DashboardLayout>
+      {!auth ? <Login /> :
+        <>
+          <Sidenav
+            color={sidenavColor}
+            brand={darkSidenav || darkMode ? brand : brandDark}
+            brandName=" Admin Dashboard"
+            routes={routes}
+            onMouseEnter={handleOnMouseEnter}
+            onMouseLeave={handleOnMouseLeave}
+          />
+          <DashboardLayout>
+            <DashboardNavbar />
+            <Routes>
+              {getRoutes(routes)}
+              <Route path="/category/addCategory" element={<AddCategory />} />
+              <Route path="/category/editCategory/:id" element={<EditCategory />} />
+              <Route path="/products/addProducts" element={<AddProduct />} />
+              <Route path="/banners/addBanner" element={<AddBanner />} />
+              <Route path="/blogs/addBlog" element={<AddBlog />} />
+              <Route path="/products/editProduct/:id" element={<EditProduct />} />
+              <Route path="/orders/editOrder/:id" element={<EditOrder />} />
+              <Route path="/banners/editBanner/:id" element={<EditBanner />} />
+              <Route path="/blogs/editBlog/:id" element={<EditBlog />} />
+              <Route path="/advertisements/addAdvertisements" element={<AddAdvertisement />} />
+              <Route path="/welcomeContents/addWelcomeContents" element={<AddWelcomeContent />} />
+              <Route path="/welcomeContents/editWelcome/:id" element={<EditWelcome />} />
+              <Route path="/advertisements/editAds/:id" element={<EditAds />} />
+              <Route path="*" element={<Navigate to="/orders" />} />
+            </Routes>
+            <Footer />
+          </DashboardLayout>
+        </>
+      }
     </ThemeProvider>
   );
 }

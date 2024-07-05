@@ -1,4 +1,5 @@
 const Banner = require('../models/banner');
+const fs=require('fs')
 
 const getBanners = async (req, res) => {
   try {
@@ -10,20 +11,19 @@ const getBanners = async (req, res) => {
 };
 
 const addBanner = async (req, res) => {
-  console.log('banner det ',req.body)
-  const { title, subtitle } = req?.body
-  const imgUrl = req?.file?.filename
   try {
-   
-     
-    
-     
-      const ban = new Banner({title, subtitle, imgUrl })
-      await ban.save()
-      res.status(201).json({ data: ban, message: 'banner created successfully' });
-     
+    const { title, subtitle, status } = req?.body   
+    console.log('123',title, subtitle);
+    const image = req?.file?.filename
+    if (!image) {
+      return res.status(404).json({ message: 'Image not found' });
+    }
+    const data = new Banner({ title, subtitle,image })
+    await data.save()
+    res.status(201).json({ data, message: 'Banner created successfully' });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ message: error?.message ?? 'Something went wrong' })
   }
 }
 
@@ -57,26 +57,30 @@ const deleteBannerById = async (req, res) => {
   }
 };
 
-const updateBannerById = async (req, res) => {
-  const { id } = req.params;
-  const { title, subtitle } = req.body;
-  const imgUrl = req.file?.filename;
-
+const updateBanner = async (req, res) => {
+  const { _id, title, subtitle, status } = req.body;
+  const image = req?.file?.filename;
   try {
-    const banner = await Banner.findById(id);
-    if (!banner) {
+    const data = await Banner.findById(_id);
+    if (!data) {
       return res.status(404).json({ message: 'Banner not found' });
     }
-
-    if (title) banner.title = title;
-    if (subtitle) banner.subtitle = subtitle;
-    if (imgUrl) banner.imgUrl = imgUrl;
-
-    await banner.save();
-    res.status(200).json({ data: banner, message: 'Banner updated successfully' });
+    if (image) {
+      fs.unlink(`public/uploads/${data?.image}`, (err) => {
+        if (err) {
+          console.error('Error deleting image:', err);
+          return;
+        }
+        console.log('Image deleted successfully.');
+      });
+    }
+    await Banner.updateOne({ _id }, {
+      $set: { title, subtitle, status, ...(image && { image }) }
+    })
+    res.status(200).json({ data, message: 'Banner updated successfully' });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'An error occurred', error });
+    return res.status(500).json({ message: error?.message ?? 'Something went wrong' })
   }
 };
 
@@ -86,6 +90,6 @@ module.exports = {
   addBanner,
 getBannerById,
 deleteBannerById,
-updateBannerById
+updateBanner
 
 }

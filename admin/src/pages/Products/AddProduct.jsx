@@ -8,24 +8,23 @@ import { useGetCategory } from 'queries/ProductQuery'
 import Typography from 'components/Typography'
 import { useAddProduct } from 'queries/ProductQuery'
 import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 const AddProduct = () => {
+  const navigate = useNavigate()
   const [details, setDetails] = useState({})
   const { data, isLoading } = useGetCategory({ pageNo: 1, pageCount: 100 });
   const { mutateAsync: AddProduct, isLoading: loading } = useAddProduct()
-  const [error,setError] = useState({})
-  const [images,setImage] = useState([])
+  const [error, setError] = useState({})
+  const [images, setImage] = useState([])
   const handleChange = (e) => {
     setDetails(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
   const [category, setCategory] = useState()
-  useEffect(()=>{
+  useEffect(() => {
     console.log(category?._id);
-  },[category])
+  }, [category])
   const handleSubmit = () => {
-    console.log(details);
-    console.log(images);
-    console.log(category)
     try {
       // if (!details?.name) {
       //   return toast.error("name is required")
@@ -50,6 +49,7 @@ const AddProduct = () => {
       AddProduct(formData)
         .then((res) => {
           toast.success(res?.message ?? "category added");
+          navigate('/products')
         })
         .catch((err) => {
           toast.error(err?.message ?? "Something went wrong");
@@ -197,21 +197,21 @@ const AddProduct = () => {
               rows={3}
             />
             <Grid item xs={12}>
-            <Input
-              id="dimension"
-              placeholder="Product dimension"
-              name="dimension"
-              value={details?.dimension || ''}
-              onChange={handleChange}
-              multiline
-              rows={5}
-            />
-          </Grid>
+              <Input
+                id="dimension"
+                placeholder="Product dimension"
+                name="dimension"
+                value={details?.dimension || ''}
+                onChange={handleChange}
+                multiline
+                rows={5}
+              />
+            </Grid>
           </Grid>
         </Grid>
         <Grid item container spacing={2} xs={12} sm={12} md={6} py={5}>
           <Grid xs={12}>
-            <DropZone dispatch={setImage}/>
+            <DropZone dispatch={setImage} />
           </Grid>
           <Grid item xs={12} sm={8}></Grid>
           <Grid item xs={12} sm={4} mt={'auto'}>
