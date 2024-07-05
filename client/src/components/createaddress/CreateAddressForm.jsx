@@ -33,7 +33,7 @@ export default function CreateAddressForm() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get('http://localhost:5000/api/v1/auth/getuser');
+        const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`);
         setUsersId(response.data.data[0]._id);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -68,7 +68,7 @@ export default function CreateAddressForm() {
       return;
     }
     try {
-      const response = await axiosInstance.post(`http://localhost:5000/api/v1/address/address/${usersId}`, formData);
+      const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/api/v1/address/address/${usersId}`, formData);
       console.log('Address saved successfully:', response.data);
       setError('');
     } catch (error) {

@@ -109,7 +109,7 @@ const AddProduct = () => {
                   <img
                     loading="lazy"
                     width="20"
-                    src={`http://localhost:5000/uploads/${option?.image}`}
+                    src={`${process.env.REACT_APP_API_URL}/uploads/${option?.image}`}
                   />
                   <Typography color="inherit" variant="caption">
                     {option?.name} <br />

@@ -12,7 +12,7 @@ function HomeCategory() {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const response = await axiosInstance.get('http://localhost:5000/api/v1/category/selectedcategories');
+            const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/category/selectedcategories`);
             setCategories2(response.data.data);
             console.log(response.data.data)
              
@@ -27,7 +27,7 @@ function HomeCategory() {
   const handleCategory = async(e,cat) =>{
 
     if(cat){
-      navigate(`/productfetch/${cat}`);
+      navigate(`/productfetch?cat=${cat}`);
     }
 
    
@@ -53,12 +53,12 @@ function HomeCategory() {
 //     cat_id:'6655b340006290bd3c7e3944'
 //   },
 // ]
-//`http://localhost:5000/uploads/${}`
+//`${process.env.REACT_APP_API_URL}/uploads/${}`
   return (
     <div className='HomeCategory'>
       {
 categories2.slice(0, 3).map((obj,index)=>(
-<div className="catBox" style={{backgroundImage:`url(http://localhost:5000/uploads/${obj.image})`,
+<div className="catBox" style={{backgroundImage:`url(${process.env.REACT_APP_API_URL}/uploads/${obj.image})`,
  }} onClick={(e)=>handleCategory(e,obj._id)} >
 
 <h2>{obj.name}</h2>

@@ -123,7 +123,7 @@ export default function Checkout() {
 
   useEffect(() => {
     if (usersId) {
-      const query = `http://localhost:5000/api/v1/address/getaddress/${usersId}`;
+      const query = `${process.env.REACT_APP_API_URL}/api/v1/address/getaddress/${usersId}`;
       setUrlQuery(query);
 
       const fetchData = async () => {
@@ -152,7 +152,7 @@ console.log(filterAddresses[0]);
   useEffect(() => {
    
     const fetchData = async () => {
-      const response = await axiosInstance.get(`http://localhost:5000/api/v1/auth/getuser`);
+      const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`);
       setUsersId(response.data.data[0]._id)
       console.log('userrrr',response.data.data[0]._id)
     }
@@ -165,11 +165,11 @@ const handleOrder = async () => {
 
 }
 
-//var urlQuery = `http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55?page=1&sortField=createdAt&sortOrder=desc`;
+//var urlQuery = `${process.env.REACT_APP_API_URL}/api/v1/cart/664db80748eeadcd76759a55?page=1&sortField=createdAt&sortOrder=desc`;
 
 useEffect(() => {
   if (usersId) {
-    const query = `http://localhost:5000/api/v1/cart/${usersId}?page=1&sortField=createdAt&sortOrder=desc`;
+    const query = `${process.env.REACT_APP_API_URL}/api/v1/cart/${usersId}?page=1&sortField=createdAt&sortOrder=desc`;
     setUrlQuery(query);
 
     const fetchData = async () => {
@@ -190,9 +190,9 @@ useEffect(() => {
     //console.log('iddd', id);
     try {
       if (action === 'increment') {
-        await axiosInstance.put(`http://localhost:5000/api/v1/cart/increase/${id}`);
+        await axiosInstance.put(`${process.env.REACT_APP_API_URL}/api/v1/cart/increase/${id}`);
       } else if (action === 'decrement') {
-        await axiosInstance.put(`http://localhost:5000/api/v1/cart/decrease/${id}`);
+        await axiosInstance.put(`${process.env.REACT_APP_API_URL}/api/v1/cart/decrease/${id}`);
       }
 
       // Fetch updated order items
@@ -209,7 +209,7 @@ useEffect(() => {
 
   const handleDelete = async (id) => {
     try {
-      await axiosInstance.delete(`http://localhost:5000/api/v1/order/orderitem/${id}`);
+      await axiosInstance.delete(`${process.env.REACT_APP_API_URL}/api/v1/order/orderitem/${id}`);
       // Fetch updated order items
       const response = await axiosInstance.get(urlQuery);
       setDetails(response.data);
@@ -246,7 +246,7 @@ console.log('cart ',productsData)
       // Prepare data for creating the order
    
       // Send a POST request to create the order
-      const response = await axiosInstance.post(`http://localhost:5000/api/v1/order/createorder/${'664db80748eeadcd76759a55'}/${'666716d82f9a542271578e2e'}`, {products:productsData});
+      const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/api/v1/order/createorder/${'664db80748eeadcd76759a55'}/${'666716d82f9a542271578e2e'}`, {products:productsData});
       console.log('Order created:', response.data);
       // Optionally, you can perform additional actions after the order is created
     } catch (error) {
@@ -301,7 +301,7 @@ console.log('cart ',productsData)
    console.log('success')
 
  
-   const response = await axiosInstance.post(`http://localhost:5000/api/v1/order/createorder/${usersId}/${primaryAddressesM._id}`,
+   const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/api/v1/order/createorder/${usersId}/${primaryAddressesM._id}`,
      {products:productsData,totalAmt:convertToServerFormat(details)});
 
    setActiveStep(activeStep + 1);
@@ -335,7 +335,7 @@ console.log('cart ',productsData)
         console.log('reached  api post')
         const postAddress = async () => {
           try {
-              const response = await axiosInstance.post(`http://localhost:5000/api/v1/address/address/${usersId}`, formDataM);
+              const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/api/v1/address/address/${usersId}`, formDataM);
       
               console.log('Address response:', response.data);
               console.log('Address response success :', response.data.success);

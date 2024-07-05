@@ -58,7 +58,7 @@ export default function SpanningTable({productDetails,setProductDetails}) {
     setInvisible(!invisible);
   };
 
-  var urlQuery = `http://localhost:5000/api/v1/cart/664db80748eeadcd76759a55?page=1&sortField=createdAt&sortOrder=desc`;
+  var urlQuery = `${process.env.REACT_APP_API_URL}/api/v1/cart/664db80748eeadcd76759a55?page=1&sortField=createdAt&sortOrder=desc`;
 
   const handleQuantityChange = async (id, action,qty,stock) => {
     //console.log('iddd', id);
@@ -66,12 +66,12 @@ export default function SpanningTable({productDetails,setProductDetails}) {
 
       if (action === 'increment') {
         if(qty < stock){
-          await axiosInstance.put(`http://localhost:5000/api/v1/cart/increase/${id}`);
+          await axiosInstance.put(`${process.env.REACT_APP_API_URL}/api/v1/cart/increase/${id}`);
 
         }
       } else if (action === 'decrement') {
         if(qty!=1 ){
-        await axiosInstance.put(`http://localhost:5000/api/v1/cart/decrease/${id}`);
+        await axiosInstance.put(`${process.env.REACT_APP_API_URL}/api/v1/cart/decrease/${id}`);
         }
       }
 

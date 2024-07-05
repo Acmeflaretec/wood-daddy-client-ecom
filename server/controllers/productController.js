@@ -115,12 +115,11 @@ const getProducts = async (req, res) => {
   try {
     const { page = 1, limit = 3, sortField, sortOrder, search, category,
       priceGreaterThan, priceLessThan, priceMin, priceMax, sortDiscount, sortDiscountGreaterThan } = req.query;
+     
 
     // Convert page and limit to integers
     const pageNumber = parseInt(page, 10) || 1;
     const limitNumber = parseInt(limit, 10) || 10;
-// console.log('lim',limit)
-console.log('lim n',limitNumber)
 
     // Construct the base query
     const query = {};
@@ -191,6 +190,7 @@ console.log('lim n',limitNumber)
       };
     }));
 
+    
     res.status(200).json({ totalProducts, products: productsWithData, totalPages: Math.ceil(totalProducts / limitNumber) });
   } catch (error) {
     console.log(error);
