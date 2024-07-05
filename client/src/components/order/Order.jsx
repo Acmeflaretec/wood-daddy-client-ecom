@@ -13,7 +13,7 @@ function Order() {
   useEffect(() => {
     const fetchUserId = async () => {
       try {
-        const response = await axiosInstance.get(`http://localhost:5000/api/v1/auth/getuser`);
+        const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`);
         const userId = response.data.data[0]._id;
         setUsersId(userId);
         console.log('userrrr', userId);
@@ -26,7 +26,7 @@ function Order() {
 
   useEffect(() => {
     if (usersId) {
-      const query = `http://localhost:5000/api/v1/cart/${usersId}?page=1&sortField=createdAt&sortOrder=desc`;
+      const query = `${process.env.REACT_APP_API_URL}/api/v1/cart/${usersId}?page=1&sortField=createdAt&sortOrder=desc`;
       setUrlQuery(query);
 
       const fetchData = async () => {
@@ -49,9 +49,9 @@ function Order() {
   const handleQuantityChange = async (id, action) => {
     try {
       if (action === 'increment') {
-        await axiosInstance.put(`http://localhost:5000/api/v1/cart/increase/${id}`);
+        await axiosInstance.put(`${process.env.REACT_APP_API_URL}/api/v1/cart/increase/${id}`);
       } else if (action === 'decrement') {
-        await axiosInstance.put(`http://localhost:5000/api/v1/cart/decrease/${id}`);
+        await axiosInstance.put(`${process.env.REACT_APP_API_URL}/api/v1/cart/decrease/${id}`);
       }
 
       // Fetch updated order items
@@ -70,7 +70,7 @@ function Order() {
 
   const handleDelete = async (id) => {
     try {
-      await axiosInstance.delete(`http://localhost:5000/api/v1/order/orderitem/${id}`);
+      await axiosInstance.delete(`${process.env.REACT_APP_API_URL}/api/v1/order/orderitem/${id}`);
       // Fetch updated order items
       if (urlQuery) {
         const response = await axiosInstance.get(urlQuery);
@@ -101,7 +101,7 @@ function Order() {
       const productsData = convertToServerFormat(details);
       console.log(productsData);
 
-      const response = await axiosInstance.post(`http://localhost:5000/api/v1/order/createorder/${usersId}/${'666716d82f9a542271578e2e'}`, { products: productsData });
+      const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/api/v1/order/createorder/${usersId}/${'666716d82f9a542271578e2e'}`, { products: productsData });
       console.log('Order created:', response.data);
     } catch (error) {
       console.error('Error creating order:', error);
@@ -157,7 +157,7 @@ function Order() {
           {details.map((item, index) => (
             <tr key={item._id}>
               <td>{index + 1}</td>
-              <td><img src={`http://localhost:5000/uploads/${item.image[0]}`} alt={item.name} /></td>
+              <td><img src={`${process.env.REACT_APP_API_URL}/uploads/${item.image[0]}`} alt={item.name} /></td>
               <td>{item.name}</td>
               <td>
                 <button onClick={() => handleQuantityChange(item.inCart._id, 'decrement')}>-</button>

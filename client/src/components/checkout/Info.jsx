@@ -45,7 +45,7 @@ function Info({ totalPrice,setProductData,productData }) {
       {/* <List disablePadding>
         {products.map((product) => (
           <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
-            <img src={`http://localhost:5000/uploads/${'1717839551847-a2.jpg'}`} alt={''} style={{height:'30px',width:'30px',marginRight:'4px'}} />
+            <img src={`${process.env.REACT_APP_API_URL}/uploads/${'1717839551847-a2.jpg'}`} alt={''} style={{height:'30px',width:'30px',marginRight:'4px'}} />
             <ListItemText
               sx={{ mr: 2 }}
               primary={product.name}

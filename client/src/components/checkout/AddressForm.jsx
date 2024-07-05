@@ -36,7 +36,7 @@ export default function AddressForm({usersProId,addressDetails,primaryAddresses,
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post(`http://localhost:5000/api/v1/address/address/${usersProId}`, formData);
+      const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/api/v1/address/address/${usersProId}`, formData);
       console.log('Address saved successfully:', response.data);
     } catch (error) {
       console.error('Error saving address:', error);

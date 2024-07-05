@@ -9,7 +9,7 @@ function ContentSection({title,para}) {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const response = await axiosInstance.get('http://localhost:5000/api/v1/contentSection');
+            const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/contentSection`);
             setContent(response.data.data[0]);
              
         } catch (error) {

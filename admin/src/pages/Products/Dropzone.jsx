@@ -10,7 +10,7 @@ const DropZone = ({ dispatch }) => {
   useEffect(() => {
     // Initialize Dropzone with options
     myDropzone = new Dropzone('#my-dropzone', {
-      // url: 'http://localhost:5000/api/v1/products', 
+      url: `${process.env.REACT_APP_API_URL}/api/v1/category`, // Replace with the actual upload URL
       paramName: 'file', // The name to use for the file upload
       acceptedFiles: '.png',
       accept: function (file, done) {

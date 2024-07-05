@@ -16,7 +16,7 @@ function SearchPage() {
   return (
     <div>
       <SearchBar setSearch1={setSearch} search1={search} /> {/* Change setSearch to setSearch1 */}
-      <ProductList title={'Results...'} searchItem={search} setSearch={setSearch} />
+      <ProductList   searchItem={search} setSearch={setSearch} />
       <Footer />
     </div>
   );

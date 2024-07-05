@@ -53,7 +53,7 @@ function routes() {
     <Route path="/signup" element={<SignupPage />} />
   </Routes>
   <Routes>
-    <Route path="/productfetch/:cat" element={<ProductsFetch />} />
+    <Route path="/productfetch" element={<ProductsFetch />} />
   </Routes>
 
   <Routes>

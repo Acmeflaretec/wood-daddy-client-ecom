@@ -41,7 +41,7 @@ const Header = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axiosInstance.get('http://localhost:5000/api/v1/auth/getuser');
+                const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`);
                 setUserDetails(response.data.data[0]);
                 console.log('userrrr', response.data.data[0]);
             } catch (error) {
@@ -96,6 +96,7 @@ const Header = () => {
             <List>
                 {[
                     { text: 'Home', route: '/' },
+                    { text: 'Products', route: '/productfetch?allProducts=allProducts' },
                     { text: 'About', route: '/about' },
                     { text: 'Services', route: '/service' },
                     { text: 'Contact', route: '/contact' },
@@ -243,6 +244,9 @@ const Header = () => {
                     <ul className="header-nav">
                         <li className="nav-item">
                             <a href="#home" className="nav-link" onClick={() => navigate('/')}>Home</a>
+                        </li>
+                        <li className="nav-item">
+                            <a href="#/productfetch?allProducts=allProducts" className="nav-link" onClick={() => navigate('/productfetch?allProducts=allProducts')}>Products</a>
                         </li>
                         <li className="nav-item">
                             <a href="#about" className="nav-link" onClick={() => navigate('/about')}>About</a>
