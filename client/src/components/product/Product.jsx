@@ -10,7 +10,7 @@ import { IconButton } from '@mui/material';
 
 import { useSwipeable } from 'react-swipeable';
 
-function Product() {
+function Product({setNotifM}) {
   const [quantity, setQuantity] = useState(1);
   const { productId } = useParams(); 
   // const location = useLocation();
@@ -48,7 +48,7 @@ function Product() {
     const fetchData = async () => {
       const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`);
       setUsersId(response.data.data[0]._id)
-      console.log('userrrr',response.data.data[0]._id)
+      //console.log('userrrr',response.data.data[0]._id)
     }
     fetchData()
     
@@ -59,7 +59,7 @@ function Product() {
       try {
         const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/products/${productId}`);
         setDetails(response.data.product);
-         console.log('prooo',response.data.product)
+        // console.log('prooo',response.data.product)
         
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -137,7 +137,7 @@ const removeWishlist = async(e,proId)=>{
   
 }
 function truncateText(text, maxLength) {
-  console.log(text)
+  //console.log(text)
   const words = text.split(' ');
   if (words.length > maxLength) {
     return words.slice(0, maxLength).join(' ') + '...';
@@ -203,7 +203,7 @@ function truncateText(text, maxLength) {
       <div style={{paddingTop:'50px',paddingBottom:'50px'}} >
 
         <p style={{display:'inline-block',marginLeft:'30px',fontSize:'24px'}} >Related products</p>
-      <ProductScroll type={'product'} categoryId={details.category} /> 
+      <ProductScroll type={'product'} categoryId={details &&  details?.category} setNotif={setNotifM}/> 
       </div>
      
     </div>

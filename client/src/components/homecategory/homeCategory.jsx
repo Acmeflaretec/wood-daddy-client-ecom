@@ -14,7 +14,7 @@ function HomeCategory() {
         try {
             const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/category/selectedcategories`);
             setCategories2(response.data.data);
-            console.log(response.data.data)
+         //   console.log(response.data.data)
              
         } catch (error) {
             console.error('Error fetching data:', error);

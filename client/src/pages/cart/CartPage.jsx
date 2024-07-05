@@ -12,6 +12,8 @@ import { useNavigate } from 'react-router-dom';
 function CartPage() {
   const [details, setDetails] = useState([]);
   const navigate = useNavigate();
+  const [notification,setNotification] = useState(true)
+
 
   const [usersId,setUsersId] = useState()
   useEffect(() => {
@@ -19,7 +21,8 @@ function CartPage() {
     const fetchData = async () => {
       const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`);
       setUsersId(response.data.data[0]._id)
-      console.log('userrrr',response.data.data[0]._id)
+      setNotification(prev => !prev)
+     // console.log('userrrr',response.data.data[0]._id)
     }
     fetchData()
     
@@ -53,9 +56,9 @@ function CartPage() {
 
   return (
     <div>
-      <Header />
+      <Header notif={notification} />
    
-        <Cart  />
+        <Cart setNotif={setNotification} />
        
 
       <div style={{ marginTop: '30px' }}>
