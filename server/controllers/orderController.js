@@ -145,12 +145,13 @@ const deleteOrderItem = async (req, res) => {
 };
 
 const getAdminOrders = async (req, res) => {
+  console.log('order fetching');
   try {
     const data = await Order.find().sort({ createdAt: -1 })
-      .populate('userId', 'username email')
+      .populate('userId', 'firstName lastName mail')
       .populate('address', 'firstname lastname address_line_1 address_line_2 zip mobile city state')
       .populate('products.item.product_id', 'name category price image');
-
+      console.log('order data',data);
     res.status(200).json({ data });
   } catch (error) {
     console.log(error);
