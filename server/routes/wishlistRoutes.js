@@ -9,6 +9,6 @@ router.post("/:userId/:proId/:folderName", addWishlistItem);
 router.delete('/:userId/:proId/:folderName', removeWishlistItem);
 // router.put('/:id', upload.single('advertisement'), updateAdvertisementById);
 
- 
+    
 
 module.exports = router;
