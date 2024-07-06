@@ -43,8 +43,8 @@ function ProductScroll({type ,categoryId }) {
         const response = await axiosInstance.get(
           `${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`
         );
-        setUsersId(response.data.data[0]._id);
-        console.log("userrrr", response.data.data[0]._id);
+        setUsersId(response?.data?.data?.[0]._id);
+        console.log("userrrr", response?.data?.data?.[0]._id);
       } catch (error) {
         console.log("prlist err", error);
       }
