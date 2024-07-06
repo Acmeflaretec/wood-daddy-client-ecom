@@ -22,9 +22,9 @@ function ContentSection({title,para}) {
 
   return (
     <div className='contentSection'>
-      <h1 className="title" style={{color:'#6e6e6e'}}>{content.title}</h1>
+      <h1 className="title" style={{color:'#6e6e6e'}}>{content?.title}</h1>
       <p className="contentPara" style={{color:'#888',fontFamily:'cursive'}}>
-{content.desc}       </p>
+{content?.desc}       </p>
       </div>
   )
 }

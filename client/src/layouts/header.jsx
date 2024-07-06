@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
 import axiosInstance from '../axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -188,7 +188,7 @@ console.log('res cwiiart ',responseWishlist.data.products.length)
                                 aria-haspopup="true"
                                 aria-expanded={desktopMenuOpen ? 'true' : undefined}
                             >
-                                <Avatar sx={{ width: 32, height: 32 }}  />{ userDetails?  (<div style={{marginLeft:'5px'}} >{userDetails.firstName}</div>) 
+                                <Link to={'/profile'}><Avatar sx={{ width: 32, height: 32 }}  /></Link>{ userDetails?  (<div style={{marginLeft:'5px'}} >{userDetails.firstName}</div>) 
                                 :
                                  (<div></div>) }
 
@@ -240,7 +240,7 @@ console.log('res cwiiart ',responseWishlist.data.products.length)
                         
                         }
                         <Divider />
-                        <MenuItem onClick={handleClose}>
+                        <MenuItem>
                             <ListItemIcon>
                                 <Settings fontSize="small" />
                             </ListItemIcon>

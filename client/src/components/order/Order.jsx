@@ -14,7 +14,7 @@ function Order() {
     const fetchUserId = async () => {
       try {
         const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`);
-        const userId = response.data.data[0]._id;
+        const userId = response?.data?.data[0]._id;
         setUsersId(userId);
         console.log('userrrr', userId);
       } catch (error) {
@@ -57,7 +57,7 @@ function Order() {
       // Fetch updated order items
       if (urlQuery) {
         const response = await axiosInstance.get(urlQuery);
-        setDetails(response.data.products);
+        setDetails(response?.data?.products);
       }
     } catch (error) {
       console.error(`Error ${action === 'increment' ? 'incrementing' : 'decrementing'} order item quantity:`, error);
