@@ -200,11 +200,11 @@ function truncateText(text, maxLength) {
 
         </div>
       </div>
-      <div style={{paddingTop:'50px',paddingBottom:'50px'}} >
+      {/* <div style={{paddingTop:'50px',paddingBottom:'50px'}} >
 
         <p style={{display:'inline-block',marginLeft:'30px',fontSize:'24px'}} >Related products</p>
       <ProductScroll type={'product'} categoryId={details &&  details?.category} setNotif={setNotifM}/> 
-      </div>
+      </div> */}
      
     </div>
   );

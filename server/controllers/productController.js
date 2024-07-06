@@ -114,14 +114,14 @@ const getProducts = async (req, res) => {
   console.log('get products reached ,')
   try {
     const { page = 1, limit = 3, sortField, sortOrder, search, category,
-      priceGreaterThan, priceLessThan, priceMin, priceMax, sortDiscount, sortDiscountGreaterThan } = req.query;
-     
-
+      priceGreaterThan, priceLessThan, priceMin, priceMax, sortDiscount, sortDiscountGreaterThan,uid } = req.query;
+     console.log('uid',uid)
+     console.log('get products reached ,')
     // Convert page and limit to integers
     const pageNumber = parseInt(page, 10) || 1;
     const limitNumber = parseInt(limit, 10) || 10;
 
-    // Construct the base query
+    // Construct the base query   
     const query = {};
 
     // Search functionality
@@ -171,7 +171,7 @@ const getProducts = async (req, res) => {
 
     // Find products based on the constructed query
     const totalProducts = await Product.countDocuments(query);
-    console.log('tpro',totalProducts)
+   // console.log('tpro',totalProducts)
     const products = await Product.find(query)
       .collation({ locale: 'en' }) // Enable case-insensitive search
       .sort(sortOptions)
@@ -179,9 +179,30 @@ const getProducts = async (req, res) => {
       .limit(limitNumber);
 
     // Fetch wishlist and cart details for each product
+
+// console.log('type is ',typeof uid) 
+if(uid === 'null'){
+  //console.log('no userId')
+  const productsWithData = await Promise.all(products.map(async (product) => {
+    // const wishlistExists = await Wishlist.exists({ userId: uid, proId: product._id });
+    // const cartExists = await Cart.exists({ userId: uid, proId: product._id });
+
+    return {
+      ...product._doc,
+      inWishlist: null,
+      inCart: null,
+    };
+  }));
+
+  
+  res.status(200).json({ totalProducts, products: productsWithData, totalPages: Math.ceil(totalProducts / limitNumber) });
+}
+  else{
+   // console.log(' userId')
+    
     const productsWithData = await Promise.all(products.map(async (product) => {
-      const wishlistExists = await Wishlist.exists({ userId: '664db80748eeadcd76759a55', proId: product._id });
-      const cartExists = await Cart.exists({ userId: '664db80748eeadcd76759a55', proId: product._id });
+      const wishlistExists = await Wishlist.exists({ userId: uid, proId: product._id });
+      const cartExists = await Cart.exists({ userId: uid, proId: product._id });
 
       return {
         ...product._doc,
@@ -192,6 +213,9 @@ const getProducts = async (req, res) => {
 
     
     res.status(200).json({ totalProducts, products: productsWithData, totalPages: Math.ceil(totalProducts / limitNumber) });
+  }
+
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'An error occurred while fetching products' });
@@ -289,7 +313,7 @@ const editProduct = async (req, res) => {
           category: req.body.category,
         }
       })
-    } console.log(product);
+    } 
     const productData = await Product.find()
     if (productData) {
       res.render("admin/product", {

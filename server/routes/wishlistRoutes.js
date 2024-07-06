@@ -4,9 +4,9 @@ const authorization = require("../middlewares/authorization");
 const { getWishlist,addWishlistItem,removeWishlistItem } = require('../controllers/wishlistController');
 
 
-router.get('/:userId/:folderName', getWishlist);
-router.post("/:userId/:proId/:folderName", addWishlistItem);
-router.delete('/:userId/:proId/:folderName', removeWishlistItem);
+router.get('/:userId/:folderName',authorization, getWishlist);
+router.post("/:userId/:proId/:folderName",authorization, addWishlistItem);
+router.delete('/:userId/:proId/:folderName',authorization, removeWishlistItem);
 // router.put('/:id', upload.single('advertisement'), updateAdvertisementById);
 
  

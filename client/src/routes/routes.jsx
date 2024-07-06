@@ -22,48 +22,35 @@ function routes() {
 
   <Routes>
   <Route path="/" element={<Home />} />
-  </Routes>
-  <Routes>
+  
   <Route path="/product/:productId" element={<ProductPage />} />
-  </Routes>
-  <Routes>
+  
     <Route path="/wishlist" element={<WishlistPage />} />
-  </Routes>
-  <Routes>
+  
     <Route path="/order" element={<OrderPage />} />
-  </Routes>
-  <Routes>
+  
     <Route path="/about" element={<AboutPage />} />
-  </Routes>
-  <Routes>
+  
     <Route path="/service" element={<ServicePage />} />
-  </Routes>
-  <Routes>
+  
     <Route path="/contact" element={<ContactPage />} />
-  </Routes>
-  <Routes>
+  
     <Route path="/search/:searchItem" element={<SearchPage />} />
-  </Routes>
-  <Routes>
+  
     <Route path="/cart" element={<CartPage />} />
-  </Routes>
-  <Routes>
+  
     <Route path="/login" element={<LoginPage />} />
-  </Routes>
-  <Routes>
+  
     <Route path="/signup" element={<SignupPage />} />
-  </Routes>
-  <Routes>
+  
     <Route path="/productfetch" element={<ProductsFetch />} />
-  </Routes>
+  
 
-  <Routes>
+   
     <Route path="/addressform" element={<CreateAddressPage />} />
-  </Routes>
-  <Routes>
+  
     <Route path="/address" element={<AddressPage />} />
-  </Routes>
-  <Routes>
+  
     <Route path="/profile" element={<MainProfile />} />
   </Routes>
  

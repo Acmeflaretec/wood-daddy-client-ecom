@@ -21,7 +21,7 @@ function Banner() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/banner`);
+        const response = await axiosInstance.get(`/api/v1/banner`);
         
         setBanners(response.data.data);
         setMaxSteps(response.data.data.length);
@@ -89,7 +89,7 @@ function Banner() {
           <div key={index} style={{ display: index === activeStep ? 'block' : 'none' }}>
             <img
               style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
-              src={`${process.env.REACT_APP_API_URL}/uploads/${slide.imgUrl}`}
+              src={`${process.env.REACT_APP_API_URL}/uploads/${slide.image}`}
               alt={`Slide ${index + 1}`}
             />
           </div>

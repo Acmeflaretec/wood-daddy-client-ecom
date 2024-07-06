@@ -48,9 +48,11 @@ const [wishlistCount,setWishlistCount] = useState(0)
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`);
+                const response = await axiosInstance.get(`/api/v1/auth/getuser`);
                 setUserDetails(response.data.data[0]);
-                //console.log('userrrr', response.data.data[0]);
+              
+                localStorage.setItem("UID",response.data.data[0]._id);
+
             } catch (error) {
                 console.log('errr', error);
                 setUserDetails(null);
@@ -66,10 +68,10 @@ try {
     
 const responseCart = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/cart/${userDetails._id}?page=1&sortField=createdAt&sortOrder=desc`);
 setCartCount(responseCart.data.products.length)
-console.log('res cart ',responseCart.data.products.length)
+ 
 const responseWishlist = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/wishlist/${userDetails._id}/wishlist?page=1&sortField=createdAt&sortOrder=desc`)
 setWishlistCount(responseWishlist.data.products.length)
-console.log('res cwiiart ',responseWishlist.data.products.length)
+ 
 } catch (error) {
     console.log(error)
 }
@@ -90,9 +92,14 @@ console.log('res cwiiart ',responseWishlist.data.products.length)
 
     const logout = () => {
         localStorage.removeItem('Tokens');
+        localStorage.removeItem('UID')
         setUserDetails(null);
         setDesktopAnchorEl(null);
         setMobileAnchorEl(null);
+
+navigate('/')
+window.location.reload()
+
     };
 
     const handleDesktopMenuClick = (event) => {
@@ -144,6 +151,8 @@ console.log('res cwiiart ',responseWishlist.data.products.length)
         </Box>
     );
 
+   
+
     return (
         <div className='header'>
             <div className='header-top'>
@@ -188,7 +197,7 @@ console.log('res cwiiart ',responseWishlist.data.products.length)
                                 aria-haspopup="true"
                                 aria-expanded={desktopMenuOpen ? 'true' : undefined}
                             >
-                                <Link to={'/profile'}><Avatar sx={{ width: 32, height: 32 }}  /></Link>{ userDetails?  (<div style={{marginLeft:'5px'}} >{userDetails.firstName}</div>) 
+                                <Link to={userDetails ?'/profile' : '/'}><Avatar sx={{ width: 32, height: 32 }}  /></Link>{ userDetails?  (<div style={{marginLeft:'5px'}} >{userDetails.firstName}</div>) 
                                 :
                                  (<div></div>) }
 

@@ -57,7 +57,8 @@ const { ObjectId } = require('mongoose').Types;
 
 const getWishlist = async (req, res) => {
   try {
-    const { userId, folderName } = req.params;
+    const {  folderName } = req.params;
+    const { _id } = req?.decoded
     let { page = 1, limit = 10, sortField, sortOrder, search, category,
       priceGreaterThan, priceLessThan, priceMin, priceMax, sortDiscount, sortDiscountGreaterThan } = req.query;
 
@@ -68,9 +69,9 @@ const getWishlist = async (req, res) => {
     const limitNumber = parseInt(limit, 10) || 10;
 
     // Construct the base query
-    const query = { userId, folderName };
+    const query = {  folderName };
 
-    console.log('usr id',userId)
+   // console.log('usr id',userId)
 
     // Sorting
     const sortOptions = {};
@@ -91,8 +92,8 @@ const getWishlist = async (req, res) => {
 
     // Fetch wishlist and cart details for each product
     const productsWithData = await Promise.all(wishlistItems.map(async (product) => {
-      const wishlistExists = await Wishlist.exists({ userId: new ObjectId(userId), proId: product.proId._id });
-      const cartExists = await Cart.exists({ userId: new ObjectId(userId), proId: product.proId._id });
+      const wishlistExists = await Wishlist.exists({ userId: new ObjectId(_id), proId: product.proId._id });
+      const cartExists = await Cart.exists({ userId: new ObjectId(_id), proId: product.proId._id });
 
       return {
         ...product.proId._doc,
@@ -103,7 +104,7 @@ const getWishlist = async (req, res) => {
 
     // Calculate total pages
     const totalPages = Math.ceil(totalCount / limitNumber);
-console.log(productsWithData)
+//console.log(productsWithData)
     res.status(200).json({ products: productsWithData, totalPages });
   } catch (error) {
     console.log('errrr', error);
@@ -113,12 +114,14 @@ console.log(productsWithData)
 
 
 const addWishlistItem = async (req, res) => {
-  const { userId, proId,folderName } = req.params;
+  const { _id } = req?.decoded
 
+  const { proId,folderName } = req.params;
+console.log(req.params)
   try {
     // Create a new wishlist item
     const newWishlistItem = await Wishlist.create({
-      userId,
+      userId:_id,
       proId,
       folderName
     });
@@ -131,13 +134,15 @@ const addWishlistItem = async (req, res) => {
 
 const removeWishlistItem = async (req, res) => {
   const { proId, userId,folderName } = req.params;
+  const { _id } = req?.decoded
+
  
   try {
     // Find and remove the wishlist item by proId and userId
-    const removedWishlistItem = await Wishlist.findOneAndDelete({ proId, userId,folderName });
+    const removedWishlistItem = await Wishlist.findOneAndDelete({ proId, userId:_id,folderName });
 
 
-    console.log('rem',removeWishlistItem)
+   // console.log('rem',removeWishlistItem)
     if (!removedWishlistItem) {
       return res.status(404).json({ error: 'Wishlist item with the specified proId not found' });
     }

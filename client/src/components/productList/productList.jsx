@@ -27,12 +27,12 @@ function ProductList(props) {
   const [grtDisc, setGrtDisc] = useState(null);
 
   let urlQuery = ``;
-  if (recentf) urlQuery = `${process.env.REACT_APP_API_URL}/api/v1/products?page=${page}&limit=9&sortField=createdAt&sortOrder=desc`;
+  if (recentf) urlQuery = `${process.env.REACT_APP_API_URL}/api/v1/products?page=${page}&limit=9&sortField=createdAt&sortOrder=desc&uid=${localStorage.getItem("UID")}`;
 
-  if (searchItem) urlQuery = `${process.env.REACT_APP_API_URL}/api/v1/products?page=${page}&limit=9&search=${searchItem}&sortField=createdAt&sortOrder=${sortInit}`;
+  if (searchItem) urlQuery = `${process.env.REACT_APP_API_URL}/api/v1/products?page=${page}&limit=9&search=${searchItem}&sortField=createdAt&sortOrder=${sortInit}&uid=${localStorage.getItem("UID")}`;
 
   if (type === "productFetch") {
-    urlQuery = `${process.env.REACT_APP_API_URL}/api/v1/products?page=${page}&limit=9&category=${categ}&sortField=createdAt&sortOrder=${sortInit}`;
+    urlQuery = `${process.env.REACT_APP_API_URL}/api/v1/products?page=${page}&limit=9&category=${categ}&sortField=createdAt&sortOrder=${sortInit}&uid=${localStorage.getItem("UID")}`;
     if (lessPrice) {
       urlQuery = urlQuery + `&priceLessThan=${lessPrice}`;
     }
@@ -48,7 +48,7 @@ function ProductList(props) {
           `${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`
         );
         setUsersId(response.data.data[0]._id);
-        console.log("userrrr", response.data.data[0]._id);
+     //   console.log("userrrr", response.data.data[0]._id);
       } catch (error) {
         console.log("prlist err", error);
       }
@@ -81,7 +81,7 @@ function ProductList(props) {
         try {
           if (allProds === "allProducts") {
             const response = await axiosInstance.get(
-              `${process.env.REACT_APP_API_URL}/api/v1/products?page=${page}&limit=9`
+              `${process.env.REACT_APP_API_URL}/api/v1/products?page=${page}&limit=9&uid=${localStorage.getItem("UID")}`
             );
 
             console.log("all prods  reached ", response.data.products);

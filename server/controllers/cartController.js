@@ -3,6 +3,7 @@ const Cart = require('../models/cart');
 const { ObjectId } = require('mongoose').Types;
 
 const getCart = async (req, res) => {
+  const { _id } = req?.decoded
   const { userId } = req.params;
 
   try {
@@ -39,9 +40,9 @@ const getCart = async (req, res) => {
       const productsWithData = await Promise.all(CartItems.map(async (product) => {
       //  console.log('product:', product);
          
-        const wishlistExists = await Wishlist.exists({ userId:new  ObjectId('664db80748eeadcd76759a55'), proId: product.proId._id });
-        const cartExists = await Cart.exists({ userId:new  ObjectId('664db80748eeadcd76759a55'), proId: product.proId._id });
-        const cartDetails = await Cart.find({ userId:new  ObjectId('664db80748eeadcd76759a55'), proId: product.proId._id });
+        const wishlistExists = await Wishlist.exists({ userId:new  ObjectId(_id), proId: product.proId._id });
+        const cartExists = await Cart.exists({ userId:new  ObjectId(_id), proId: product.proId._id });
+        const cartDetails = await Cart.find({ userId:new  ObjectId(_id), proId: product.proId._id });
 
         console.log('object',cartDetails)
   
@@ -67,12 +68,14 @@ const getCart = async (req, res) => {
 
 
 const addCart = async (req, res) => {
-  const { userId, proId } = req.params;
+  const { _id } = req?.decoded
+
+  const {  proId } = req.params;
 
   try {
     // Create a new cart entry
     const newCart = await Cart.create({
-      userId: userId,
+      userId: _id,
       proId: proId,
       qty:1
     });
@@ -84,11 +87,12 @@ const addCart = async (req, res) => {
 };
 
 const removeCart = async (req, res) => {
-  const { proId,userId } = req.params;
+  const { proId } = req.params;
+  const { _id } = req?.decoded
 
   try { 
     // Find and remove the cart item by proId
-    const removedCart = await Cart.findOneAndDelete({ proId,userId });
+    const removedCart = await Cart.findOneAndDelete({ proId,userId:_id });
 
     if (!removedCart) {
       return res.status(404).json({ error: 'Cart item with the specified proId not found' });

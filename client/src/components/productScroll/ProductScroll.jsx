@@ -56,10 +56,14 @@ const [snackBarMessage,setSnackBarMessage] = useState('')
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const UID =localStorage.getItem("UID")
+        console.log('store ',UID) 
+
         const response = await axiosInstance.get(
           `${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`
         );
         setUsersId(response.data.data[0]._id);
+       // console.log('userrrr',response.data.data[0]._id)
         await  setNotif(prev => !prev)
       } catch (error) {
         console.log("prlist err", error);
@@ -68,17 +72,17 @@ const [snackBarMessage,setSnackBarMessage] = useState('')
     fetchData();
   }, []);
 
-  if(type==='home') urlQuery=`${process.env.REACT_APP_API_URL}/api/v1/products?page=1&limit=9&sortField=createdAt&sortOrder=desc`
+  if(type==='home') urlQuery=`${process.env.REACT_APP_API_URL}/api/v1/products?page=1&limit=9&sortField=createdAt&sortOrder=desc&uid=${localStorage.getItem("UID")}`
 
-  if(type==='product') urlQuery=`${process.env.REACT_APP_API_URL}/api/v1/products?page=1&limit=9&category=${categoryId}&sortField=createdAt&sortOrder=desc`
-console.log('urll',urlQuery)
-console.log('cat id ',categoryId)
+  if(type==='product') urlQuery=`${process.env.REACT_APP_API_URL}/api/v1/products?page=1&limit=9&category=${categoryId}&sortField=createdAt&sortOrder=desc&uid=${localStorage.getItem("UID")}`
+ 
+//console.log('cat id ',categoryId)
   const fetchData = async () =>{
 try {
   const response = await axiosInstance.get(urlQuery)
   setDetails(response.data.products)
   // setNotif(prev => !prev)
-  console.log('home prods',response.data.products)
+ // console.log('home prods',response.data.products)
 } catch (error) {
   console.log('errr',error)
 }

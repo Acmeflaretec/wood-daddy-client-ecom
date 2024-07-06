@@ -29,7 +29,7 @@ const [details, setDetails] = useState([]);
    
     const fetchData = async () => {
       const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`);
-      setUsersId(response.data.data[0]._id)
+      setUsersId(response?.data.data[0]._id)
       console.log('userrrr',response.data.data[0]._id)
     }
     fetchData()
@@ -44,7 +44,7 @@ const [details, setDetails] = useState([]);
       const fetchCartData = async () => {
         try {
           const response = await axiosInstance.get(urlQuery);
-          setDetails(response.data.products);
+          setDetails(response?.data?.products);
           convertToServerFormat(response.data.products)
          
         } catch (error) {
@@ -70,8 +70,8 @@ const [details, setDetails] = useState([]);
         // Fetch updated order items
         const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/cart/${usersId}?page=1&limit=6&sortField=createdAt&sortOrder=desc`);
        // console.log('ress cart',response.data)
-        setDetails(response.data.products);
-        convertToServerFormat(response.data.products)
+        setDetails(response?.data?.products);
+        convertToServerFormat(response?.data?.products)
         setNotif(prev => !prev);
       }
 
@@ -88,8 +88,8 @@ const [details, setDetails] = useState([]);
         await axiosInstance.put(`${process.env.REACT_APP_API_URL}/api/v1/cart/decrease/${id}`);
         const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/cart/${usersId}?page=1&limit=6&sortField=createdAt&sortOrder=desc`);
       //  console.log('ress cart',response.data)
-        setDetails(response.data.products);
-        convertToServerFormat(response.data.products)
+        setDetails(response?.data?.products);
+        convertToServerFormat(response?.data?.products)
         setNotif(prev => !prev);
       }
 
@@ -110,8 +110,8 @@ const [details, setDetails] = useState([]);
     try {
       const response = await axiosInstance.delete(`${process.env.REACT_APP_API_URL}/api/v1/cart/${usersId}/${proId}`);
       
-      setDetails(details.filter((item) => item._id !== proId));
-      convertToServerFormat(details.filter((item) => item._id !== proId))
+      setDetails(details?.filter((item) => item._id !== proId));
+      convertToServerFormat(details?.filter((item) => item._id !== proId))
       setNotif(prev => !prev);
     } catch (error) {
       console.log('err', error);
@@ -121,7 +121,7 @@ const [details, setDetails] = useState([]);
  
 
   function convertToServerFormat(details) {
-    const products = details.map(item => ({
+    const products = details?.map(item => ({
       product_id: item._id, // Assuming _id represents the product ID
       qty: item.cartDetails.length > 0 ? item.cartDetails[0].qty : 0, // Assuming qty is taken from cartDetails
       price: item.sale_rate // Assuming sale_rate represents the price
