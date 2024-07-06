@@ -19,7 +19,7 @@ useEffect(() => {
   const fetchData = async () => {
 try {
   
-  const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`);
+  const response = await axiosInstance.get(`/api/v1/auth/getuser`);
   setUserDetails(response.data.data[0])
   setNotification(prev => !prev)
   console.log('userrrr',response.data.data[0])

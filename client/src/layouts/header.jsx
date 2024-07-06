@@ -248,22 +248,7 @@ window.location.reload()
                       </MenuItem>)
                         
                         }
-                        <Divider />
-                        <MenuItem>
-                            <ListItemIcon>
-                                <Settings fontSize="small" />
-                            </ListItemIcon>
-                            Settings
-                        </MenuItem>
-                        <Divider />
-                        {userDetails ? (
-                        <MenuItem onClick={()=>{userDetails ? navigate('/address') : navigate('/login')}}>
-                            <ListItemIcon>
-                                <Settings fontSize="small" />
-                            </ListItemIcon>
-                            Address
-                        </MenuItem>) : ( <div></div> )
-                        }
+                        
                         <Divider />
 
                         {userDetails ? (
@@ -334,19 +319,21 @@ window.location.reload()
                     <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                         <Tooltip title="Account settings">
                             <IconButton
-                                onClick={handleMobileMenuClick}
+                                onClick={handleDesktopMenuClick}
                                 size="small"
                                 sx={{ ml: 2 }}
-                                aria-controls={mobileMenuOpen ? 'account-menu' : undefined}
+                                aria-controls={desktopMenuOpen ? 'account-menu' : undefined}
                                 aria-haspopup="true"
-                                aria-expanded={mobileMenuOpen ? 'true' : undefined}
+                                aria-expanded={desktopMenuOpen ? 'true' : undefined}
                             >
-                               <Avatar sx={{ width: 32, height: 32 }}  />{ userDetails?  (<div style={{marginLeft:'5px'}} >{userDetails.firstName}</div>) 
+                                <Link to={userDetails ?'/profile' : '/'}><Avatar sx={{ width: 32, height: 32 }}  /></Link>{ userDetails?  (<div style={{marginLeft:'5px'}} >{userDetails.firstName}</div>) 
                                 :
                                  (<div></div>) }
+
                             </IconButton>
                         </Tooltip>
                     </Box>
+                
                     <Menu
                         anchorEl={mobileAnchorEl}
                         id="account-menu"
@@ -385,21 +372,7 @@ window.location.reload()
                         <MenuItem onClick={handleClose}>
                             <Avatar /> Profile
                         </MenuItem>
-                        <Divider />
-                        <MenuItem onClick={handleClose}>
-                            <ListItemIcon>
-                                <Settings fontSize="small" />
-                            </ListItemIcon>
-                            Settings
-                        </MenuItem>
-                        {userDetails ? (
-                        <MenuItem onClick={()=>{ navigate('/address')}}>
-                            <ListItemIcon>
-                                <Settings fontSize="small" />
-                            </ListItemIcon>
-                            Address
-                        </MenuItem>) : ( <div></div> )
-                        }
+                        
                         <Divider />
                         {userDetails ? (
                             <MenuItem onClick={logout}>

@@ -220,7 +220,7 @@ fetchData()
                 <CardMedia
                   component="img"
                   height="260"
-                  image={`${process.env.REACT_APP_API_URL}/uploads/1717839555991-a2.jpg`}
+                  image={`${process.env.REACT_APP_API_URL}/uploads/${item.image[0]}`}
                   alt="Paella dish"
                   onClick={()=>navigate(`/product/${item._id}`)}
 

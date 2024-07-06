@@ -5,6 +5,7 @@ import ProfileOrder from '../../components/profileOrder/ProfileOrder';
 import Profile from './Profile';
 import Header from '../../layouts/header';
 import Footer from '../../layouts/footer';
+import axiosInstance from '../../axios';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

@@ -3,6 +3,8 @@
 // SearchBar component
 import React, { useState, useEffect } from 'react';
 import './index.css';
+import { Link, useNavigate } from 'react-router-dom';
+
 import axiosInstance from '../../axios';
 import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -27,8 +29,6 @@ import Tooltip from '@mui/material/Tooltip';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import SearchIcon from '@mui/icons-material/Search';
-
-import { useNavigate } from 'react-router-dom';
 
 function SearchBar(props) {
   const navigate = useNavigate();
@@ -66,12 +66,12 @@ useEffect(()=>{
     const fetchNotification = async ()=>{
 try {
 
-const responseCart = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/cart/${userDetails._id}?page=1&sortField=createdAt&sortOrder=desc`);
+const responseCart = await axiosInstance.get(`/api/v1/cart/${userDetails._id}?page=1&sortField=createdAt&sortOrder=desc`);
 setCartCount(responseCart.data.products.length)
-console.log('res cart ',responseCart.data.products.length)
-const responseWishlist = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/wishlist/${userDetails._id}/wishlist?page=1&sortField=createdAt&sortOrder=desc`)
+//console.log('res cart ',responseCart.data.products.length)
+const responseWishlist = await axiosInstance.get(`/api/v1/wishlist/${userDetails._id}/wishlist?page=1&sortField=createdAt&sortOrder=desc`)
 setWishlistCount(responseWishlist.data.products.length)
-console.log('res cwiiart ',responseWishlist.data.products.length)
+//console.log('res cwiiart ',responseWishlist.data.products.length)
 } catch (error) {
 console.log(error)
 }
@@ -102,9 +102,12 @@ console.log(error)
 
 const logout = () => {
     localStorage.removeItem('Tokens');
+    localStorage.removeItem('UID')
     setUserDetails(null);
     setDesktopAnchorEl(null);
     setMobileAnchorEl(null);
+    navigate('/')
+window.location.reload()
 };
 
 const handleDesktopMenuClick = (event) => {
@@ -196,7 +199,7 @@ const DrawerList = (
                                 aria-haspopup="true"
                                 aria-expanded={desktopMenuOpen ? 'true' : undefined}
                             >
-                                <Avatar sx={{ width: 32, height: 32 }}  />{ userDetails?  (<div style={{marginLeft:'5px'}} >{userDetails.firstName}</div>) 
+                                <Link to={userDetails ?'/profile' : '/'}><Avatar sx={{ width: 32, height: 32 }}  /></Link>{ userDetails?  (<div style={{marginLeft:'5px'}} >{userDetails.firstName}</div>) 
                                 :
                                  (<div></div>) }
 
@@ -248,13 +251,7 @@ const DrawerList = (
                         
                         }
                         <Divider />
-                        <MenuItem onClick={handleClose}>
-                            <ListItemIcon>
-                                <Settings fontSize="small" />
-                            </ListItemIcon>
-                            Settings
-                        </MenuItem>
-                        <Divider />
+                       
                         {userDetails ? (
                         <MenuItem onClick={()=>{userDetails ? navigate('/address') : navigate('/login')}}>
                             <ListItemIcon>
@@ -336,16 +333,17 @@ const DrawerList = (
                     <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                         <Tooltip title="Account settings">
                             <IconButton
-                                onClick={handleMobileMenuClick}
+                                onClick={handleDesktopMenuClick}
                                 size="small"
                                 sx={{ ml: 2 }}
-                                aria-controls={mobileMenuOpen ? 'account-menu' : undefined}
+                                aria-controls={desktopMenuOpen ? 'account-menu' : undefined}
                                 aria-haspopup="true"
-                                aria-expanded={mobileMenuOpen ? 'true' : undefined}
+                                aria-expanded={desktopMenuOpen ? 'true' : undefined}
                             >
-                               <Avatar sx={{ width: 32, height: 32 }}  />{ userDetails?  (<div style={{marginLeft:'5px'}} >{userDetails.firstName}</div>) 
+                                <Link to={userDetails ?'/profile' : '/'}><Avatar sx={{ width: 32, height: 32 }}  /></Link>{ userDetails?  (<div style={{marginLeft:'5px'}} >{userDetails.firstName}</div>) 
                                 :
                                  (<div></div>) }
+
                             </IconButton>
                         </Tooltip>
                     </Box>
@@ -387,15 +385,9 @@ const DrawerList = (
                         <MenuItem onClick={handleClose}>
                             <Avatar /> Profile
                         </MenuItem>
-                        <Divider />
-                        <MenuItem onClick={handleClose}>
-                            <ListItemIcon>
-                                <Settings fontSize="small" />
-                            </ListItemIcon>
-                            Settings
-                        </MenuItem>
+                       
                         {userDetails ? (
-                        <MenuItem onClick={()=>{ navigate('/address')}}>
+                        <MenuItem onClick={()=>{userDetails ? navigate('/address') : navigate('/login')}}>
                             <ListItemIcon>
                                 <Settings fontSize="small" />
                             </ListItemIcon>

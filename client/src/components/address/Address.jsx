@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
   TextField, Button, Box, Container, Typography, List, ListItem,
   ListItemText, ListItemSecondaryAction, IconButton, Checkbox,
@@ -8,16 +8,36 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import HomeIcon from '@mui/icons-material/Home';
+import axiosInstance from '../../axios';
 
 const Address = () => {
   const [formData, setFormData] = useState({
     firstname: '', lastname: '', address_line_1: '', address_line_2: '',
-    city: '', state: '', zip: '', country: '', mobile: '', primary: false,
+    city: '', state: '', zip: '', country: '', mobile: '', 
   });
 
   const [addresses, setAddresses] = useState([]);
+  const [addressesData,setAddressesData] = useState([])
   const [editingIndex, setEditingIndex] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+
+// getting ADDRESSES
+const fetchAddress = async()=>{
+try {
+  const response = await axiosInstance.get(`/api/v1/address/getaddresses`)
+  setAddressesData(response.data)
+  console.log('add',response.data)
+} catch (error) {
+  
+}
+
+}
+
+useEffect(()=>{
+  fetchAddress()
+},[])
+
+
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -25,10 +45,17 @@ const Address = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+    console.log('form',{
+      ...formData,
+      [name]: value,
+    })
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     e.preventDefault();
+await axiosInstance.post(`/api/v1/address/address`,formData)
+ await fetchAddress()
+
     if (editingIndex !== null) {
       const updatedAddresses = [...addresses];
       updatedAddresses[editingIndex] = formData;
@@ -39,7 +66,7 @@ const Address = () => {
     }
     setFormData({
       firstname: '', lastname: '', address_line_1: '', address_line_2: '',
-      city: '', state: '', zip: '', country: '', mobile: '', primary: false,
+      city: '', state: '', zip: '', country: '', mobile: '', 
     });
     setOpenDialog(false);
   };
@@ -50,10 +77,25 @@ const Address = () => {
     setOpenDialog(true);
   };
 
-  const handleDelete = (index) => {
-    const updatedAddresses = addresses.filter((_, i) => i !== index);
-    setAddresses(updatedAddresses);
+  const handleDelete =async (index,addressId) => {
+    await axiosInstance.delete(`/api/v1/address/${addressId}`)
+    if(addressesData.length>1){
+      await fetchAddress()
+
+    }else{
+
+      window.location.reload()
+    }
+
+    // const updatedAddresses = addresses.filter((_, i) => i !== index);
+    // setAddresses(updatedAddresses);
   };
+  const handleDefault = async(addressId)=>{
+
+    await axiosInstance.put(`/api/v1/address/setdefault/${addressId}`)
+    await fetchAddress()
+
+  }
 
   const handleOpenDialog = () => {
     setEditingIndex(null);
@@ -72,9 +114,9 @@ const Address = () => {
           Address 
         </Typography>
 
-        {addresses.length > 0 ? (
+        {addressesData.length > 0 ? (
           <List>
-            {addresses.map((address, index) => (
+            {addressesData.map((address, index) => (
               <Card key={index} sx={{ mb: 2 }}>
                 <CardContent>
                   <ListItem disablePadding>
@@ -82,7 +124,7 @@ const Address = () => {
                       primary={
                         <Typography variant="subtitle1">
                           {`${address.firstname} ${address.lastname}`}
-                          {address.primary && <Typography component="span" color="primary" sx={{ ml: 1 }}>(Primary)</Typography>}
+                          {address.primary && <Typography component="span" color="primary" sx={{ ml: 1 }}>(default)</Typography>}
                         </Typography>
                       }
                       secondary={
@@ -94,10 +136,22 @@ const Address = () => {
                       }
                     />
                     <ListItemSecondaryAction>
+                  
+
+         {!address.primary ==true ?   (<Button
+              variant="contained"
+              color="success"
+             
+            
+              onClick={()=>handleDefault(address._id)}
+            >
+              default
+            </Button>) : ('')}
+ 
                       <IconButton edge="end" aria-label="edit" onClick={() => handleEdit(index)} color="primary">
                         <EditIcon />
                       </IconButton>
-                      <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(index)} color="error">
+                      <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(index,address._id)} color="error">
                         <DeleteIcon />
                       </IconButton>
                     </ListItemSecondaryAction>
@@ -122,7 +176,7 @@ const Address = () => {
           </Paper>
         )}
 
-        {addresses.length > 0 && (
+        {addressesData.length > 0 && (
           <Box mt={2} display="flex" justifyContent="flex-end">
             <Button
               variant="contained"
@@ -168,12 +222,12 @@ const Address = () => {
               <Grid item xs={12}>
                 <TextField name="mobile" label="Mobile" value={formData.mobile} onChange={handleChange} fullWidth required />
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Box display="flex" alignItems="center">
                   <Checkbox name="primary" checked={formData.primary} onChange={handleChange} />
                   <Typography>Set as Primary Address</Typography>
                 </Box>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Box>
         </DialogContent>

@@ -29,7 +29,7 @@ export default function CreateAddressForm() {
     primary: true,
   });
   const [error, setError] = useState('');
-
+console.log('object,formData',formData)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -48,6 +48,8 @@ export default function CreateAddressForm() {
       ...formData,
       [name]: value,
     });
+
+
   };
 
   const validateForm = () => {
@@ -68,7 +70,7 @@ export default function CreateAddressForm() {
       return;
     }
     try {
-      const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/api/v1/address/address/${usersId}`, formData);
+      const response = await axiosInstance.post(`/api/v1/address/address`, formData); 
       console.log('Address saved successfully:', response.data);
       setError('');
     } catch (error) {
