@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 const notify = () => toast.success('Category deleted successfully.');
 
 const Category = ({ id, title, desc }) => {
-  console.log('key-', id);
   return (
     <Box
       display="flex"
@@ -75,14 +74,13 @@ const TableData = () => {
       setData(fetchData.data);
     }
   }, [fetchData]);
-  console.log('ma-', data);
   return (
     <>
       {isLoading ? (
         <Typography>Loading...</Typography>
       ) : (
         <Box>
-          {data.map((item) => (
+          {data?.map((item) => (
 
             <Category
               key={item._id}

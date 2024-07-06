@@ -22,7 +22,7 @@ function Banner() {
     const fetchData = async () => {
       try {
         const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/banner`);
-        console.log('bannn ',response)
+        
         setBanners(response.data.data);
         setMaxSteps(response.data.data.length);
       } catch (error) {

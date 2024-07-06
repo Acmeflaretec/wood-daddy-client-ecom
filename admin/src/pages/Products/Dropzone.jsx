@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Dropzone from 'dropzone';
 import 'dropzone/dist/dropzone.css';
 import { Alert, Typography } from '@mui/material';
@@ -10,14 +10,15 @@ const DropZone = ({ dispatch }) => {
   useEffect(() => {
     // Initialize Dropzone with options
     myDropzone = new Dropzone('#my-dropzone', {
-      url: `${process.env.REACT_APP_API_URL}/api/v1/category`, // Replace with the actual upload URL
-      paramName: 'file', // The name to use for the file upload
-      acceptedFiles: '.png',
+      url: `${process.env.REACT_APP_API_URL}/api/v1/category`,
+      paramName: 'file',
+      acceptedFiles: 'image/*',
+      addRemoveLinks: true,
       accept: function (file, done) {
         if (file.size === 0) {
           done('Folder uploads are not allowed. Please select individual files.');
         } else {
-          dispatch(prev => [...prev, file])
+          dispatch(prev => [...prev, file]);
           done();
         }
       },
@@ -26,19 +27,24 @@ const DropZone = ({ dispatch }) => {
     myDropzone.on('addedfile', (file) => {
       console.log(`${file}`);
     });
+
+    myDropzone.on('removedfile', (file) => {
+      dispatch(prev => prev.filter(f => f.name !== file.name));
+    });
+
     return () => {
       myDropzone.destroy();
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <div style={{ marginLeft: 18 }}>
-      <Alert severity="info"><Typography variant='caption'>
-        Click here to select files or Drag files and drop here
-      </Typography> </Alert>
-      <form action="/file-upload"
-        className="dropzone"
-        id="my-dropzone"></form>
+      <Alert severity="info">
+        <Typography variant='caption'>
+          Click here to select files or Drag files and drop here
+        </Typography>
+      </Alert>
+      <form action="/file-upload" className="dropzone" id="my-dropzone"></form>
     </div>
   );
 };

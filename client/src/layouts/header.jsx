@@ -25,8 +25,14 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import Badge from '@mui/material/Badge';
 
-const Header = () => {
+const Header = ({notif,notificationM}) => {
+
+
+const [cartCount,setCartCount] = useState(0)
+const [wishlistCount,setWishlistCount] = useState(0)
+
     const [searchItem, setSearchItem] = useState('');
     const [open, setOpen] = useState(false);
     const [userDetails, setUserDetails] = useState(null);
@@ -38,12 +44,13 @@ const Header = () => {
     const desktopMenuOpen = Boolean(desktopAnchorEl);
     const mobileMenuOpen = Boolean(mobileAnchorEl);
 
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`);
                 setUserDetails(response.data.data[0]);
-                console.log('userrrr', response.data.data[0]);
+                //console.log('userrrr', response.data.data[0]);
             } catch (error) {
                 console.log('errr', error);
                 setUserDetails(null);
@@ -51,6 +58,29 @@ const Header = () => {
         };
         fetchData();
     }, []);
+
+    useEffect(()=>{
+
+        const fetchNotification = async ()=>{
+try {
+    
+const responseCart = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/cart/${userDetails._id}?page=1&sortField=createdAt&sortOrder=desc`);
+setCartCount(responseCart.data.products.length)
+console.log('res cart ',responseCart.data.products.length)
+const responseWishlist = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/wishlist/${userDetails._id}/wishlist?page=1&sortField=createdAt&sortOrder=desc`)
+setWishlistCount(responseWishlist.data.products.length)
+console.log('res cwiiart ',responseWishlist.data.products.length)
+} catch (error) {
+    console.log(error)
+}
+
+        }
+
+        fetchNotification()
+
+    },[notif,notificationM])
+
+   
 
     const login = () => {
         setDesktopAnchorEl(null);
@@ -138,9 +168,16 @@ const Header = () => {
                     <h1 onClick={() => navigate('/')}>Wood Daddy</h1>
                 </div>
                 <div className="grp-bar">
-                    <NotificationsIcon className='headicons' onClick={ userDetails?   () => navigate('/order') : () => navigate('/login')} />
+                    {/* <NotificationsIcon className='headicons' onClick={ userDetails?   () => navigate('/order') : () => navigate('/login')} /> */}
+
+                    <Badge badgeContent={wishlistCount} color="primary">
                     <FavoriteBorderIcon className='headicons' onClick={ userDetails?  () => navigate('/wishlist') : () => navigate('/login')} />
+                    </Badge>
+
+                    <Badge badgeContent={cartCount} color="primary">
                     <ShoppingBasketIcon className='headicons' onClick={userDetails ? () => navigate('/cart') : () => navigate('/login')} />
+                    </Badge>
+
                     <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                         <Tooltip title="Account settings">
                             <IconButton
@@ -277,9 +314,14 @@ const Header = () => {
                     </form>
                 </div>
                 <div className="mob-grp-bar">
-                    <NotificationsIcon className='headicons' onClick={userDetails?   () => navigate('/order') : () => navigate('/login')}  />
-                    <FavoriteBorderIcon className='headicons' onClick={userDetails ?  () => navigate('/wishlist') : ()=> navigate('/login') } />
-                    <ShoppingBasketIcon className='headicons' onClick={userDetails ?  () => navigate('/cart') : ()=> navigate('/login') }  />
+                    {/* <NotificationsIcon className='headicons' onClick={userDetails?   () => navigate('/order') : () => navigate('/login')}  /> */}
+                    <Badge badgeContent={wishlistCount} color="primary">
+                    <FavoriteBorderIcon className='headicons' onClick={ userDetails?  () => navigate('/wishlist') : () => navigate('/login')} />
+                    </Badge>
+
+                    <Badge badgeContent={cartCount} color="primary">
+                    <ShoppingBasketIcon className='headicons' onClick={userDetails ? () => navigate('/cart') : () => navigate('/login')} />
+                    </Badge>
                     <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                         <Tooltip title="Account settings">
                             <IconButton

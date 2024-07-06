@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
+import { pink,red,green } from '@mui/material/colors';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css'; 
 import 'slick-carousel/slick/slick-theme.css';
@@ -16,6 +17,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import Snackbar from '@mui/material/Snackbar';
 import ShareIcon from '@mui/icons-material/Share';
 
 const ExpandMore = styled((props) => {
@@ -29,13 +31,27 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-function ProductScroll({type ,categoryId }) {
+function ProductScroll({type ,categoryId,setNotif }) {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
   const [details, setDetails] = useState([]);
   const [usersId, setUsersId] = useState();
+const [snackBarMessage,setSnackBarMessage] = useState('')
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
    
-  let urlQuery = ``;
+  var urlQuery = ``;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,8 +59,8 @@ function ProductScroll({type ,categoryId }) {
         const response = await axiosInstance.get(
           `${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`
         );
-        setUsersId(response?.data?.data?.[0]._id);
-        console.log("userrrr", response?.data?.data?.[0]._id);
+        setUsersId(response.data.data[0]._id);
+        await  setNotif(prev => !prev)
       } catch (error) {
         console.log("prlist err", error);
       }
@@ -55,16 +71,16 @@ function ProductScroll({type ,categoryId }) {
   if(type==='home') urlQuery=`${process.env.REACT_APP_API_URL}/api/v1/products?page=1&limit=9&sortField=createdAt&sortOrder=desc`
 
   if(type==='product') urlQuery=`${process.env.REACT_APP_API_URL}/api/v1/products?page=1&limit=9&category=${categoryId}&sortField=createdAt&sortOrder=desc`
-console.log(urlQuery)
-console.log(categoryId)
-
+console.log('urll',urlQuery)
+console.log('cat id ',categoryId)
   const fetchData = async () =>{
 try {
   const response = await axiosInstance.get(urlQuery)
   setDetails(response.data.products)
+  // setNotif(prev => !prev)
   console.log('home prods',response.data.products)
 } catch (error) {
-  
+  console.log('errr',error)
 }
 
   }
@@ -102,8 +118,87 @@ fetchData()
     ],
   };
 
+  //add & remove cart wishlist start
+
+  const addCart = async(e,proId)=>{
+
+    e.preventDefault()
+     console.log('proid',proId)
+      try {
+    
+        const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/api/v1/cart/${usersId}/${proId}`);
+      //  setDetails({ ...details, inCart: true });
+     await   fetchData()
+
+     
+   await  setNotif(prev => !prev)
+     setSnackBarMessage('added to cart')
+     handleClick()
+      } catch (error) {
+        console.log('err',error)
+      }
+      
+  
+  }
+  const removeCart = async(e,proId)=>{
+  
+    e.preventDefault()
+    console.log('proid',proId)
+    try {
+  
+      const response = await axiosInstance.delete(`${process.env.REACT_APP_API_URL}/api/v1/cart/${usersId}/${proId}`);
+   //   setDetails({ ...details, inCart: false });
+    await  fetchData()
+
+   await setNotif(prev => !prev)
+    setSnackBarMessage('removed from cart')
+    handleClick()
+    } catch (error) {
+      console.log('err',error)
+    }
+    
+  }
+  const addWishlist = async(e,proId)=>{
+    e.preventDefault()
+  console.log('proid',proId)
+    try {
+  
+      const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/api/v1/wishlist/${usersId}/${proId}/wishlist`);
+     // setDetails({ ...details, inWishlist: true });
+    await fetchData()
+   await setNotif(prev => !prev)
+    setSnackBarMessage('added to wishlist')
+    handleClick()
+    } catch (error) {
+      console.log('err',error)
+    }
+    
+  }
+  const removeWishlist = async(e,proId)=>{
+    e.preventDefault()
+    console.log('proid',proId)
+    try {
+  
+      const response = await axiosInstance.delete(`${process.env.REACT_APP_API_URL}/api/v1/wishlist/${usersId}/${proId}/wishlist`);
+     // setDetails({ ...details, inWishlist: false });
+
+     await fetchData()
+    await setNotif(prev => !prev)
+     setSnackBarMessage('removed from wishlist')
+     handleClick()
+    } catch (error) {
+      console.log('err',error)
+    }
+    
+  }
+
+
+    //add & remove cart wishlist start
+
+
+
   function truncateText(text, maxLength) {
-    console.log(text)
+    
     const words = text.split(' ');
     if (words.length > maxLength) {
       return words.slice(0, maxLength).join(' ') + '...';
@@ -151,13 +246,30 @@ fetchData()
                 </CardContent>
                 <CardActions>
                   <div style={{ marginLeft: '10%', width: '80%', display: 'flex', justifyContent: 'space-between' }}>
-                    <IconButton aria-label="add to favorites" >
-                      <FavoriteIcon fontSize="large" />
-                    </IconButton>
-                    <IconButton aria-label="share" disabled={item?.stock <= 0}
-                      >
-                      <ShoppingCartIcon fontSize="large" />
-                    </IconButton>
+
+{!item?.inWishlist ? 
+                   ( <IconButton aria-label="add to favorites"  onClick={usersId ? (e)=>addWishlist(e,item._id) : ()=>navigate('/login')}  >
+                      <FavoriteIcon fontSize="large" color='success'  />
+                    </IconButton>)
+                    :
+                    ( <IconButton aria-label="add to favorites" onClick={usersId ? (e)=>removeWishlist(e,item._id) : ()=> navigate('/login')  }>
+                      <FavoriteIcon fontSize="large" sx={{ color: red[500] }}  />
+                    </IconButton>)
+
+}
+
+{ !item?.inCart ? 
+                    (<IconButton aria-label="share" disabled={item?.stock <= 0}
+                      onClick={usersId ? (e)=>addCart(e,item._id) :()=>navigate('/login') }   >
+                      <ShoppingCartIcon fontSize="large" color='success' />
+                    </IconButton>)  
+                    :
+                      (<IconButton aria-label="share" disabled={item?.stock <= 0}
+                        onClick={usersId ? (e)=>removeCart(e,item._id) : ()=> navigate('/login')}  >
+                        <ShoppingCartIcon fontSize="large" sx={{ color: red[500] }} />
+                      </IconButton>)
+
+                    }
                   </div>
                 </CardActions>
               </Card>
@@ -165,6 +277,12 @@ fetchData()
           ))}
         </Slider>
       </div>
+      <Snackbar
+        open={open}
+        autoHideDuration={5000}
+        onClose={handleClose}
+        message={snackBarMessage}
+      />
     </div>
   );
 }

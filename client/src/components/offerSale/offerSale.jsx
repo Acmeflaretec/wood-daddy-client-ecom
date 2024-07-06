@@ -12,7 +12,7 @@ function OfferSale() {
       try {
         const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/advertisement`);
         setOffers(response.data.data[0]);
-        console.log(response.data.data[0])
+        //console.log(response.data.data[0])
       } catch (error) {
         console.error('Error fetching data:', error);
       }
