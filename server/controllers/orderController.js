@@ -149,8 +149,8 @@ const getAdminOrders = async (req, res) => {
   try {
     const data = await Order.find().sort({ createdAt: -1 })
       .populate('userId', 'firstName lastName mail')
-      .populate('address', 'firstname lastname address_line_1 address_line_2 zip mobile city state')
-      .populate('products.item.product_id', 'name category price image');
+      .populate('address', 'firstname lastname address_line_1 address_line_2 zip mobile city state country')
+      .populate('products.item.product_id', 'name brand category price image');
       console.log('order data',data);
     res.status(200).json({ data });
   } catch (error) {

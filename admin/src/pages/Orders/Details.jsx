@@ -16,14 +16,14 @@ const Details = ({ data }) => {
                 <Typography fontSize={14}>{data?.address?.city}, {data?.address?.state}</Typography>
                 <Typography fontSize={14}>{data?.address?.country} {data?.address?.zip}</Typography>
                 <Typography fontSize={14}>Ph : {data?.address?.mobile}</Typography>
-                <Typography fontSize={14}>Email : {data?.email}</Typography>
+                {/* <Typography fontSize={14}>Email : {data?.mail}</Typography> */}
             </Grid>
             
             <Grid item xs={12}>
             <Typography variant='body2' pb={2} fontWeight={600}>Payment details</Typography>
             <Stack direction={'row'} justifyContent={'space-between'}>
                 <Typography fontSize={14}>Order Subtotal</Typography>
-                <Typography fontSize={14}>₹ {data?.amount}/-</Typography>
+                <Typography fontSize={14}>₹ {data?.Totalamount}/-</Typography>
             </Stack>
             <Stack direction={'row'} justifyContent={'space-between'}>
                 <Typography fontSize={14}>Shipping charges</Typography>
@@ -35,7 +35,7 @@ const Details = ({ data }) => {
             </Stack>
             <Stack direction={'row'} justifyContent={'space-between'} pt={1}>
                 <Typography fontSize={14} fontWeight={600}>Total</Typography>
-                <Typography fontSize={14} fontWeight={600}>₹ {data?.amount}/-</Typography>
+                <Typography fontSize={14} fontWeight={600}>₹ {data?.Totalamount}/-</Typography>
             </Stack>
             </Grid>
           
