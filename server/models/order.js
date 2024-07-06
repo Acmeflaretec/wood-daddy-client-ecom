@@ -4,8 +4,8 @@ const mongoose = require('mongoose')
 const orderSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Types.ObjectId,
-        ref: 'User',
-        required: true
+        ref: 'user',
+        required: true  
     },
     payment_mode: {
         type: String,

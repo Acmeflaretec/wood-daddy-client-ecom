@@ -58,7 +58,7 @@ const TableData = () => {
   const rows = data?.data?.map(item => ({
     User: (
       <Typography variant="caption" color="secondary" fontWeight="medium">
-        {item?.userId?.username} ({item?.userId?.email})
+        {item?.userId?.firstName} {item?.userId?.lastName}({item?.userId?.mail})
       </Typography>
     ),
     PaymentMode: (
