@@ -113,7 +113,7 @@ const getProducts = async (req, res) => {
 
   console.log('get products reached ,')
   try {
-    const { page = 1, limit = 3, sortField, sortOrder, search, category,
+    const { page = 1, limit = 100, sortField, sortOrder, search, category,
       priceGreaterThan, priceLessThan, priceMin, priceMax, sortDiscount, sortDiscountGreaterThan,uid } = req.query;
      console.log('uid',uid)
      console.log('get products reached ,')
