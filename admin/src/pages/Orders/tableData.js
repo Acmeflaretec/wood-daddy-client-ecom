@@ -48,8 +48,6 @@ const TableData = () => {
     { name: 'PaymentMode', align: 'center' },
     { name: 'Amount', align: 'center' },
     { name: 'orderPerson', align: 'center' },
-    { name: 'Address', align: 'center' },
-    // { name: 'Products', align: 'center' },
     { name: 'Ordered', align: 'center' },
     { name: 'Status', align: 'center' },
     { name: 'Action', align: 'center' },
@@ -74,11 +72,6 @@ const TableData = () => {
     orderPerson: (
       <Typography variant="caption" color="secondary" fontWeight="medium">
         {item?.address?.firstname} {item?.address?.lastname}
-      </Typography>
-    ),
-    Address: (
-      <Typography variant="caption" color="secondary" fontWeight="medium">
-        {item?.address?.address_line_1}, {item?.address?.address_line_2},{item?.address?.city}, {item?.address?.state},{item?.address?.zip}, {item?.address?.mobile}
       </Typography>
     ),
     // Products: item?.products?.item.map(product => (

@@ -36,9 +36,6 @@ const TableData = () => {
     { name: "stock", align: "center" },
     { name: "sale_rate", align: "center" },
     { name: "discount", align: "center" },
-    { name: "specification", align: "center" },
-    { name: "dimension", align: "center" },
-    { name: "warranty", align: "center" },
     { name: "date", align: "center" },
     { name: "status", align: "center" },
     // { name: "createdon", align: "center" },
@@ -76,22 +73,6 @@ const TableData = () => {
         {item?.discount}
       </Typography>
     ),
-    specification: (
-      <Typography variant="caption" color="secondary" fontWeight="medium">
-        {item?.specification}
-      </Typography>
-    ),
-    dimension: (
-      <Typography variant="caption" color="secondary" fontWeight="medium">
-        {item?.dimension}
-      </Typography>
-    ),
-    warranty: (
-      <Typography variant="caption" color="secondary" fontWeight="medium">
-        {item?.warranty}
-      </Typography>
-    ),
-   
     date: (
       <Typography variant="caption" color="secondary" fontWeight="medium">
         {new Date(item?.createdAt).toDateString()}

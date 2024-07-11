@@ -56,7 +56,7 @@ function ProductList(props) {
     const fetchData = async () => {
       try {
         const response = await axiosInstance.get(`/auth/getuser`);
-        setUsersId(response.data.data[0]._id);
+        setUsersId(response?.data?.data?.[0]?._id);
         //   console.log("userrrr", response.data.data[0]._id);
       } catch (error) {
         console.log("prlist err", error);
@@ -73,9 +73,9 @@ function ProductList(props) {
       const fetchData = async () => {
         try {
           const response = await axiosInstance.get(urlQuery);
-          console.log("wish ", response.data);
-          setDetails(response.data.products);
-          setTotalPages(Math.ceil(response.data.totalProducts / 10));
+          console.log("wish ", response?.data);
+          setDetails(response?.data?.products);
+          setTotalPages(Math.ceil(response?.data?.totalProducts / 10));
           
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -94,17 +94,17 @@ function ProductList(props) {
               )}`
             );
 
-            console.log("all prods  reached ", response.data.products);
-            setTotalPages(Math.ceil(response.data.totalProducts / 10));
-            setDetails(response.data.products);
+            console.log("all prods  reached ", response?.data?.products);
+            setTotalPages(Math.ceil(response?.data?.totalProducts / 10));
+            setDetails(response?.data?.products);
             
           } else {
             console.log("urlll", urlQuery);
             const response = await axiosInstance.get(urlQuery);
 
-            console.log("data reached ", response.data.products);
-            setTotalPages(Math.ceil(response.data.totalProducts / 10));
-            setDetails(response.data.products);
+            console.log("data reached ", response?.data?.products);
+            setTotalPages(Math.ceil(response?.data?.totalProducts / 10));
+            setDetails(response?.data?.products);
             
           }
         } catch (error) {

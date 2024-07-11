@@ -34,8 +34,8 @@ function ProductScroll({ type, categoryId, setNotif }) {
         console.log("store ", UID);
 
         const response = await axiosInstance.get(`/auth/getuser`);
-        setUsersId(response.data.data[0]._id);
-        // console.log('userrrr',response.data.data[0]._id)
+        setUsersId(response?.data?.data?.[0]?._id);
+        // console.log('userrrr',response?.data?.data?.[0]?._id)
 
       } catch (error) {
         console.log("prlist err", error);
@@ -58,9 +58,9 @@ function ProductScroll({ type, categoryId, setNotif }) {
   const fetchData = async () => {
     try {
       const response = await axiosInstance.get(urlQuery);
-      setDetails(response.data.products);
+      setDetails(response?.data?.products);
       // setNotif(prev => !prev)
-      console.log("home prods", response.data.products);
+      console.log("home prods", response?.data?.products);
     } catch (error) {
       console.log("errr", error);
     }
