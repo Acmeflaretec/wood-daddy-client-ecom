@@ -70,7 +70,7 @@ console.log('object,formData',formData)
       return;
     }
     try {
-      const response = await axiosInstance.post(`/api/v1/address/address`, formData); 
+      const response = await axiosInstance.post(`/address/address`, formData); 
       console.log('Address saved successfully:', response.data);
       setError('');
     } catch (error) {

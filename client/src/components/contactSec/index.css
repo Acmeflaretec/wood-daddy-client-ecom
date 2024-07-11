@@ -1,54 +1,39 @@
-.ContactSec{
+.ContactSec {
   display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   margin-top: 60px;
   margin-bottom: 60px;
   background-color: rgb(20, 84, 167);
-
-
 }
 @media only screen and (max-width: 678px) {
-  .ContactSec{
-justify-content: center;
-align-items: center;
-  }
- 
-  .contactBox{
-
-    
-  
-  }
-  .contactImg{
-
-  
-  }
   .ctitle {
-font-size: 30px !important;
-
+    font-size: 30px !important;
   }
 }
 
-
-
-.contactBox{
-text-align: center;
+.contactBox {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
   width: 40%;
-
 }
-.contactImg{
-width: 60%;
-
+.contactImg {
+  width: 60%;
 }
 .salesBtn {
-  /* Container styling */
-  display: inline-block;
-  
+  max-width: 300px;
   border: 1px solid white;
   color: white;
   font-size: 22px;
-  transition: border-color 0.3s; /* Smooth transition for border color change */
+  margin-top: 1rem;
+  padding: 8px;
+  transition: border-color 0.3s;
 }
 
 .salesBtn:hover {
-  cursor: pointer; /* Change cursor to pointer on hover */
+  cursor: pointer;
 }

@@ -1,27 +1,53 @@
-import React from 'react';
-import './index.css';
+import React from "react";
+import "./index.css";
+import { List, ListItem, Typography } from "@mui/material";
 
 function AboutSec() {
   return (
-    <div className='AboutSec'>
+    <div className="AboutSec">
       <img src="/gallery/a1.jpg" alt="" />
       <div className="content">
-        <h1 style={{color:'gray'}}>Welcome to Wood Daddy</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce placerat, risus in cursus posuere,
-           elit lorem tristique elit, eget fermentum ex massa in nisi. Nullam euismod odio at dapibus malesuada.
-           Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin
-            literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in 
-            Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of
-             the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.
-            The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+        <h1 style={{ color: "gray" }}>Welcome to Wood Daddy</h1>
+        <Typography p={2}>
+          Welcome to WoodDaddy, your trusted destination for exquisite,
+          high-quality furniture. Founded with a passion for craftsmanship and a
+          commitment to excellence, we are dedicated to transforming your living
+          spaces into beautiful, functional havens.
+        </Typography>
 
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce placerat, risus in cursus posuere,
-           elit lorem tristique elit, eget fermentum ex massa in nisi. Nullam euismod odio at dapibus malesuada.
-           Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin
-            literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in 
-            Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of
-             the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.
-            The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+        <Typography p={2}>
+          We take pride in our meticulous attention to detail and our commitment
+          to using only the finest materials. Each piece of furniture at
+          WoodDaddy is crafted with care and precision by skilled artisans who
+          bring years of experience and a deep love for their craft. From the
+          selection of premium woods to the final finishing touches, we ensure
+          that every item meets our stringent quality standards.
+        </Typography>
+        <Typography p={2}>
+          Explore our diverse range of furniture that caters to various tastes
+          and preferences. Whether you are looking for a statement piece to
+          anchor your living room, a functional yet stylish dining set, or
+          elegant bedroom furniture, WoodDaddy has something for every corner of
+          your home. Our collection includes:
+        </Typography>
+        <List>
+          <ListItem>
+            Dining Room Furniture: Dining tables, chairs, and sideboards.
+          </ListItem>
+          <ListItem>
+            Bedroom Furniture: Beds, wardrobes, and nightstands.
+          </ListItem>
+          <ListItem>
+            ListItemving Room Furniture: Sofas, coffee tables, TV units, and
+            more.
+          </ListItem>
+          <ListItem>
+            Office Furniture: Desks, bookshelves, and office chairs.
+          </ListItem>
+          <ListItem>
+            Outdoor Furniture: Patio sets, garden chairs, and more.
+          </ListItem>
+        </List>
       </div>
     </div>
   );

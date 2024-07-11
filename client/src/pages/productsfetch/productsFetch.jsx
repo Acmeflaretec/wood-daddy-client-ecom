@@ -18,9 +18,8 @@ function ProductsFetch() {
 
   return (
      <div>
-      <SearchBar setSearch1={setSearch} search1={search} notif={notification} />
+      {/* <SearchBar setSearch1={setSearch} search1={search} notif={notification} /> */}
       <ProductList  type={'productFetch'} categ={cat} allProds={allProducts} setNotif={setNotification}/>
-      <Footer />
     </div>
   )
 }

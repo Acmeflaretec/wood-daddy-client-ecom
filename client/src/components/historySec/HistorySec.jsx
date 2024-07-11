@@ -1,31 +1,41 @@
-import React from 'react'
-import './index.css'
+import React from "react";
+import "./index.css";
+import { Typography } from "@mui/material";
 
 function HistorySec() {
   return (
-    <div className='AboutSec'>
-    
-    <div className="content">
-      <h1 style={{color:'gray'}}>Our history</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce placerat, risus in cursus posuere,
-         elit lorem tristique elit, eget fermentum ex massa in nisi. Nullam euismod odio at dapibus malesuada.
-         Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin
-          literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in 
-          Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of
-           the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.
-          The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+    <div className="AboutSec">
+      <div className="content">
+        <h1 style={{ color: "gray" }}>Our history</h1>
+        <Typography p={2}>
+          WoodDaddy was born out of a deep appreciation for fine woodworking and
+          a desire to bring artisanal quality furniture to discerning customers.
+          Our journey began with a simple belief: that furniture should be more
+          than just functional—it should be a work of art that enhances your
+          home and reflects your unique style.
+        </Typography>
 
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce placerat, risus in cursus posuere,
-         elit lorem tristique elit, eget fermentum ex massa in nisi. Nullam euismod odio at dapibus malesuada.
-         Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin
-          literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in 
-          Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of
-           the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.
-          The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+        <Typography p={2}>
+          At WoodDaddy, our mission is to provide you with exceptional furniture
+          that combines timeless design with unparalleled craftsmanship. We
+          believe in creating pieces that are not only beautiful but also
+          durable and sustainable. Our goal is to offer a curated selection of
+          furniture that meets the highest standards of quality and aesthetic
+          appeal.
+        </Typography>
+        <Typography p={2}>
+          At WoodDaddy, we believe that our customers deserve the best. We are
+          dedicated to providing exceptional customer service and ensuring that
+          your shopping experience is seamless and enjoyable. Our knowledgeable
+          team is always ready to assist you with any questions or concerns you
+          may have. Thank you for choosing WoodDaddy. We are honored to be a
+          part of your home and look forward to helping you create spaces that
+          you love.
+        </Typography>
+      </div>
+      <img src="/gallery/a2.jpg" alt="" style={{ height: "600px" }} />
     </div>
-    <img src="/gallery/a2.jpg" alt="" style={{height:'600px'}} />
-  </div>
-  )
+  );
 }
 
-export default HistorySec
+export default HistorySec;

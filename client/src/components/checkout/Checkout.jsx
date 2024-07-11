@@ -1,394 +1,193 @@
-import React, { useState, useEffect } from 'react';
-import axiosInstance from '../../axios';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from "react";
+import axiosInstance from "../../axios";
+import { useNavigate } from "react-router-dom";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CssBaseline from "@mui/material/CssBaseline";
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import Stepper from "@mui/material/Stepper";
+import Typography from "@mui/material/Typography";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
+import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
+import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+import AddressForm from "./AddressForm";
+import getCheckoutTheme from "./getCheckoutTheme";
+import Info from "./Info";
+import InfoMobile from "./InfoMobile";
+import Review from "./Review";
+import SpanningTable from "./table";
 
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Stepper from '@mui/material/Stepper';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import Typography from '@mui/material/Typography';
-
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
-import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-
-import AddressForm from './AddressForm';
-import getCheckoutTheme from './getCheckoutTheme';
-import Info from './Info';
-import InfoMobile from './InfoMobile';
-import PaymentForm from './PaymentForm';
-import Review from './Review';
-import ToggleColorMode from './ToggleColorMode';
-import SpanningTable from './table'
-import { TryOutlined } from '@mui/icons-material';
-
-function ToggleCustomTheme({ showCustomTheme, toggleCustomTheme }) {
-
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '100dvw',
-        position: 'fixed',
-        bottom: 24,
-      }}
-    >
-      <ToggleButtonGroup
-        color="primary"
-        exclusive
-        value={showCustomTheme}
-        onChange={toggleCustomTheme}
-        aria-label="Platform"
-        sx={{
-          backgroundColor: 'background.default',
-          '& .Mui-selected': {
-            pointerEvents: 'none',
-          },
-        }}
-      >
-        <ToggleButton value>
-          <AutoAwesomeRoundedIcon sx={{ fontSize: '20px', mr: 1 }} />
-          Custom theme
-        </ToggleButton>
-        <ToggleButton value={false}>Material Design 2</ToggleButton>
-      </ToggleButtonGroup>
-    </Box>
-  );
-}
-
-ToggleCustomTheme.propTypes = {
-  showCustomTheme: PropTypes.shape({
-    valueOf: PropTypes.func.isRequired,
-  }).isRequired,
-  toggleCustomTheme: PropTypes.func.isRequired,
-};
-
-const steps = [ 'order details','Shipping address', 'Review your order'];
-
-const logoStyle = {
-  width: '140px',
-  height: '56px',
-  marginLeft: '-4px',
-  marginRight: '-8px',
-};
-
-
+const steps = ["order details", "Shipping address", "Review your order"];
 
 export default function Checkout() {
-  const [mode, setMode] = React.useState('light');
+  const [mode, setMode] = React.useState("light");
   const [showCustomTheme, setShowCustomTheme] = React.useState(true);
   const checkoutTheme = createTheme(getCheckoutTheme(mode));
   const defaultTheme = createTheme({ palette: { mode } });
   const [activeStep, setActiveStep] = React.useState(0);
-  const [usersId,setUsersId] = useState()
-  const [urlQuery, setUrlQuery] = useState('');
-  const [checkAddress,setCheckAddress] = useState()
-
-
+  const [usersId, setUsersId] = useState();
+  const [shippingAddress, setShippingAddress] = useState({});
+  const [order, setOrder] = useState({});
+  const [totalAmt, setTotalAmt] = useState(0);
+  const [amount, setAmount] = useState(0);
   const [details, setDetails] = useState([]);
   const navigate = useNavigate();
 
   const [addressDetailsM, setAddressDetailsM] = useState();
-  const [primaryAddressesM,setPrimaryAddressesM] = useState();
+  const [primaryAddressesM, setPrimaryAddressesM] = useState();
   const [formDataM, setFormDataM] = useState({
-    firstname: '',
-    lastname: '',
-    address_line_1: '',
-    address_line_2: '',
-    city: '',
-    state: '',
-    zip: '',
-    primary:true,
-    country: '',
-    mobile:'',
-    
+    firstname: "",
+    lastname: "",
+    address_line_1: "",
+    address_line_2: "",
+    city: "",
+    state: "",
+    zip: "",
+    primary: true,
+    country: "",
+    mobile: "",
   });
-
- 
 
   useEffect(() => {
     if (usersId) {
-      const query = `${process.env.REACT_APP_API_URL}/api/v1/address/getaddress/${usersId}`;
-      setUrlQuery(query);
-
+      const query = `/address/address/${usersId}`;
       const fetchData = async () => {
         try {
           const response = await axiosInstance.get(query);
-          setAddressDetailsM(response.data);
-         
-          const filterAddresses = await response.data.filter(address => address.primary === true);
-          setPrimaryAddressesM(filterAddresses[0])
-
-console.log(filterAddresses[0]);
-
-          console.log('adddd',response.data)
+          setAddressDetailsM(response?.data);
+          const filterAddresses = await response?.data?.filter(
+            (address) => address.primary === true
+          );
+          setPrimaryAddressesM(filterAddresses?.[0]);
+          console.log(filterAddresses?.[0]);
+          console.log("adddd", response.data);
         } catch (error) {
-          console.error('Error fetching data:', error);
+          console.error("Error fetching data:", error);
         }
       };
-
       fetchData();
     }
   }, [usersId]);
 
-
-
-
   useEffect(() => {
-   
     const fetchData = async () => {
-      const response = await axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/v1/auth/getuser`);
-      setUsersId(response.data.data[0]._id)
-      console.log('userrrr',response.data.data[0]._id)
-    }
-    fetchData()
-    
+      const response = await axiosInstance.get(`/auth/getuser`);
+      setUsersId(response?.data?.data?.[0]?._id);
+      console.log("userrrr", response?.data?.data?.[0]?._id);
+    };
+    fetchData();
   }, []);
 
-const handleOrder = async () => {
- navigate(`/order`);
-
-}
-
-//var urlQuery = `${process.env.REACT_APP_API_URL}/api/v1/cart/664db80748eeadcd76759a55?page=1&sortField=createdAt&sortOrder=desc`;
-
-useEffect(() => {
-  if (usersId) {
-    const query = `${process.env.REACT_APP_API_URL}/api/v1/cart/${usersId}?page=1&sortField=createdAt&sortOrder=desc`;
-    setUrlQuery(query);
-
-    const fetchData = async () => {
-      try {
-        const response = await axiosInstance.get(query);
-        setDetails(response.data.products);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }
-}, [usersId]);
-
-   
-  const handleQuantityChange = async (id, action) => {
-    //console.log('iddd', id);
-    try {
-      if (action === 'increment') {
-        await axiosInstance.put(`${process.env.REACT_APP_API_URL}/api/v1/cart/increase/${id}`);
-      } else if (action === 'decrement') {
-        await axiosInstance.put(`${process.env.REACT_APP_API_URL}/api/v1/cart/decrease/${id}`);
-      }
-
-      // Fetch updated order items
-      const response = await axiosInstance.get(urlQuery);
-      setDetails(response.data.products);
-    } catch (error) {
-      console.error(`Error ${action === 'increment' ? 'incrementing' : 'decrementing'} order item quantity:`, error);
+  useEffect(() => {
+    if (usersId) {
+      const query = `/cart/${usersId}?page=1&sortField=createdAt&sortOrder=desc`;
+      const fetchData = async () => {
+        try {
+          const response = await axiosInstance.get(query);
+          setDetails(response?.data?.products);
+          convertToServerFormat(response?.data?.products);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      fetchData();
     }
-  };
+  }, [usersId]);
 
-  const calculateTotal = () => {
-    return details.reduce((total, item) => total + item.quantity * item.price, 0);
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await axiosInstance.delete(`${process.env.REACT_APP_API_URL}/api/v1/order/orderitem/${id}`);
-      // Fetch updated order items
-      const response = await axiosInstance.get(urlQuery);
-      setDetails(response.data);
-    } catch (error) {
-      console.error('Error deleting order item:', error);
-    }
-  };
   function convertToServerFormat(details) {
-    const products = details.map(item => ({
-      product_id: item._id, // Assuming _id represents the product ID
-      qty: item.cartDetails.length > 0 ? item.cartDetails[0].qty : 0, // Assuming qty is taken from cartDetails
-      price: item.sale_rate // Assuming sale_rate represents the price
+    const products = details?.map((item) => ({
+      product_id: item._id,
+      qty: item.cartDetails.length > 0 ? item.cartDetails[0].qty : 0,
+      sale_rate: item.sale_rate,
+      price: item.price,
     }));
-  
-    const totalPrice = products.reduce((acc, curr) => acc + (curr.qty * curr.price), 0);
-  
-    return {
-      item: products,
-      totalPrice
-    };
+
+    const totalPrice = products.reduce(
+      (acc, curr) => acc + curr.qty * curr.price,
+      0
+    );
+    const totalSalePrice = products.reduce(
+      (acc, curr) => acc + curr.qty * curr.sale_rate,
+      0
+    );
+    setAmount(totalPrice);
+    setTotalAmt(totalSalePrice);
+    return 
   }
-  
 
-  const handleBuy = async () => {
+  const handlePlaceOrder = async () => {
     try {
-      // Calculate total amount
-   //   const totalAmount = calculateTotal();
-console.log('productsssss',details)
-
-const productsData = convertToServerFormat(details);
-console.log(productsData);
-console.log('cart ',productsData)
-
-      // Prepare data for creating the order
-   
-      // Send a POST request to create the order
-      const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/api/v1/order/createorder/${'664db80748eeadcd76759a55'}/${'666716d82f9a542271578e2e'}`, {products:productsData});
-      console.log('Order created:', response.data);
-      // Optionally, you can perform additional actions after the order is created
+      const products = details?.map((item) => ({
+        product_id: item._id,
+        qty: item.cartDetails.length > 0 ? item.cartDetails[0].qty : 0,
+        price: item.sale_rate,
+      }));
+      const productsData = {
+        item: products,
+        totalPrice: totalAmt,
+      };
+      console.log(productsData);
+      console.log({ products: productsData, totalAmt: { totalPrice: totalAmt } });
+      const response = await axiosInstance.post(
+        `/order/createorder/${usersId}/${shippingAddress?._id}`,
+        { products: productsData, totalAmt: { totalPrice: totalAmt } }
+      );
+      setActiveStep(activeStep + 1);
+      setOrder(response?.data)
+      console.log("Order created:", response?.data);
     } catch (error) {
-      console.error('Error creating order:', error);
-      // Optionally, you can handle error cases here
+      console.error("Error creating order:", error);
     }
   };
 
+  // ********* //
 
-  React.useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-    document.body.appendChild(script);
-    return () => {
-       document.body.removeChild(script);
-    };
- }, []);
-//  const handleClick = () => {
-
-//     const options = {
-//        key: 'rzp_test_wNhVz81BFxrIrL',
-//        amount: parseInt(1000) * 100, // amount in paisa
-//        currency: 'INR',
-//        name: 'TUT FINDER',
-//        description: 'Purchase course',
-//        handler: function (response) {
-//           handlePaymentSuccess()
-//        },
-//       //  prefill: {
-//       //     email: data?.email,
-//       //  },
-//       //  theme: {
-//       //     color: theme?.palette?.mode === 'light' ? '#a31545' : '#000',
-//       //  },
-//       //  image: 'apple-touch-icon.png'
-//     };
-
-//     const rzp = new window.Razorpay(options);
-//     rzp.open()
-//     // details?.subscription_type === 'Paid' ? rzp.open() : handlePaymentSuccess()
-//  };
-
-
-
-
-//  succes payment
- const handlePaymentSuccess = async () => {
-  const productsData =await convertToServerFormat(details);
-console.log(productsData);
-console.log('cart ',productsData)
-   console.log('success')
-
- 
-   const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/api/v1/order/createorder/${usersId}/${primaryAddressesM._id}`,
-     {products:productsData,totalAmt:convertToServerFormat(details)});
-
-   setActiveStep(activeStep + 1);
- };
-// ********* //
-
-  const toggleColorMode = () => {
-    setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
-  };
-
-  const toggleCustomTheme = () => {
-    setShowCustomTheme((prev) => !prev);
-  };
-
-  const handleNext = async() => {
-    console.log('act step',activeStep+1)
-   if(activeStep+1 ==1 ) {
-    setActiveStep(activeStep + 1);
-    console.log('act1',activeStep +1)
-    
-  }
-  
-  if(activeStep+1 ==2){
-    console.log('act2',activeStep +1)
-
-    if(primaryAddressesM  ){
-
-      console.log('address present',primaryAddressesM)
+  const handleNext = async () => {
+    console.log("act step", activeStep + 1);
+    if (activeStep + 1 == 1) {
       setActiveStep(activeStep + 1);
-      }else{
-        console.log('reached  api post')
+      console.log("act1", activeStep + 1);
+    }
+
+    if (activeStep + 1 == 2) {
+      console.log("act2", activeStep + 1);
+
+      if (primaryAddressesM) {
+        console.log("address present", primaryAddressesM);
+        setActiveStep(activeStep + 1);
+      } else {
+        console.log("reached  api post");
         const postAddress = async () => {
           try {
-              const response = await axiosInstance.post(`${process.env.REACT_APP_API_URL}/api/v1/address/address/${usersId}`, formDataM);
-      
-              console.log('Address response:', response.data);
-              console.log('Address response success :', response.data.success);
-              // Assuming a successful response indicates the address was added
-              if (response.data ) {
-                  setActiveStep(activeStep + 1);
-              }
+            const response = await axiosInstance.post(
+              `/address/address`,
+              formDataM
+            );
+            setShippingAddress(response?.data);
+            console.log("Address response:", response?.data);
+            if (response.data) {
+              setActiveStep(activeStep + 1);
+            }
           } catch (error) {
-              console.error('Error adding address:', error);
+            console.error("Error adding address:", error);
           }
-      };
-      
-      postAddress();
-      console.log('not present', primaryAddressesM);
-      
+        };
 
-
-
-        
+        postAddress();
+        console.log("not present", primaryAddressesM);
       }
+    }
 
-  }
-
-if(activeStep + 1 === 3){
-
-
-  const options = {
-    key: 'rzp_test_wNhVz81BFxrIrL',
-    amount: parseInt(1000) * 100, // amount in paisa
-    currency: 'INR',
-    name: 'TUT FINDER',
-    description: 'Purchase course',
-    handler: function (response) {
-       handlePaymentSuccess()
-    },
-   //  prefill: {
-   //     email: data?.email,
-   //  },
-   //  theme: {
-   //     color: theme?.palette?.mode === 'light' ? '#a31545' : '#000',
-   //  },
-   //  image: 'apple-touch-icon.png'
- };
-
- const rzp = new window.Razorpay(options);
- rzp.open()
-
-
-
-}
-
-
-
+    if (activeStep + 1 === 3) {
+      handlePlaceOrder()
+      setActiveStep(activeStep + 1);
+    }
   };
 
   const handleBack = () => {
@@ -398,33 +197,45 @@ if(activeStep + 1 === 3){
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return <SpanningTable productDetails={details} setProductDetails={setDetails} />;
+        return (
+          <SpanningTable
+            productDetails={details}
+            setProductDetails={setDetails}
+          />
+        );
       case 1:
-        return <AddressForm usersProId={usersId} addressDetails={addressDetailsM} primaryAddresses={primaryAddressesM} 
-        formData={formDataM} setFormData={setFormDataM} />;
+        return (
+          <AddressForm
+            usersProId={usersId}
+            addressDetails={addressDetailsM}
+            primaryAddresses={primaryAddressesM}
+            formData={formDataM}
+            setFormData={setFormDataM}
+          />
+        );
       case 2:
-        return <Review />;
+        return <Review products={details} address={shippingAddress} />;
       default:
-        throw new Error('Unknown step');
+        throw new Error("Unknown step");
     }
   }
 
   return (
     <ThemeProvider theme={showCustomTheme ? checkoutTheme : defaultTheme}>
       <CssBaseline />
-      <Grid container sx={{ height: { xs: '100%', sm: '100dvh' } }}>
+      <Grid container sx={{ height: { xs: "100%", sm: "100dvh" } }}>
         <Grid
           item
           xs={12}
           sm={5}
           lg={4}
           sx={{
-            display: { xs: 'none', md: 'flex' },
-            flexDirection: 'column',
-            backgroundColor: 'background.paper',
-            borderRight: { sm: 'none', md: '1px solid' },
-            borderColor: { sm: 'none', md: 'divider' },
-            alignItems: 'start',
+            display: { xs: "none", md: "flex" },
+            flexDirection: "column",
+            backgroundColor: "background.paper",
+            borderRight: { sm: "none", md: "1px solid" },
+            borderColor: { sm: "none", md: "divider" },
+            alignItems: "start",
             pt: 4,
             px: 10,
             gap: 4,
@@ -432,8 +243,8 @@ if(activeStep + 1 === 3){
         >
           <Box
             sx={{
-              display: 'flex',
-              alignItems: 'end',
+              display: "flex",
+              alignItems: "end",
               height: 150,
             }}
           >
@@ -441,28 +252,21 @@ if(activeStep + 1 === 3){
               startIcon={<ArrowBackRoundedIcon />}
               component="a"
               href="/"
-              sx={{ ml: '-8px' }}
+              sx={{ ml: "-8px" }}
             >
               Back to Home
-              {/* <img
-                src={
-                  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg'
-                }
-                style={logoStyle}
-                alt="Sitemark's logo"
-              /> */}
             </Button>
           </Box>
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
+              display: "flex",
+              flexDirection: "column",
               flexGrow: 1,
-              width: '100%',
+              width: "100%",
               maxWidth: 500,
             }}
           >
-            <Info totalPrice={convertToServerFormat(details)} productData={details} setProductData={setDetails} />
+            <Info item={details?.length} total={totalAmt} subtotal={amount} />
           </Box>
         </Grid>
         <Grid
@@ -471,12 +275,12 @@ if(activeStep + 1 === 3){
           md={7}
           lg={8}
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            maxWidth: '100%',
-            width: '100%',
-            backgroundColor: { xs: 'transparent', sm: 'background.default' },
-            alignItems: 'start',
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: "100%",
+            width: "100%",
+            backgroundColor: { xs: "transparent", sm: "background.default" },
+            alignItems: "start",
             pt: { xs: 2, sm: 4 },
             px: { xs: 2, sm: 10 },
             gap: { xs: 4, md: 8 },
@@ -484,62 +288,53 @@ if(activeStep + 1 === 3){
         >
           <Box
             sx={{
-              display: 'flex',
-              justifyContent: { sm: 'space-between', md: 'flex-end' },
-              alignItems: 'center',
-              width: '100%',
-              maxWidth: { sm: '100%', md: 600 },
+              display: "flex",
+              justifyContent: { sm: "space-between", md: "flex-end" },
+              alignItems: "center",
+              width: "100%",
+              maxWidth: { sm: "100%", md: 600 },
             }}
           >
             <Box
               sx={{
-                display: { xs: 'flex', md: 'none' },
-                flexDirection: 'row',
-                width: '100%',
-                justifyContent: 'space-between',
+                display: { xs: "flex", md: "none" },
+                flexDirection: "row",
+                width: "100%",
+                justifyContent: "space-between",
               }}
             >
               <Button
                 startIcon={<ArrowBackRoundedIcon />}
                 component="a"
                 href="/"
-                sx={{ alignSelf: 'start' }}
+                sx={{ alignSelf: "start" }}
               >
                 Back to home
-                {/* <img
-                  src={
-                    'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg'
-                  }
-                  style={logoStyle}
-                  alt="Sitemark's logo"
-                /> */}
               </Button>
-              <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
             </Box>
             <Box
               sx={{
-                display: { xs: 'none', md: 'flex' },
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                alignItems: 'flex-end',
+                display: { xs: "none", md: "flex" },
+                flexDirection: "column",
+                justifyContent: "end",
+                alignItems: "flex-end",
                 flexGrow: 1,
                 height: 150,
               }}
             >
-              <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
               <Stepper
                 id="desktop-stepper"
                 activeStep={activeStep}
                 sx={{
-                  width: '100%',
+                  width: "100%",
                   height: 40,
                 }}
               >
                 {steps.map((label) => (
                   <Step
                     sx={{
-                      ':first-child': { pl: 0 },
-                      ':last-child': { pr: 0 },
+                      ":first-child": { pl: 0 },
+                      ":last-child": { pr: 0 },
                     }}
                     key={label}
                   >
@@ -551,58 +346,62 @@ if(activeStep + 1 === 3){
           </Box>
           <Card
             sx={{
-              display: { xs: 'flex', md: 'none' },
-              width: '100%',
+              display: { xs: "flex", md: "none" },
+              width: "100%",
             }}
           >
             <CardContent
               sx={{
-                display: 'flex',
-                width: '100%',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                ':last-child': { pb: 2 },
+                display: "flex",
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "space-between",
+                ":last-child": { pb: 2 },
               }}
             >
               <div>
                 <Typography variant="subtitle2" gutterBottom>
                   Selected products
                 </Typography>
-                <Typography variant="body1">
-                  {activeStep >= 2 ? '$144.97' : '$134.98'}
-                </Typography>
+                <Typography variant="body1">₹ {totalAmt}</Typography>
               </div>
-              <InfoMobile totalPrice={activeStep >= 2 ? '$144.97' : '$134.98'} />
+              <InfoMobile
+                item={details?.length}
+                total={totalAmt}
+                subtotal={amount}
+              />
             </CardContent>
           </Card>
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
+              display: "flex",
+              flexDirection: "column",
               flexGrow: 1,
-              width: '100%',
-              maxWidth: { sm: '100%', md: 600 },
-              maxHeight: '720px',
-              gap: { xs: 5, md: 'none' },
+              width: "100%",
+              maxWidth: { sm: "100%", md: 600 },
+              maxHeight: "720px",
+              gap: { xs: 5, md: "none" },
             }}
           >
             <Stepper
               id="mobile-stepper"
               activeStep={activeStep}
               alternativeLabel
-              sx={{ display: { sm: 'flex', md: 'none' } }}
+              sx={{ display: { sm: "flex", md: "none" } }}
             >
               {steps.map((label) => (
                 <Step
                   sx={{
-                    ':first-child': { pl: 0 },
-                    ':last-child': { pr: 0 },
-                    '& .MuiStepConnector-root': { top: { xs: 6, sm: 12 } },
+                    ":first-child": { pl: 0 },
+                    ":last-child": { pr: 0 },
+                    "& .MuiStepConnector-root": { top: { xs: 6, sm: 12 } },
                   }}
                   key={label}
                 >
                   <StepLabel
-                    sx={{ '.MuiStepLabel-labelContainer': { maxWidth: '70px' } }}
+                    sx={{
+                      ".MuiStepLabel-labelContainer": { maxWidth: "70px" },
+                    }}
                   >
                     {label}
                   </StepLabel>
@@ -614,16 +413,17 @@ if(activeStep + 1 === 3){
                 <Typography variant="h1">📦</Typography>
                 <Typography variant="h5">Thank you for your order!</Typography>
                 <Typography variant="body1" color="text.secondary">
-                  Your order number is
-                  <strong>&nbsp;#140396</strong>. We have emailed your order
-                  confirmation and will update you once its shipped.
+                  Order Successfull
+                  <strong>&nbsp;#{order?._id}</strong> is the order
+                  confirmation id and will update you once its shipped.
                 </Typography>
                 <Button
                   variant="contained"
                   sx={{
-                    alignSelf: 'start',
-                    width: { xs: '100%', sm: 'auto' },
+                    alignSelf: "start",
+                    width: { xs: "100%", sm: "auto" },
                   }}
+                  onClick={handleBack}
                 >
                   Go to my orders
                 </Button>
@@ -633,15 +433,16 @@ if(activeStep + 1 === 3){
                 {getStepContent(activeStep)}
                 <Box
                   sx={{
-                    display: 'flex',
-                    flexDirection: { xs: 'column-reverse', sm: 'row' },
-                    justifyContent: activeStep !== 0 ? 'space-between' : 'flex-end',
-                    alignItems: 'end',
+                    display: "flex",
+                    flexDirection: { xs: "column-reverse", sm: "row" },
+                    justifyContent:
+                      activeStep !== 0 ? "space-between" : "flex-end",
+                    alignItems: "end",
                     flexGrow: 1,
                     gap: 1,
                     pb: { xs: 12, sm: 0 },
                     mt: { xs: 2, sm: 0 },
-                    mb: '60px',
+                    mb: "60px",
                   }}
                 >
                   {activeStep !== 0 && (
@@ -650,13 +451,12 @@ if(activeStep + 1 === 3){
                       onClick={handleBack}
                       variant="text"
                       sx={{
-                        display: { xs: 'none', sm: 'flex' },
+                        display: { xs: "none", sm: "flex" },
                       }}
                     >
                       Previous
                     </Button>
                   )}
-
                   {activeStep !== 0 && (
                     <Button
                       startIcon={<ChevronLeftRoundedIcon />}
@@ -664,22 +464,21 @@ if(activeStep + 1 === 3){
                       variant="outlined"
                       fullWidth
                       sx={{
-                        display: { xs: 'flex', sm: 'none' },
+                        display: { xs: "flex", sm: "none" },
                       }}
                     >
                       Previous
                     </Button>
                   )}
-
                   <Button
                     variant="contained"
                     endIcon={<ChevronRightRoundedIcon />}
                     onClick={handleNext}
                     sx={{
-                      width: { xs: '100%', sm: 'fit-content' },
+                      width: { xs: "100%", sm: "fit-content" },
                     }}
                   >
-                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                    {activeStep === steps.length - 1 ? "Place order" : "Next"}
                   </Button>
                 </Box>
               </React.Fragment>
@@ -687,10 +486,6 @@ if(activeStep + 1 === 3){
           </Box>
         </Grid>
       </Grid>
-      {/* <ToggleCustomTheme
-        toggleCustomTheme={toggleCustomTheme}
-        showCustomTheme={showCustomTheme}
-      /> */}
     </ThemeProvider>
   );
 }

@@ -1,30 +1,27 @@
 /* header */
-.header-top{
-display: flex;
-height: 110px;
-
+.header-top {
+  display: flex;
+  height: 110px;
 }
 
 /* search */
-.search-bar{
+.search-bar {
   display: flex;
   flex-direction: column;
-flex: 1;
-align-items: center;
-justify-content: center;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
 }
- 
 
 /* menu */
-.nav-link{
+.nav-link {
   color: #6e6e6e;
-  
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ;
+
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-
 /* logo */
-.logo-bar{
+.logo-bar {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,54 +31,45 @@ justify-content: center;
 .logo-bar h1 {
   font-size: 45px;
   color: #888;
-transition: 0.3s;
-
+  transition: 0.3s;
 }
 .logo-bar h1:hover {
   font-size: 55px;
   color: #6e6e6e;
-
 }
 /* group */
-.grp-bar{
-display: flex;
-align-items: center;
-justify-content: center;
-flex: 1;
-gap: 15px;
-
+.grp-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 15px;
 }
 
-.headicons{
+.headicons {
   color: #6d6c6c;
   cursor: pointer;
   opacity: 0.8;
   transition: 0.3s;
-
 }
-.headicons:hover{
-
+.headicons:hover {
   opacity: 1;
 }
 
-.mob-search-bar{
+.mob-search-bar {
   display: none;
 }
-.mob-grp-bar{
+.mob-grp-bar {
   display: none;
 }
 
-
-.header-bottom{
+.header-bottom {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 60px !important;
- 
-
 }
 .header-nav {
- 
   list-style: none;
   padding: 0;
   margin: 0;
@@ -104,14 +92,26 @@ gap: 15px;
   background-color: #f0f0f0; /* Background color on hover */
 }
 .header-nav li a {
-font-size: 18px;
-
+  font-size: 18px;
 }
 
+html,
+body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
 /* footer */
 /* Footer CSS */
 
 .footer-distributed {
+  margin-top: auto;
   background: #aba7a7;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
   box-sizing: border-box;
@@ -136,7 +136,7 @@ font-size: 18px;
 /* The company logo */
 .footer-distributed h3 {
   color: #0a0909;
-  font: normal 36px 'Open Sans', cursive;
+  font: normal 36px "Open Sans", cursive;
   margin: 0;
 }
 
@@ -285,49 +285,42 @@ font-size: 18px;
   }
 }
 
-.header-bottom{
+.header-bottom {
   /* background-color: #e8dfdf; */
 }
 
 /* mob  */
 @media (max-width: 678px) {
- 
-
-.mob-search-bar{
-  display: flex;
-  flex-direction: column;
-flex: 1;
-align-items: center;
-justify-content: center;
-
-}
-.mob-grp-bar{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  gap: 15px;
-
-}
-.logo-bar h1 {
-  font-size: 30px;
-  color: #888;
-transition: 0.3s;
-
-}
-.logo-bar h1:hover {
-  font-size: 35px;
-  color: #6e6e6e;
-
-}
-.search-bar{
-  display: none !important;
-}
-.grp-bar{
-  display: none !important;
-}
-.header-nav{
-  display: none !important;
-}
-
+  .mob-search-bar {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+  }
+  .mob-grp-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: 15px;
+  }
+  .logo-bar h1 {
+    font-size: 30px;
+    color: #888;
+    transition: 0.3s;
+  }
+  .logo-bar h1:hover {
+    font-size: 35px;
+    color: #6e6e6e;
+  }
+  .search-bar {
+    display: none !important;
+  }
+  .grp-bar {
+    display: none !important;
+  }
+  .header-nav {
+    display: none !important;
+  }
 }

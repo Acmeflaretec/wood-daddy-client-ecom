@@ -1,34 +1,25 @@
 .OfferSale {
   margin-top: 40px;
   margin-bottom: 40px;
-  /* Additional CSS for positioning and text color */
+  text-align: center;
   position: relative;
   color: white;
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-
 }
 
 .OfferSale p,
 .OfferSale h1 {
-  /* Additional CSS for text color */
   color: white;
 }
 
 .salesBtn {
-  /* Container styling */
   display: inline-block;
-  
   border: 1px solid white;
   color: white;
   font-size: 12px;
-  transition: border-color 0.3s; /* Smooth transition for border color change */
+  transition: border-color 0.3s;
 }
 
 .salesBtn:hover {
-  cursor: pointer; /* Change cursor to pointer on hover */
+  cursor: pointer;
 }
-
-
-
-
-

@@ -1,7 +1,10 @@
 import React from 'react';
 import {
   List, ListItem, ListItemText, Divider, Chip, Button,
-  Card, CardContent, Typography, Box
+  Card, CardContent, Typography, Box,
+  ListItemAvatar,
+  Avatar,
+  Grid
 } from '@mui/material';
 
 function OrderList({ orders, onOrderClick }) {
@@ -20,26 +23,31 @@ function OrderList({ orders, onOrderClick }) {
 
   return (
     <List>
-      {orders.map((order) => (
-        <React.Fragment key={order.id}>
+      {orders?.map((order) => (
+        <React.Fragment key={order?._id}>
           <ListItem alignItems="flex-start">
             <ListItemText
               primary={
-                <Typography variant="h6">
-                  Order #{order.id} - {order.date}
+                <Grid display={"flex"} justifyContent={'space-between'}>
+                <Typography variant="caption">
+                  Order #{order?._id}
                 </Typography>
+                <Typography variant="caption" px={2}>
+                  Ordered on {new Date(order?.createdAt)?.toDateString()}
+                </Typography>
+                </Grid>
               }
               secondary={
                 <>
                   <Typography component="span" variant="body2" color="text.primary">
-                    Total: ${order.total.toFixed(2)}
+                    Total: ₹ {order?.Totalamount?.toFixed(2)}
                   </Typography>
                   <br />
-                  <Chip label={order.status} color="primary" size="small" />
+                  Order Status : <Chip label={order?.status} color="primary" size="small" />
                 </>
               }
             />
-            <Button variant="outlined" onClick={() => onOrderClick(order)}>
+            <Button variant="outlined" onClick={() => onOrderClick(order?._id)}>
               View Details
             </Button>
           </ListItem>

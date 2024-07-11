@@ -1,20 +1,33 @@
-import React from 'react';
+import React from "react";
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions,
-  Typography, Button, Grid, Card, CardContent, Box,
-  CardMedia, Divider, Stepper, Step, StepLabel, StepContent
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Typography,
+  Button,
+  Grid,
+  Card,
+  CardContent,
+  Box,
+  CardMedia,
+  Divider,
+  Stepper,
+  Step,
+  StepLabel,
+  StepContent,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
-  '& .MuiDialogTitle-root': {
+  "& .MuiDialogTitle-root": {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
   },
-  '& .MuiDialogContent-root': {
+  "& .MuiDialogContent-root": {
     padding: theme.spacing(3),
   },
 }));
@@ -26,8 +39,8 @@ const OrderInfoCard = styled(Card)(({ theme }) => ({
 
 const ItemCard = styled(Card)(({ theme }) => ({
   marginBottom: theme.spacing(2),
-  transition: 'box-shadow 0.3s',
-  '&:hover': {
+  transition: "box-shadow 0.3s",
+  "&:hover": {
     boxShadow: theme.shadows[4],
   },
 }));
@@ -38,24 +51,25 @@ const SummaryCard = styled(Card)(({ theme }) => ({
   backgroundColor: theme.palette.grey[100],
 }));
 
-const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
+const ColorlibStepIconRoot = styled("div")(({ theme, ownerState }) => ({
+  backgroundColor:
+    theme.palette.mode === "dark" ? theme.palette.grey[700] : "#ccc",
   zIndex: 1,
-  color: '#fff',
+  color: "#fff",
   width: 50,
   height: 50,
-  display: 'flex',
-  borderRadius: '50%',
-  justifyContent: 'center',
-  alignItems: 'center',
+  display: "flex",
+  borderRadius: "50%",
+  justifyContent: "center",
+  alignItems: "center",
   ...(ownerState.active && {
     backgroundImage:
-      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
-    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
+      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
+    boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
   }),
   ...(ownerState.completed && {
     backgroundImage:
-      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+      "linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)",
   }),
 }));
 
@@ -69,14 +83,17 @@ function ColorlibStepIcon(props) {
   };
 
   return (
-    <ColorlibStepIconRoot ownerState={{ completed, active }} className={className}>
+    <ColorlibStepIconRoot
+      ownerState={{ completed, active }}
+      className={className}
+    >
       {icons[String(icon)]}
     </ColorlibStepIconRoot>
   );
 }
 
 const getOrderSteps = () => {
-  return ['Processing', 'Shipped', 'Delivered'];
+  return ["Placed", "Shipped", "Delivered"];
 };
 
 const getActiveStep = (status) => {
@@ -86,49 +103,55 @@ const getActiveStep = (status) => {
 
 function SingleOrder({ order, onClose }) {
   if (!order) return null;
-
+  console.log(order);
   const steps = getOrderSteps();
-  const activeStep = getActiveStep(order.status);
+  const activeStep = getActiveStep(order?.status);
 
   return (
     <StyledDialog open={!!order} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>Order #{order.id} Details</DialogTitle>
+      <DialogTitle>Order #{order._id} Details</DialogTitle>
       <DialogContent>
         <OrderInfoCard>
           <CardContent>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
                 <Typography variant="subtitle1" gutterBottom>
-                  <strong>Order Date:</strong> {order.date}
+                  <strong>Order Date:</strong>{" "}
+                  {new Date(order?.createdAt)?.toDateString()}
                 </Typography>
                 <Typography variant="subtitle1" gutterBottom>
-                  <strong>Total:</strong> ${order.total.toFixed(2)}
+                  <strong>Total:</strong> ${order?.Totalamount?.toFixed(2)}
                 </Typography>
                 <Typography variant="subtitle1" gutterBottom>
                   <strong>Status:</strong> {order.status}
                 </Typography>
               </Grid>
-              <Grid item xs={12} md={6}>
+              {/* <Grid item xs={12} md={6}>
                 <Typography variant="subtitle1" gutterBottom>
                   <strong>Shipping Address:</strong>
                 </Typography>
                 <Typography variant="body2">{order.shippingAddress}</Typography>
-              </Grid>
+              </Grid> */}
             </Grid>
           </CardContent>
         </OrderInfoCard>
 
         <Stepper activeStep={activeStep} orientation="vertical">
-          {steps.map((label, index) => (
+          {steps?.map((label, index) => (
             <Step key={label}>
               <StepLabel StepIconComponent={ColorlibStepIcon}>
-                <Typography variant="h6" color={index === activeStep ? "primary" : "textSecondary"}>
+                <Typography
+                  variant="h6"
+                  color={index === activeStep ? "primary" : "textSecondary"}
+                >
                   {label}
                 </Typography>
               </StepLabel>
               <StepContent>
                 <Typography>
-                  {index === activeStep ? `Your order is currently ${label.toLowerCase()}.` : ''}
+                  {index === activeStep
+                    ? `Your order is currently ${label.toLowerCase()}.`
+                    : ""}
                 </Typography>
               </StepContent>
             </Step>
@@ -139,7 +162,7 @@ function SingleOrder({ order, onClose }) {
           Items:
         </Typography>
         <Grid container spacing={2}>
-          {order.items.map((item, index) => (
+          {order?.products?.item?.map((item, index) => (
             <Grid item xs={12} key={index}>
               <ItemCard variant="outlined">
                 <CardContent>
@@ -147,21 +170,36 @@ function SingleOrder({ order, onClose }) {
                     <Grid item xs={3} sm={2}>
                       <CardMedia
                         component="img"
-                        height="80"
-                        image={item.image}
-                        alt={item.name}
+                        // height="80"
+                        image={`${process.env.REACT_APP_API_URL}/uploads/${item?.product_id?.image?.[0]}`}
+                        alt={item?.product_id?.name}
                       />
                     </Grid>
                     <Grid item xs={9} sm={10}>
-                      <Typography variant="h6">{item.name}</Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        Quantity: {item.quantity}
+                      <Typography variant="h6">
+                        {item?.product_id?.name}
+                      </Typography>
+                      <Typography variant="caption">
+                        {item?.product_id?.subheading}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        Price: ${item.price.toFixed(2)}
+                        Quantity: {item?.qty}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        Subtotal: ${(item.price * item.quantity).toFixed(2)}
+                        Price: ₹{" "}
+                        <span
+                          style={{
+                            textDecorationLine: "line-through",
+                            paddingRight: "5px",
+                          }}
+                        >
+                          {item?.product_id?.price}
+                        </span>
+                        {item?.product_id?.sale_rate}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Subtotal: ₹{" "}
+                        {(item?.product_id?.sale_rate * item?.qty)?.toFixed(2)}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -176,18 +214,11 @@ function SingleOrder({ order, onClose }) {
             Order Summary
           </Typography>
           <Typography variant="body1">
-            Subtotal: ${order.subtotal.toFixed(2)}
+            Subtotal: ₹ {order.Totalamount}
           </Typography>
-          <Typography variant="body1">
-            Shipping: ${order.shipping.toFixed(2)}
-          </Typography>
-          <Typography variant="body1">
-            Tax: ${order.tax.toFixed(2)}
-          </Typography>
-          <Divider style={{ margin: '10px 0' }} />
-          <Typography variant="h6">
-            Total: ${order.total.toFixed(2)}
-          </Typography>
+          <Typography variant="body1">Tax: N/A</Typography>
+          <Divider style={{ margin: "10px 0" }} />
+          <Typography variant="h6">Total: ₹ {order?.Totalamount}</Typography>
         </SummaryCard>
       </DialogContent>
       <DialogActions>

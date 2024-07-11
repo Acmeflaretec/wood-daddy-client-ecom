@@ -8,11 +8,14 @@
 /* products listing */
 .productList{
 display: flex;
+flex-direction: column;
 font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 
 }
 
-
+.ProductsBox{
+  min-height: 40vh;
+}
 
 
 /* product card */
@@ -22,9 +25,10 @@ font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
 .ProductList {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  padding: auto;
+  display: fl;
+  /* flex-wrap: wrap; */
+  /* justify-content: space-between; */
   row-gap: 30px;
 }
 

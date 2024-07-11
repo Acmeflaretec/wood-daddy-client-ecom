@@ -1,36 +1,88 @@
-import React from 'react';
-import { Box, Typography, Paper } from '@mui/material';
-import './MapAddress.css';
+import React from "react";
+import { Box, Typography, Paper, Grid, Link } from "@mui/material";
+import "./MapAddress.css";
+import { Email, LocationCity, Phone, Web } from "@mui/icons-material";
 
 function MapAddress() {
   return (
-    <Box className='MapAddress'>
-      <Box className='mapContainer'>
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d62651.02061496091!2d76.02719146071638!3d11.06194314978545!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba64a9be29b058f%3A0x23e371e0d4c30d8e!2sMalappuram%2C%20Kerala!5e0!3m2!1sen!2sin!4v1714627543517!5m2!1sen!2sin"
-          width="100%"
-          height="450"
-          style={{ border: '0' }}
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="Google Map"
-        ></iframe>
-      </Box>
-      {/* <Paper elevation={3} className='addressContainer'>
-        <Typography variant="h5" gutterBottom>
-          Our Address
-        </Typography>
-        <Typography variant="body1">
-          123 Beautiful Street, City, Country
-        </Typography>
-        <Typography variant="body1">
-          Phone: +1234567890
-        </Typography>
-        <Typography variant="body1">
-          Email: example@example.com
-        </Typography>
-      </Paper> */}
+    <Box className="MapAddress">
+      <Grid container p={{ xs: 2, md: 5 }}>
+        <Grid item md={6} pr={{ md: 3 }}>
+          <Grid container spacing={3}>
+            <Grid item>
+              <Typography variant="h4">Get in touch</Typography>
+              <Typography variant="body1">
+                Want to get in touch? we'd love to hear from you. here is how
+                you can reach us.
+              </Typography>
+            </Grid>
+            <Grid item container spacing={3} pb={4}>
+              <Grid item xs={6}>
+                <Paper sx={{ textAlign: "center" }}>
+                  <Phone fontSize="large" />
+                  <Typography>Phone</Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{ textDecoration: "none" }}
+                    component={Link}
+                    href="tel:9123456739"
+                    target="_blank"
+                  >
+                    +91 8234567890
+                  </Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={6}>
+                <Paper sx={{ textAlign: "center" }}>
+                  <Email fontSize="large" />
+                  <Typography>Email</Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{ textDecoration: "none" }}
+                    component={Link}
+                    href="mailto:info@wooddaddy.in"
+                    target="_blank"
+                  >
+                    info@wooddaddy.in
+                  </Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={6}>
+                <Paper sx={{ textAlign: "center" }}>
+                  <Web fontSize="large" />
+                  <Typography>website</Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{ textDecoration: "none" }}
+                    component={Link}
+                    href="https://www.wooddaddy.in"
+                    target="_blank"
+                  >
+                    www.wooddaddy.in
+                  </Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={6}>
+                <Paper sx={{ textAlign: "center" }}>
+                  <LocationCity fontSize="large" />
+                  <Typography variant="body1">123 Beautiful Street,</Typography>
+                  <Typography variant="body1">City, Country</Typography>
+                </Paper>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid
+          item
+          md={6}
+          className="image-container"
+          component={Link}
+          href="https://maps.app.goo.gl/8Udi2QzFcrLa49uAA"
+          target="_blank"
+        >
+          <img src="/gallery/gmap.png" className="image" />
+        </Grid>
+      </Grid>
     </Box>
   );
 }

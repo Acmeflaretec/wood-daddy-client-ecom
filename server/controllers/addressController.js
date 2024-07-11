@@ -1,27 +1,10 @@
-const Address = require('../models/address');
+const Address = require("../models/address");
 
 // Create a new address
 const createAddress = async (req, res) => {
   try {
-   // const {userId} = req.params
-    const {  firstname, lastname, country, address_line_1, address_line_2, city, state, zip, mobile } = req.body;
-    const { _id } = req?.decoded
-    // if (primary) {
-    //   // If the new address is marked as primary, make sure to update the existing primary address to non-primary
-    //   await Address.updateMany({ userId:_id, primary: true }, { primary: false });
-    // }
-    const isExisting = await Address.find({
-      userId:_id
-    });
-console.log(isExisting)
-    let SetPrimaryTrue = false;
-    if(isExisting.length <=0) SetPrimaryTrue=true
-
-    console.log('is address existing ',isExisting)
-console.log('is primary ',SetPrimaryTrue)
-
-    const newAddress = new Address({
-      userId:_id,
+    // const {userId} = req.params
+    const {
       firstname,
       lastname,
       country,
@@ -31,13 +14,40 @@ console.log('is primary ',SetPrimaryTrue)
       state,
       zip,
       mobile,
-      primary:SetPrimaryTrue,
+    } = req.body;
+    const { _id } = req?.decoded;
+    // if (primary) {
+    //   // If the new address is marked as primary, make sure to update the existing primary address to non-primary
+    //   await Address.updateMany({ userId:_id, primary: true }, { primary: false });
+    // }
+    const isExisting = await Address.find({
+      userId: _id,
+    });
+    console.log(isExisting);
+    let SetPrimaryTrue = false;
+    if (isExisting.length <= 0) SetPrimaryTrue = true;
+
+    console.log("is address existing ", isExisting);
+    console.log("is primary ", SetPrimaryTrue);
+
+    const newAddress = new Address({
+      userId: _id,
+      firstname,
+      lastname,
+      country,
+      address_line_1,
+      address_line_2,
+      city,
+      state,
+      zip,
+      mobile,
+      primary: SetPrimaryTrue,
     });
 
     const savedAddress = await newAddress.save();
     res.status(201).json(savedAddress);
   } catch (error) {
-    res.status(500).json({ message: 'Error creating address', error });
+    res.status(500).json({ message: "Error creating address", error });
   }
 };
 
@@ -45,16 +55,30 @@ console.log('is primary ',SetPrimaryTrue)
 const updateAddress = async (req, res) => {
   try {
     const { addressId } = req.params;
-    const { firstname, lastname, country, address_line_1, address_line_2, city, state, zip, mobile, primary } = req.body;
+    const {
+      firstname,
+      lastname,
+      country,
+      address_line_1,
+      address_line_2,
+      city,
+      state,
+      zip,
+      mobile,
+      primary,
+    } = req.body;
 
     const address = await Address.findById(addressId);
     if (!address) {
-      return res.status(404).json({ message: 'Address not found' });
+      return res.status(404).json({ message: "Address not found" });
     }
 
     if (primary) {
       // If the updated address is marked as primary, make sure to update the existing primary address to non-primary
-      await Address.updateMany({ userId: address.userId, primary: true }, { primary: false });
+      await Address.updateMany(
+        { userId: address.userId, primary: true },
+        { primary: false }
+      );
     }
 
     address.firstname = firstname;
@@ -71,7 +95,7 @@ const updateAddress = async (req, res) => {
     const updatedAddress = await address.save();
     res.status(200).json(updatedAddress);
   } catch (error) {
-    res.status(500).json({ message: 'Error updating address', error });
+    res.status(500).json({ message: "Error updating address", error });
   }
 };
 
@@ -82,12 +106,12 @@ const deleteAddress = async (req, res) => {
 
     const deletedAddress = await Address.findByIdAndDelete(addressId);
     if (!deletedAddress) {
-      return res.status(404).json({ message: 'Address not found' });
+      return res.status(404).json({ message: "Address not found" });
     }
 
-    res.status(200).json({ message: 'Address deleted successfully' });
+    res.status(200).json({ message: "Address deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting address', error });
+    res.status(500).json({ message: "Error deleting address", error });
   }
 };
 
@@ -95,15 +119,15 @@ const deleteAddress = async (req, res) => {
 const getAddresses = async (req, res) => {
   try {
     //const { userId } = req.params;
-    const { _id } = req?.decoded
-    const addresses = await Address.find({ userId:_id });
+    const { _id } = req?.decoded;
+    const addresses = await Address.find({ userId: _id });
     if (!addresses || addresses.length === 0) {
-      return res.status(404).json({ message: 'Addresses not found' });
+      return res.status(404).json({ message: "Addresses not found" });
     }
 
     res.status(200).json(addresses);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching addresses', error });
+    res.status(500).json({ message: "Error fetching addresses", error });
   }
 };
 
@@ -114,31 +138,33 @@ const getAddressById = async (req, res) => {
 
     const address = await Address.findById(addressId);
     if (!address) {
-      return res.status(404).json({ message: 'Address not found' });
+      return res.status(404).json({ message: "Address not found" });
     }
 
     res.status(200).json(address);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching address', error });
+    res.status(500).json({ message: "Error fetching address", error });
   }
 };
 
-const setDefault = async(req,res)=>{
-try {
-  const {addressId} = req.params
-  const { _id } = req?.decoded
-  await Address.updateMany({ userId: _id, primary: true }, { primary: false });
-// Set the specified address as primary: true
-const updatedAddress = await Address.findByIdAndUpdate(addressId, { primary: true });
+const setDefault = async (req, res) => {
+  try {
+    const { addressId } = req.params;
+    const { _id } = req?.decoded;
+    await Address.updateMany(
+      { userId: _id, primary: true },
+      { primary: false }
+    );
+    // Set the specified address as primary: true
+    const updatedAddress = await Address.findByIdAndUpdate(addressId, {
+      primary: true,
+    });
 
-return res.status(200).json({ message: 'Address set as primary' });
-
-
-} catch (error) {
-  return res.status(500).json({ message: 'Server error' });
-}
-
-}
+    return res.status(200).json({ message: "Address set as primary" });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
+};
 
 module.exports = {
   createAddress,

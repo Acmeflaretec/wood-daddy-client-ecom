@@ -1,6 +1,7 @@
 .Product{
 width: 100%;
-
+min-height: 80vh;
+padding: 30px;
 }
 .proSub{
   
@@ -13,6 +14,7 @@ width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 15px;
 }
 
 .imgFrame img {
@@ -63,13 +65,13 @@ font-size: 30px;
 
 .proSub{
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
 }
 .proContents{
   display: flex;
   flex-direction: column;
-  text-align: center;
-  align-items: center;
+  /* text-align: center; */
+  /* align-items: center; */
 }
 
 }

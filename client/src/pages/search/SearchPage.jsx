@@ -9,15 +9,13 @@ import SearchBar from '../../components/searchBar/SearchBar';
 
 function SearchPage() {
   const { searchItem } = useParams();
-  const [search, setSearch] = useState(searchItem);
 
-  console.log('searchhh', search);
+  console.log('searchhh', searchItem);
 
   return (
     <div>
-      <SearchBar setSearch1={setSearch} search1={search} /> {/* Change setSearch to setSearch1 */}
-      <ProductList   searchItem={search} setSearch={setSearch} />
-      <Footer />
+      {/* <SearchBar setSearch1={setSearch} search1={search} /> */}
+      <ProductList   searchItem={searchItem}  />
     </div>
   );
 }

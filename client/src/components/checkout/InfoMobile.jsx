@@ -1,17 +1,14 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
+import * as React from "react";
+import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
+import Info from "./Info";
 
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-
-import CloseIcon from '@mui/icons-material/Close';
-import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
-
-import Info from './Info';
-
-function InfoMobile({ totalPrice }) {
+function InfoMobile({ item, total, subtotal }) {
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen) => () => {
@@ -19,14 +16,14 @@ function InfoMobile({ totalPrice }) {
   };
 
   const DrawerList = (
-    <Box sx={{ width: 'auto', px: 3, pb: 3, pt: 8 }} role="presentation">
+    <Box sx={{ width: "auto", px: 3, pb: 3, pt: 8 }} role="presentation">
       <IconButton
         onClick={toggleDrawer(false)}
-        sx={{ position: 'absolute', right: 8, top: 8 }}
+        sx={{ position: "absolute", right: 8, top: 8 }}
       >
         <CloseIcon />
       </IconButton>
-      <Info totalPrice={totalPrice} />
+      <Info item={item} total={total} subtotal={subtotal} />
     </Box>
   );
 
