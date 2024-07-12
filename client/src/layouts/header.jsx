@@ -47,8 +47,7 @@ const Header = ({ notif, notificationM }) => {
       try {
         const response = await axiosInstance.get(`/auth/getuser`);
         setUserDetails(response?.data?.data?.[0]);
-
-        localStorage.setItem("UID", response?.data?.data?.[0]?._id);
+        localStorage.setItem("UID", response?.data?.data?.[0]?._id ?? null);
       } catch (error) {
         console.log("errr", error);
         setUserDetails(null);

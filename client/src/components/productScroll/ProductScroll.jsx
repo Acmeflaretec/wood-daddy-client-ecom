@@ -58,7 +58,7 @@ function ProductScroll({ type, categoryId, setNotif }) {
   const fetchData = async () => {
     try {
       const response = await axiosInstance.get(urlQuery);
-      setDetails(response?.data?.products);
+      setDetails(response?.data?.products ?? []);
       // setNotif(prev => !prev)
       console.log("home prods", response?.data?.products);
     } catch (error) {
@@ -159,7 +159,7 @@ function ProductScroll({ type, categoryId, setNotif }) {
     >
       <div style={{ width: "100%", margin: "0 auto" }}>
         <Slider {...settings}>
-          {details.map((item, index) => (
+          {details?.map((item, index) => (
             // <div key={index} style={{ padding: "0 10px",display:'flex',height:'700px',backgroundColor:red[500] }}>
             <ProductCard
               data={item}
